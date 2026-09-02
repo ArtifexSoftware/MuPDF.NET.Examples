@@ -1,0 +1,4 @@
+embeddedCount=1
+facturX=factur-x.xml
+xmlSha256=bc9a945e75127e6721b59e60ee39dd0cd23ecf2088c71a00f15e792747d69061
+roundTripMatch=true

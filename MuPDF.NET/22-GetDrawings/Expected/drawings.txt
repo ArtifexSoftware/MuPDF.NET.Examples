@@ -1,0 +1,3 @@
+pathCount=2
+type.s=2
+redrawnRects=1
