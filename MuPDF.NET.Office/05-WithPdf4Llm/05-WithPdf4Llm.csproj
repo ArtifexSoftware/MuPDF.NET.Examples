@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MuPDF.NET.Examples.Office.WithPdf4Llm</RootNamespace>
+    <AssemblyName>05-WithPdf4Llm</AssemblyName>
+    <PlatformTarget Condition="'$(OS)' == 'Windows_NT'">x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MuPDF.NET.Office" Version="$(ArtifexMuPDFNetOfficeVersion)" />
+    <PackageReference Include="MuPDF.NET.Office.NativeAssets" Version="$(ArtifexMuPDFNetOfficeVersion)" />
+    <PackageReference Include="MuPDF.NET.PDF4LLM" Version="$(ArtifexMuPDFNetPDF4LLMVersion)" />
+    <ProjectReference Include="..\..\Common\Examples.Common.csproj" />
+  </ItemGroup>
+</Project>

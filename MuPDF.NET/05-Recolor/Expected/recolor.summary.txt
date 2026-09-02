@@ -1,0 +1,6 @@
+csAfter=ICCBased
+csBefore=DeviceRGB
+extractComponents=4
+extractCsName=ICCBased(CMYK,Artifex CMYK SWOP Profile)
+pageCount=2
+textSha256=3ac66637cc45a40b201f066997325ee6d3f84f219bab5766565a6f3bfe5e5ccf

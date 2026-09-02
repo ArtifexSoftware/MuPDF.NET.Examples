@@ -1,0 +1,2 @@
+docxPages=3
+hwpxPages=1

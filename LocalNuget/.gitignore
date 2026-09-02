@@ -1,0 +1,4 @@
+# Drop or symlink locally packed Artifex .nupkg files here (optional).
+# NuGet.Config uses this folder as LocalArtifex ahead of nuget.org.
+*
+!.gitignore
