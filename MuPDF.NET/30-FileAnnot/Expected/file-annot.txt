@@ -1,0 +1,5 @@
+annotType=FileAttachment
+filename=note.txt
+size=42
+annotCount=1
+type=FileAttachment

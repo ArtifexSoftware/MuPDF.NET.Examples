@@ -1,0 +1,9 @@
+encrypted=ok
+needsPass=True
+isEncrypted=True
+authenticate=2
+pages=3
+decrypted=ok
+decrypted.needsPass=False
+decrypted.isEncrypted=False
+decrypted.pages=3

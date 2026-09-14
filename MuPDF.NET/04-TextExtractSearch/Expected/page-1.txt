@@ -1,0 +1,36 @@
+Datei:
+Hydraulik:
+IBN-Code:
+ait-deutschland GmbH
+D-95359 Kasendorf
+Industriestraße 3
+SEITE_1/3
+TRL
+ext.
+HK / KK
+HUP
+TB1
+FP1
+HK / KK
+TW
+MK1
+XXX
+WTPSK
+TA
+M
+ZUP
+BUP
+A
+B
+ZWE
+TBW
+Hybrox
+HSV
+TW
+TW
+TW
+Hybrox589713a
+Dieses Schema ist ein Anlagenbeispiel ohne Absperr- und Sicherheitseinrichtungen, was
+die fachliche Planung vor Ort nicht ersetzt.
+Alle regionalen Normen, Gesetze und Vorschriften sind dabei einzuhalten. Die
+Rohrdimension muss planerisch ermittelt werden.

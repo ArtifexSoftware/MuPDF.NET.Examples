@@ -1,0 +1,6 @@
+before.rotation=270
+before.rect=0,0,842,595
+before.cropbox=0,0,595,842
+after.rotation=90
+crop.rect=0,0,421,297.5
+after.cropbox=0,0,421,297.5

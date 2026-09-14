@@ -1,0 +1,2 @@
+imageCount=1
+xref=9 ext=jpeg w=632 h=132 n=3 bytes=7850 sha=48a83fd8541e25e74224352bc0c441ac6644abee75b9713a4a7ea94eb25c7d04

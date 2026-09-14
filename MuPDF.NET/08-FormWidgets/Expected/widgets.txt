@@ -1,0 +1,21 @@
+widgetCount=20
+acknowledgeOther	Text	
+claimNo	Text	EC202307310
+debtor	Text	KLIMA-THERM SP. Z O.O.
+entrustMoney	Text	20,348,526.10
+ifAcknowledge	RadioButton	
+ifAcknowledge	RadioButton	
+ifAcknowledge	RadioButton	
+ifAcknowledge	RadioButton	
+ifReceived	RadioButton	
+ifReceived	RadioButton	
+ifReceived	RadioButton	
+ifReceived	RadioButton	
+ifReceived	RadioButton	
+investigationAgency	Text	IA Group B.V
+moneyId	Text	EUR
+partlyDetail	Text	
+placementDate	Text	2023-11-09
+policyHolder	Text	广东美的楼宇科技有限公司
+reportDate	Text	
+trustNoticeNo	Text	EC202307310-CFTD-01

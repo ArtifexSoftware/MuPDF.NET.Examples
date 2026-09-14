@@ -1,0 +1,3 @@
+pageCount=2
+replacement=logo.png
+textSha256=3ac66637cc45a40b201f066997325ee6d3f84f219bab5766565a6f3bfe5e5ccf

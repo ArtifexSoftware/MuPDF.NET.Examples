@@ -1,0 +1,22 @@
+---before---
+author=
+creationDate=D:20231211141625+01'00'
+creator=AutoCAD LT 2023 - Deutsch (German) 2023 (24.2)
+encryption=
+format=PDF 1.7
+keywords=
+modDate=D:20240502120953+02'00'
+producer=pdfplot16.hdi 16.02.072.00000
+subject=
+title=Schemaalpha
+trapped=
+---after---
+author=Artifex
+creator=MuPDF.NET.Examples
+encryption=
+format=PDF 1.7
+keywords=
+producer=pdfplot16.hdi 16.02.072.00000
+subject=14-Metadata sample
+title=MuPDF.NET.Examples — Metadata
+trapped=

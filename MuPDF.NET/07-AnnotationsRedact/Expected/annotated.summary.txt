@@ -1,0 +1,3 @@
+annotCount=2
+pageCount=1
+textSha256=3700b4e919a79e8c3da6ce4aa6b6d45103da3952f41d0f887f83a68acd1f73b3

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MuPDF.NET.Examples.PDF4LLM.ToJsonLayout</RootNamespace>
+    <AssemblyName>02-ToJsonLayout</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MuPDF.NET.PDF4LLM" Version="$(ArtifexMuPDFNetPDF4LLMVersion)" />
+    <ProjectReference Include="..\..\Common\Examples.Common.csproj" />
+  </ItemGroup>
+</Project>

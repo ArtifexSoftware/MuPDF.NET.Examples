@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MuPDF.NET.Examples.MuPDFNet.ZugferdEmbedded</RootNamespace>
+    <AssemblyName>18-ZugferdEmbedded</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MuPDF.NET" Version="$(ArtifexMuPDFNetVersion)" />
+    <ProjectReference Include="..\..\Common\Examples.Common.csproj" />
+  </ItemGroup>
+</Project>

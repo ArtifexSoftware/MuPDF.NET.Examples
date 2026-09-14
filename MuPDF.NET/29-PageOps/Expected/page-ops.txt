@@ -1,0 +1,4 @@
+built.pages=5
+afterMove.pages=5
+afterDelete.pages=4
+afterSelect.pages=1

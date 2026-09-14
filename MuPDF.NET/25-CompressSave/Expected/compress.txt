@@ -1,0 +1,2 @@
+smallerOrEqual=true
+savedWith=garbage4+deflate+objstms
