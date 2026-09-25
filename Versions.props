@@ -4,7 +4,7 @@
     Prefer packages from D:\Artifex\LocalNuget when present (see NuGet.Config).
   -->
   <PropertyGroup Label="Artifex package versions">
-    <ArtifexMuPDFNetVersion>3.28.2</ArtifexMuPDFNetVersion>
+    <ArtifexMuPDFNetVersion>3.28.2.4</ArtifexMuPDFNetVersion>
     <ArtifexMuPDFNetPDF4LLMVersion>1.28.2</ArtifexMuPDFNetPDF4LLMVersion>
     <ArtifexMuPDFNetOfficeVersion>1.28.2</ArtifexMuPDFNetOfficeVersion>
   </PropertyGroup>

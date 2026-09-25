@@ -91,10 +91,11 @@ Each project folder has its own `README.md` (what it shows, inputs, how to run, 
 | Downsample / recompress images | `20-RewriteImages` |
 | Compress PDF streams on save | `25-CompressSave` |
 | Page file attachment annot | `30-FileAnnot` (vs `13-EmbeddedFiles`) |
+| Render many files/pages in parallel | `31-ParallelPixmap` (vs sequential `03-RenderPixmap`) |
 
 | Product | Projects |
 |---------|----------|
-| MuPDF.NET | Open/Save, Pages, Render, Text, Recolor, Story/HTML, Annotations, Widgets, Insert/Replace/Extract images, Outline/Links, Tables, Barcodes, Embedded files, Metadata, TextWriter, Draw shapes, ZUGFeRD, Color management, Rewrite images, GetDrawings, Rotate/Crop, Encrypt, Compress, Watermark, Image→PDF, Image filters, Page ops, File annot |
+| MuPDF.NET | Open/Save, Pages, Render, Parallel pixmap, Text, Recolor, Story/HTML, Annotations, Widgets, Insert/Replace/Extract images, Outline/Links, Tables, Barcodes, Embedded files, Metadata, TextWriter, Draw shapes, ZUGFeRD, Color management, Rewrite images, GetDrawings, Rotate/Crop, Encrypt, Compress, Watermark, Image→PDF, Image filters, Page ops, File annot |
 | MuPDF.NET.PDF4LLM | Markdown, JSON layout, Plain text, OCR, Tables→CSV, Llama markdown reader, GetKeyValues, Markdown→PDF |
 | MuPDF.NET.Office | Unlock/fonts, Open HWPX/DOCX, Export PDF, Export MD/JSON, With PDF4LLM |
 
