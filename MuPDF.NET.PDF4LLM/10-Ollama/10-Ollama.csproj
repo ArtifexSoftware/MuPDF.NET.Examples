@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MuPDF.NET.Examples.PDF4LLM.OllamaCapitals</RootNamespace>
+    <AssemblyName>10-Ollama</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MuPDF.NET.PDF4LLM" Version="$(ArtifexMuPDFNetPDF4LLMVersion)" />
+    <PackageReference Include="Microsoft.Extensions.AI" Version="10.10.0" />
+    <PackageReference Include="OllamaSharp" Version="5.4.30" />
+    <ProjectReference Include="..\..\Common\Examples.Common.csproj" />
+  </ItemGroup>
+</Project>

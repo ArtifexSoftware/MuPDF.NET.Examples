@@ -5,7 +5,7 @@
   -->
   <PropertyGroup Label="Artifex package versions">
     <ArtifexMuPDFNetVersion>3.28.2.4</ArtifexMuPDFNetVersion>
-    <ArtifexMuPDFNetPDF4LLMVersion>1.28.2</ArtifexMuPDFNetPDF4LLMVersion>
+    <ArtifexMuPDFNetPDF4LLMVersion>1.28.2.1</ArtifexMuPDFNetPDF4LLMVersion>
     <ArtifexMuPDFNetOfficeVersion>1.28.2</ArtifexMuPDFNetOfficeVersion>
   </PropertyGroup>
 </Project>

@@ -37,6 +37,8 @@ Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Confi
 - Packages from [nuget.org](https://www.nuget.org/) (see `Versions.props`)
 - Optional `MUPDF_OFFICE_KEY` for Office unlock
 - `02-ToJsonLayout` / `03-ToText`: optional [pymupdf-layout](https://pypi.org/project/pymupdf-layout/) for layout mode
+- `09-LoadAi`: optional `AZURE_OPENAI_*` (and `AZURE_SEARCH_*`) for a live model; default run needs no keys
+- `10-Ollama` / `11-OllamaMagazines`: local [Ollama](https://ollama.com) (`ollama pull mistral` and `ollama pull nomic-embed-text`); SKIP when Ollama is not running — see `MuPDF.NET.PDF4LLM/10-Ollama/README.md`
 
 ## Run (compare against Expected/)
 
@@ -96,7 +98,7 @@ Each project folder has its own `README.md` (what it shows, inputs, how to run, 
 | Product | Projects |
 |---------|----------|
 | MuPDF.NET | Open/Save, Pages, Render, Parallel pixmap, Text, Recolor, Story/HTML, Annotations, Widgets, Insert/Replace/Extract images, Outline/Links, Tables, Barcodes, Embedded files, Metadata, TextWriter, Draw shapes, ZUGFeRD, Color management, Rewrite images, GetDrawings, Rotate/Crop, Encrypt, Compress, Watermark, Image→PDF, Image filters, Page ops, File annot |
-| MuPDF.NET.PDF4LLM | Markdown, JSON layout, Plain text, OCR, Tables→CSV, Llama markdown reader, GetKeyValues, Markdown→PDF |
+| MuPDF.NET.PDF4LLM | Markdown, JSON layout, Plain text, OCR, Tables→CSV, Llama markdown reader, GetKeyValues, Markdown→PDF, LoadAi (RAG ask/search), Ollama capitals, Ollama magazines |
 | MuPDF.NET.Office | Unlock/fonts, Open HWPX/DOCX, Export PDF, Export MD/JSON, With PDF4LLM |
 
 ## Versions
