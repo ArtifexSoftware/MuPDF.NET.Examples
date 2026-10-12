@@ -28,3 +28,7 @@ dotnet run --project MuPDF.NET.PDF4LLM\01-ToMarkdown
 
 - `MuPDF4LLM.SetUseLayout(false)`
 - `MuPDF4LLM.ToMarkdown`
+
+## Related
+
+- [`09-LoadAi`](../09-LoadAi/) — index that Markdown, then Ask / Search (why this package exists)

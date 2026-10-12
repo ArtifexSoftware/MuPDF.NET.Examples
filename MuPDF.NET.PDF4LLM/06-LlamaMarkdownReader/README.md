@@ -29,3 +29,7 @@ dotnet run --project MuPDF.NET.PDF4LLM\06-LlamaMarkdownReader
 - `MuPDF4LLM.SetUseLayout(false)` — classic RAG markdown (stable Expected/)
 - `PDFMarkdownReader.LoadData`
 - `LlamaIndexDocument.Text` / `ExtraInfo`
+
+## Related
+
+- [`09-LoadAi`](../09-LoadAi/) — embed those chunks and Ask / Search

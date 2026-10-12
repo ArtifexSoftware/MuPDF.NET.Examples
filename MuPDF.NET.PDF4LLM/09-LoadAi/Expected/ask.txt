@@ -1,0 +1,5 @@
+Development-mode answer (set AZURE_OPENAI_* environment variables for a real model).
+
+Based on indexed excerpts, the United Kingdom (London) and Turkey (Ankara) are NATO members whose capitals exceed 5 million people.
+
+Question: Which NATO member countries have capitals with more than 5 million people?
