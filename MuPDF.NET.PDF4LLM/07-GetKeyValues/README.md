@@ -8,7 +8,7 @@ Extract AcroForm field names and values via `MuPDF4LLM.GetKeyValues`.
 
 ## Package
 
-- [MuPDF.NET.PDF4LLM](https://www.nuget.org/packages/MuPDF.NET.PDF4LLM)
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.0 (via `Common`)
 
 ## Input / output
 

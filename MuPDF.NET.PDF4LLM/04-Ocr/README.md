@@ -8,11 +8,11 @@ Compare Markdown extraction with OCR on vs off.
 
 ## Package
 
-- [MuPDF.NET.PDF4LLM](https://www.nuget.org/packages/MuPDF.NET.PDF4LLM)
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.0 (via `Common`)
 
 ## Prerequisites
 
-- OCR needs **layout mode** (`SetUseLayout(true)`) — `useOcr` is ignored when layout is off.
+- OCR needs **layout mode** (`Utils.UseLayout(true)`) — `useOcr` is ignored when layout is off.
 - OCR path also needs a working Tesseract / tessdata install when `useOcr: true`.
 
 ## Input / output
@@ -31,4 +31,5 @@ dotnet run --project MuPDF.NET.PDF4LLM\04-Ocr
 
 ## APIs used
 
-- `MuPDF4LLM.ToMarkdown(..., useOcr: false|true)`
+- `Utils.UseLayout(true)`
+- `Document.ToMarkdown(..., useOcr: false|true)`

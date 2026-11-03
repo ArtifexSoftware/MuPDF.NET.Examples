@@ -16,7 +16,8 @@ namespace MuPDF.NET.Examples.Common
 
         /// <summary>
         /// Print Artifex package versions used by this process.
-        /// Always prints MuPDF.NET + MuPDF; also Office / PDF4LLM when referenced.
+        /// Always prints MuPDF.NET + MuPDF; also Office when referenced.
+        /// LLM extract/RAG types ship in MuPDF.NET 4.0 (no extra package).
         /// </summary>
         public static void PrintPackageVersions()
         {
@@ -27,10 +28,6 @@ namespace MuPDF.NET.Examples.Common
             string? office = TryGetPackageVersion("MuPDF.NET.Office");
             if (office != null)
                 Console.WriteLine($"MuPDF.NET.Office {office}");
-
-            string? pdf4llm = TryGetPackageVersion("MuPDF.NET.PDF4LLM");
-            if (pdf4llm != null)
-                Console.WriteLine($"MuPDF.NET.PDF4LLM {pdf4llm}");
         }
 
         public static void Info(string text) => Console.WriteLine(text);

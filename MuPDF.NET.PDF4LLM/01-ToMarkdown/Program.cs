@@ -1,5 +1,5 @@
+using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
-using MuPDF.NET.PDF4LLM;
 
 namespace MuPDF.NET.Examples.PDF4LLM.ToMarkdown;
 
@@ -8,7 +8,7 @@ internal static class Program
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.PDF4LLM / 01-ToMarkdown");
+        ConsoleEx.Title("MuPDF.NET / 01-ToMarkdown");
         ToMarkdown();
     }
 
@@ -22,13 +22,14 @@ internal static class Program
         var check = new ResultCheck("MuPDF.NET.PDF4LLM", "01-ToMarkdown");
 
         // Remember prior layout flag so we restore it for other examples in the same process.
-        bool prior = MuPDF4LLM.UseLayout;
+        bool prior = Utils.LayoutEnabled;
         try
         {
             // false = MuPdfRag markdown (no pymupdf-layout required).
-            MuPDF4LLM.SetUseLayout(false);
+            Utils.UseLayout(false);
 
-            string markdown = MuPDF4LLM.ToMarkdown(input, showProgress: false) ?? "";
+            using Document doc = new Document(input);
+            string markdown = doc.ToMarkdown(showProgress: false) ?? "";
             File.WriteAllText(output, markdown);
 
             ConsoleEx.Info($"Opened: {input}");
@@ -37,7 +38,7 @@ internal static class Program
         }
         finally
         {
-            MuPDF4LLM.SetUseLayout(prior);
+            Utils.UseLayout(prior);
         }
 
         check.Finish();

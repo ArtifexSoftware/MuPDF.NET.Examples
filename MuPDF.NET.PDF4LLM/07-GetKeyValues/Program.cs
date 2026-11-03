@@ -10,7 +10,7 @@ internal static class Program
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.PDF4LLM / 07-GetKeyValues");
+        ConsoleEx.Title("MuPDF.NET / 07-GetKeyValues");
         GetKeyValues();
     }
 

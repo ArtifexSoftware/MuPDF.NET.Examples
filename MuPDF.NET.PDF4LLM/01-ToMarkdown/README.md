@@ -1,6 +1,6 @@
 # 01-ToMarkdown
 
-Convert a PDF to Markdown (classic RAG path with layout off).
+Convert a PDF to Markdown (classic RAG path with layout off). Uses `Document.ToMarkdown` from **MuPDF.NET 4.0**.
 
 ## Sample method
 
@@ -8,7 +8,7 @@ Convert a PDF to Markdown (classic RAG path with layout off).
 
 ## Package
 
-- [MuPDF.NET.PDF4LLM](https://www.nuget.org/packages/MuPDF.NET.PDF4LLM)
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.0 (via `Common`)
 
 ## Input / output
 
@@ -26,5 +26,9 @@ dotnet run --project MuPDF.NET.PDF4LLM\01-ToMarkdown
 
 ## APIs used
 
-- `MuPDF4LLM.SetUseLayout(false)`
-- `MuPDF4LLM.ToMarkdown`
+- `Utils.UseLayout(false)`
+- `Document.ToMarkdown`
+
+## Related
+
+- [`09-LoadAi`](../09-LoadAi/) — index that Markdown, then Ask / Search

@@ -3,15 +3,15 @@ acknowledgeOther	Text
 claimNo	Text	EC202307310
 debtor	Text	KLIMA-THERM SP. Z O.O.
 entrustMoney	Text	20,348,526.10
-ifAcknowledge	RadioButton	
-ifAcknowledge	RadioButton	
-ifAcknowledge	RadioButton	
-ifAcknowledge	RadioButton	
-ifReceived	RadioButton	
-ifReceived	RadioButton	
-ifReceived	RadioButton	
-ifReceived	RadioButton	
-ifReceived	RadioButton	
+ifAcknowledge	RadioButton	Off
+ifAcknowledge	RadioButton	Off
+ifAcknowledge	RadioButton	Off
+ifAcknowledge	RadioButton	Off
+ifReceived	RadioButton	Off
+ifReceived	RadioButton	Off
+ifReceived	RadioButton	Off
+ifReceived	RadioButton	Off
+ifReceived	RadioButton	Off
 investigationAgency	Text	IA Group B.V
 moneyId	Text	EUR
 partlyDetail	Text	

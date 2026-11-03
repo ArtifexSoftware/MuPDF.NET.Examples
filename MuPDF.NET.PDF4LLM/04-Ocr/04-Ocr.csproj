@@ -5,7 +5,6 @@
     <AssemblyName>04-Ocr</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MuPDF.NET.PDF4LLM" Version="$(ArtifexMuPDFNetPDF4LLMVersion)" />
     <ProjectReference Include="..\..\Common\Examples.Common.csproj" />
   </ItemGroup>
 </Project>

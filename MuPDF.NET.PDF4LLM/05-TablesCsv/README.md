@@ -8,7 +8,7 @@ Detect tables on a page and write the first table as CSV.
 
 ## Package
 
-- [MuPDF.NET.PDF4LLM](https://www.nuget.org/packages/MuPDF.NET.PDF4LLM) (uses MuPDF.NET table APIs)
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.0 (via `Common`)
 
 ## Input / output
 
