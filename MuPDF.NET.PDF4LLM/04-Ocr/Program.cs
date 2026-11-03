@@ -1,5 +1,5 @@
+using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
-using MuPDF.NET.PDF4LLM;
 
 namespace MuPDF.NET.Examples.PDF4LLM.Ocr;
 
@@ -8,7 +8,7 @@ internal static class Program
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.PDF4LLM / 04-Ocr");
+        ConsoleEx.Title("MuPDF.NET / 04-Ocr");
         OcrCompare();
     }
 
@@ -22,19 +22,23 @@ internal static class Program
         string withoutOcr = ExamplePaths.Output("MuPDF.NET.PDF4LLM", "04-Ocr", "ocr-off.md");
         var check = new ResultCheck("MuPDF.NET.PDF4LLM", "04-Ocr");
 
-        bool prior = MuPDF4LLM.UseLayout;
+        bool prior = Utils.LayoutEnabled;
         try
         {
             // OCR is only implemented in the layout pipeline (DocumentLayout).
             // With UseLayout=false, useOcr is ignored and scanned pages stay empty.
-            MuPDF4LLM.SetUseLayout(true);
+            Utils.UseLayout(true);
 
             // Without OCR: only embedded text.
-            string mdOff = MuPDF4LLM.ToMarkdown(input, showProgress: false, useOcr: false) ?? "";
+            string mdOff;
+            using (Document docOff = new Document(input))
+                mdOff = docOff.ToMarkdown(showProgress: false, useOcr: false) ?? "";
             File.WriteAllText(withoutOcr, mdOff);
 
             // With OCR: Tesseract where the pipeline decides it helps (needs tessdata).
-            string mdOn = MuPDF4LLM.ToMarkdown(input, showProgress: false, useOcr: true) ?? "";
+            string mdOn;
+            using (Document docOn = new Document(input))
+                mdOn = docOn.ToMarkdown(showProgress: false, useOcr: true) ?? "";
             File.WriteAllText(withOcr, mdOn);
 
             ConsoleEx.Info($"Opened: {input}");
@@ -46,7 +50,7 @@ internal static class Program
         }
         finally
         {
-            MuPDF4LLM.SetUseLayout(prior);
+            Utils.UseLayout(prior);
         }
 
         check.Finish();

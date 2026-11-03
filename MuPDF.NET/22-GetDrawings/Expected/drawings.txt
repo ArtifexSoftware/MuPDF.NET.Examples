@@ -1,3 +1,4 @@
-pathCount=2
+pathCount=3
+type.fs=1
 type.s=2
-redrawnRects=1
+redrawnRects=2

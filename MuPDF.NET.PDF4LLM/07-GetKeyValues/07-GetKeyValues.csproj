@@ -5,7 +5,6 @@
     <AssemblyName>07-GetKeyValues</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MuPDF.NET.PDF4LLM" Version="$(ArtifexMuPDFNetPDF4LLMVersion)" />
     <ProjectReference Include="..\..\Common\Examples.Common.csproj" />
   </ItemGroup>
 </Project>

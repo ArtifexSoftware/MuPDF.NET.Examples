@@ -8,7 +8,7 @@ Load LlamaIndex-compatible documents (one per page) via `PDFMarkdownReader`.
 
 ## Package
 
-- [MuPDF.NET.PDF4LLM](https://www.nuget.org/packages/MuPDF.NET.PDF4LLM)
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.0 (via `Common`)
 
 ## Input / output
 
@@ -29,3 +29,7 @@ dotnet run --project MuPDF.NET.PDF4LLM\06-LlamaMarkdownReader
 - `MuPDF4LLM.SetUseLayout(false)` — classic RAG markdown (stable Expected/)
 - `PDFMarkdownReader.LoadData`
 - `LlamaIndexDocument.Text` / `ExtraInfo`
+
+## Related
+
+- [`09-LoadAi`](../09-LoadAi/) — embed those chunks and Ask / Search

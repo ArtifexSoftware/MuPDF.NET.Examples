@@ -10,7 +10,7 @@ internal static class Program
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.PDF4LLM / 06-LlamaMarkdownReader");
+        ConsoleEx.Title("MuPDF.NET / 06-LlamaMarkdownReader");
         LlamaMarkdownReader();
     }
 

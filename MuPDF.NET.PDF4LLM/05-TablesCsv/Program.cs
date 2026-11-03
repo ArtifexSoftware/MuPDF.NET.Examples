@@ -10,7 +10,7 @@ internal static class Program
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.PDF4LLM / 05-TablesCsv");
+        ConsoleEx.Title("MuPDF.NET / 05-TablesCsv");
         TablesToCsv();
     }
 
@@ -26,7 +26,7 @@ internal static class Program
         using var doc = Document.Open(input);
         using Page page = doc[0];
 
-        // Same table finder as MuPDF.NET (PDF4LLM package pulls it in).
+        // Same table finder as other MuPDF.NET table samples.
         List<Table> tables = Utils.GetTables(
             page,
             clip: page.Rect,

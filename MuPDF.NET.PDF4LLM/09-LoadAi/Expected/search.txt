@@ -1,0 +1,6 @@
+query=capital cities with more than 50% of national population
+1. national-capitals.pdf p5
+2. national-capitals.pdf p5
+3. national-capitals.pdf p5
+4. national-capitals.pdf p5
+5. national-capitals.pdf p5

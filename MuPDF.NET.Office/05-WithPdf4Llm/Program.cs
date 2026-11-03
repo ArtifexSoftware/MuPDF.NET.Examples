@@ -1,7 +1,7 @@
 using System.Text;
+using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
 using MuPDF.NET.Office;
-using MuPDF.NET.PDF4LLM;
 
 namespace MuPDF.NET.Examples.Office.WithPdf4Llm;
 
@@ -15,7 +15,7 @@ internal static class Program
     }
 
     /// <summary>
-    /// Unlock Office, then run MuPDF4LLM.ToMarkdown on an HWPX path.
+    /// Unlock Office, then run <see cref="Document.ToMarkdown"/> on an HWPX path.
     /// </summary>
     static void WithPdf4Llm()
     {
@@ -23,14 +23,15 @@ internal static class Program
         string output = ExamplePaths.Output("MuPDF.NET.Office", "05-WithPdf4Llm", "sample.hwpx.md");
         var check = new ResultCheck("MuPDF.NET.Office", "05-WithPdf4Llm");
 
-        // Office unlock registers the document handler so PDF4LLM can open HWPX/DOCX paths.
+        // Office unlock registers the document handler so Document can open HWPX/DOCX paths.
         MuPDFOffice.Unlock(OfficeLicense.KeyFromEnvironment(), fontPathAuto: true);
 
-        bool prior = MuPDF4LLM.UseLayout;
+        bool prior = Utils.LayoutEnabled;
         try
         {
-            MuPDF4LLM.SetUseLayout(false);
-            string markdown = MuPDF4LLM.ToMarkdown(input, showProgress: false) ?? "";
+            Utils.UseLayout(false);
+            using Document doc = new Document(input);
+            string markdown = doc.ToMarkdown(showProgress: false) ?? "";
             // Always write UTF-8 (no BOM) so Output/ is readable on every OS.
             File.WriteAllText(output, markdown, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
 
@@ -47,7 +48,7 @@ internal static class Program
         }
         finally
         {
-            MuPDF4LLM.SetUseLayout(prior);
+            Utils.UseLayout(prior);
         }
 
         check.Finish();

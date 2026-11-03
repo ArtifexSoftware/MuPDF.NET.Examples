@@ -8,7 +8,7 @@ internal static class Program
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.PDF4LLM / 08-MarkdownToPdf");
+        ConsoleEx.Title("MuPDF.NET / 08-MarkdownToPdf");
         MarkdownToPdf();
     }
 

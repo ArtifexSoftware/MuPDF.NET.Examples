@@ -1,6 +1,6 @@
 # 02-ToJsonLayout
 
-Convert a PDF to layout JSON. Requires the optional **pymupdf-layout** provider.
+Convert a PDF to layout JSON. Requires the optional **pymupdf 2.0** layout worker.
 
 ## Sample method
 
@@ -8,11 +8,11 @@ Convert a PDF to layout JSON. Requires the optional **pymupdf-layout** provider.
 
 ## Package
 
-- [MuPDF.NET.PDF4LLM](https://www.nuget.org/packages/MuPDF.NET.PDF4LLM)
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.0 (via `Common`)
 
 ## Prerequisites
 
-- Install [pymupdf-layout](https://pypi.org/project/pymupdf-layout/) so `MuPDF4LLM.LayoutAvailable` is true.
+- One-time layout setup: `dotnet msbuild -t:MuPDFNetSetupLayoutPython` (or `python` `setup_layout_python.py`) so `MuPDF4LLM.LayoutAvailable` is true.
 - Without layout, the sample records `LAYOUT_UNAVAILABLE` and skips JSON.
 
 ## Input / output
@@ -32,5 +32,5 @@ dotnet run --project MuPDF.NET.PDF4LLM\02-ToJsonLayout
 ## APIs used
 
 - `MuPDF4LLM.LayoutAvailable`
-- `MuPDF4LLM.SetUseLayout(true)`
-- `MuPDF4LLM.ToJson`
+- `Utils.UseLayout(true)`
+- `Document.ToJson`

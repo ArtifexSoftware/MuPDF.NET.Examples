@@ -1,3 +1,4 @@
+using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
 using MuPDF.NET.PDF4LLM;
 
@@ -8,12 +9,12 @@ internal static class Program
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.PDF4LLM / 03-ToText");
+        ConsoleEx.Title("MuPDF.NET / 03-ToText");
         ToText();
     }
 
     /// <summary>
-    /// Convert a PDF to plain text via layout (requires pymupdf-layout).
+    /// Convert a PDF to plain text via layout (requires pymupdf 2.0 layout worker).
     /// </summary>
     static void ToText()
     {
@@ -21,7 +22,7 @@ internal static class Program
         string output = ExamplePaths.Output("MuPDF.NET.PDF4LLM", "03-ToText", "columns.txt");
         var check = new ResultCheck("MuPDF.NET.PDF4LLM", "03-ToText");
 
-        bool prior = MuPDF4LLM.UseLayout;
+        bool prior = Utils.LayoutEnabled;
         try
         {
             // ToText requires UseLayout=true.
@@ -33,8 +34,9 @@ internal static class Program
                 return;
             }
 
-            MuPDF4LLM.SetUseLayout(true);
-            string text = MuPDF4LLM.ToText(input, useOcr: false, showProgress: false) ?? "";
+            Utils.UseLayout(true);
+            using Document doc = new Document(input);
+            string text = doc.ToText(useOcr: false, showProgress: false) ?? "";
             File.WriteAllText(output, text);
 
             ConsoleEx.Info($"Opened: {input}");
@@ -44,7 +46,7 @@ internal static class Program
         }
         finally
         {
-            MuPDF4LLM.SetUseLayout(prior);
+            Utils.UseLayout(prior);
         }
 
         check.Finish();

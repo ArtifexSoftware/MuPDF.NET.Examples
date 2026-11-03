@@ -1,0 +1,21 @@
+Development-mode answer (set AZURE_OPENAI_* environment variables for a real model).
+
+Based on indexed excerpts, the United Kingdom (London) and Turkey (Ankara) are NATO members whose capitals exceed 5 million people.
+
+Question: Document: national-capitals.pdf
+
+Development-mode summary (set AZURE_OPENAI_* for a real model).
+
+The document lists capital cities with population figures. Several capitals exceed 5 million residents.
+
+Development-mode summary (set AZURE_OPENAI_* for a real model).
+
+The document lists capital cities with population figures. Several capitals exceed 5 million residents.
+
+Development-mode summary (set AZURE_OPENAI_* for a real model).
+
+The document lists capital cities with population figures. Several capitals exceed 5 million residents.
+
+Development-mode summary (set AZURE_OPENAI_* for a real model).
+
+The document lists capital cities with population figures. Several capitals exceed 5 million residents.
