@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
-    <!-- Prefer locally packed Artifex nupkgs over nuget.org / the global cache copy of the same version. -->
-    <RestoreSources>D:\Artifex\LocalNuget;$(MSBuildThisFileDirectory)LocalNuget;https://api.nuget.org/v3/index.json</RestoreSources>
+    <!-- Prefer nupkgs in repo-local LocalNuget/ over nuget.org / the global cache copy of the same version. -->
+    <RestoreSources>$(MSBuildThisFileDirectory)LocalNuget;https://api.nuget.org/v3/index.json</RestoreSources>
     <!-- Without a RID, every example copies every native RID (Linux Skia, all MuPDF.NativeAssets, …) into bin/. -->
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' and '$(OS)' == 'Windows_NT'">win-x64</RuntimeIdentifier>
   </PropertyGroup>

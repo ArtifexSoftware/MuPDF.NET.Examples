@@ -1,7 +1,7 @@
 <Project>
   <!--
     Single source of truth for NuGet package versions in MuPDF.NET.Examples.
-    Prefer packages from D:\Artifex\LocalNuget when present (see NuGet.Config).
+    See NuGet.Config for restore sources (repo-local LocalNuget/, then nuget.org).
   -->
   <PropertyGroup Label="Artifex package versions">
     <ArtifexMuPDFNetVersion>4.1.0</ArtifexMuPDFNetVersion>
