@@ -19,9 +19,6 @@ namespace MuPDF.NET.Examples.Common
         public static string MuPdfNetInput(string fileName) =>
             Require(Path.Combine(InputRoot, "MuPDF.NET", fileName));
 
-        public static string Pdf4LlmInput(string fileName) =>
-            Require(Path.Combine(InputRoot, "MuPDF.NET.PDF4LLM", fileName));
-
         public static string OfficeInput(string fileName) =>
             Require(Path.Combine(InputRoot, "MuPDF.NET.Office", fileName));
 

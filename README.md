@@ -1,8 +1,8 @@
 # MuPDF.NET.Examples
 
-Customer-facing sample apps for **[MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.0** and **[MuPDF.NET.Office](https://www.nuget.org/packages/MuPDF.NET.Office) 2.0.2**.
+Customer-facing sample apps for **[MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.1** and **[MuPDF.NET.Office](https://www.nuget.org/packages/MuPDF.NET.Office) 2.1.0**.
 
-Markdown / JSON / text extract (`Document.ToMarkdown`, `ToJson`, `ToText`) and RAG helpers (`LoadAiAsync`, Llama, MarkdownToPdf) are in **MuPDF.NET 4.0** (`MuPDF.NET.PDF4LLM` namespace inside `MuPDF.NET.dll`). The empty PDF4LLM NuGet stub is not used here. LLM samples stay under the `MuPDF.NET.PDF4LLM/` folder so Input/Expected paths stay stable.
+Markdown / JSON / text extract (`Document.ToMarkdown`, `ToJson`, `ToText`) and RAG helpers (`Utils.LoadAiAsync`, `PDFMarkdownReader`, `Utils.MarkdownToPdf`) are in **MuPDF.NET 4.1**. Samples `PackageReference` **MuPDF.NET** and **MuPDF.NET.Office** only.
 
 Each feature is a small console project. Packages are referenced via **NuGet only**.
 
@@ -38,9 +38,9 @@ Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Confi
 - .NET 8 SDK (Windows, Linux, or macOS)
 - Packages from [nuget.org](https://www.nuget.org/) (see `Versions.props`)
 - Optional `MUPDF_OFFICE_KEY` for Office unlock
-- `02-ToJsonLayout` / `03-ToText`: optional pymupdf **2.0** layout worker (`dotnet msbuild -t:MuPDFNetSetupLayoutPython`)
-- `09-LoadAi`: optional `AZURE_OPENAI_*` (and `AZURE_SEARCH_*`) for a live model; default run needs no keys
-- `10-Ollama` / `11-OllamaMagazines`: local [Ollama](https://ollama.com) (`ollama pull mistral` and `ollama pull nomic-embed-text`); SKIP when Ollama is not running — see `MuPDF.NET.PDF4LLM/10-Ollama/README.md`
+- `33-ToJsonLayout` / `34-ToText`: optional layout worker — [MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional) (`dotnet msbuild -t:MuPDFNetSetupLayoutPython`)
+- `40-LoadAi`: optional `AZURE_OPENAI_*` (and `AZURE_SEARCH_*`) for a live model; default run needs no keys
+- `41-Ollama` / `42-OllamaMagazines`: local [Ollama](https://ollama.com) (`ollama pull mistral` and `ollama pull nomic-embed-text`); SKIP when Ollama is not running — see `MuPDF.NET/41-Ollama/README.md`
 
 ## Run (compare against Expected/)
 
@@ -99,13 +99,12 @@ Each project folder has its own `README.md` (what it shows, inputs, how to run, 
 
 | Product | Projects |
 |---------|----------|
-| MuPDF.NET | Open/Save, Pages, Render, Parallel pixmap, Text, Recolor, Story/HTML, Annotations, Widgets, Insert/Replace/Extract images, Outline/Links, Tables, Barcodes, Embedded files, Metadata, TextWriter, Draw shapes, ZUGFeRD, Color management, Rewrite images, GetDrawings, Rotate/Crop, Encrypt, Compress, Watermark, Image→PDF, Image filters, Page ops, File annot |
-| MuPDF.NET (LLM / RAG, folder `MuPDF.NET.PDF4LLM/`) | Markdown, JSON layout, Plain text, OCR, Tables→CSV, Llama markdown reader, GetKeyValues, Markdown→PDF, LoadAi (RAG ask/search), Ollama capitals, Ollama magazines |
+| MuPDF.NET | Open/Save, Pages, Render, Parallel pixmap, Text, Recolor, Story/HTML, Annotations, Widgets, Insert/Replace/Extract images, Outline/Links, Tables, Barcodes, Embedded files, Metadata, TextWriter, Draw shapes, ZUGFeRD, Color management, Rewrite images, GetDrawings, Rotate/Crop, Encrypt, Compress, Watermark, Image→PDF, Image filters, Page ops, File annot, Markdown, JSON layout, Plain text, OCR, Tables→CSV, Llama markdown reader, GetKeyValues, Markdown→PDF, LoadAi (RAG ask/search), Ollama capitals, Ollama magazines |
 | MuPDF.NET.Office | Unlock/fonts, Open HWPX/DOCX, Export PDF, Export MD/JSON, Unlock then `Document.ToMarkdown` |
 
 ## Versions
 
-Edit `Versions.props` only. Current pins: MuPDF.NET **4.0.0**, Office **2.0.2**. Restore looks in `D:\Artifex\LocalNuget` first, then `LocalNuget/`, then nuget.org.
+Edit `Versions.props` only. Current pins: MuPDF.NET **4.1.0**, Office **2.1.0**. Restore looks in `D:\Artifex\LocalNuget` first, then `LocalNuget/`, then nuget.org.
 
 ## License
 
