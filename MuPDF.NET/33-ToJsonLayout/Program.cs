@@ -13,7 +13,7 @@ internal static class Program
     }
 
     /// <summary>
-    /// Convert a PDF to layout JSON (requires pymupdf 2.0 layout worker).
+    /// Convert a PDF to layout JSON (requires pymupdf 2.1 layout worker).
     /// </summary>
     static void ToJsonLayout()
     {
@@ -28,7 +28,7 @@ internal static class Program
             if (!Utils.LayoutAvailable)
             {
                 ConsoleEx.Info("Layout provider unavailable — ToJson requires UseLayout=true.");
-                ConsoleEx.Info("Install pymupdf 2.0 (dotnet msbuild -t:MuPDFNetSetupLayoutPython) and re-run.");
+                ConsoleEx.Info("Install pymupdf 2.1 (dotnet msbuild -t:MuPDFNetSetupLayoutPython) and re-run.");
                 check.Text("LAYOUT_UNAVAILABLE\n", "layout-status.txt");
                 check.Finish();
                 return;

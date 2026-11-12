@@ -12,7 +12,7 @@ Convert a PDF to layout JSON. Requires the optional **pymupdf 2.1** layout worke
 
 ## Prerequisites
 
-- One-time layout setup: `dotnet msbuild -t:MuPDFNetSetupLayoutPython` so `Utils.LayoutAvailable` is true. Full steps: [MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional).
+- One-time layout setup: **Python 3.11+** on `PATH`, then `dotnet msbuild -t:MuPDFNetSetupLayoutPython` so `Utils.LayoutAvailable` is true. Ubuntu 22.04's `python3` is 3.10 — install `python3.11` first. Full steps: [MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional).
 - Without layout, the sample records `LAYOUT_UNAVAILABLE` and skips JSON.
 
 ## Input / output

@@ -18,7 +18,7 @@ cd MuPDF.NET.Examples
 dotnet restore
 ```
 
-Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Config`](NuGet.Config) restores Artifex packages from **`D:\Artifex\LocalNuget`** first, then the repo-local **`LocalNuget/`** folder, then **nuget.org**.
+Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Config`](NuGet.Config) restores from the repo-local **`LocalNuget/`** folder, then **nuget.org**.
 
 ## Layout
 
@@ -27,6 +27,7 @@ Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Confi
 | `Common/` | Paths, `ResultCheck`, PDF fingerprints |
 | `Input/` | Fixtures (committed) |
 | `Output/` | Generated files (gitignored) |
+| `artifacts/` | Shared `bin/` / `obj/` for all samples (gitignored) |
 | `{product}/{NN-Name}/Expected/` | Golden baselines (committed) |
 | `run-all.cmd` / `run-all.ps1` / `run-all.sh` | Batch PASS/FAIL/SKIP runner |
 | `LocalNuget/` | Optional local `.nupkg` drop folder |
@@ -38,7 +39,7 @@ Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Confi
 - .NET 8 SDK (Windows, Linux, or macOS)
 - Packages from [nuget.org](https://www.nuget.org/) (see `Versions.props`)
 - Optional `MUPDF_OFFICE_KEY` for Office unlock
-- `33-ToJsonLayout` / `34-ToText`: optional layout worker — [MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional) (`dotnet msbuild -t:MuPDFNetSetupLayoutPython`)
+- `33-ToJsonLayout` / `34-ToText`: optional layout worker needs **Python 3.11+** (Ubuntu 22.04: `sudo apt install python3.11 python3.11-venv python3.11-full`) then `dotnet msbuild -t:MuPDFNetSetupLayoutPython` — [MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional)
 - `40-LoadAi`: optional `AZURE_OPENAI_*` (and `AZURE_SEARCH_*`) for a live model; default run needs no keys
 - `41-Ollama` / `42-OllamaMagazines`: local [Ollama](https://ollama.com) (`ollama pull mistral` and `ollama pull nomic-embed-text`); SKIP when Ollama is not running — see `MuPDF.NET/41-Ollama/README.md`
 
@@ -104,7 +105,7 @@ Each project folder has its own `README.md` (what it shows, inputs, how to run, 
 
 ## Versions
 
-Edit `Versions.props` only. Current pins: MuPDF.NET **4.1.0**, Office **2.1.0**. Restore looks in `D:\Artifex\LocalNuget` first, then `LocalNuget/`, then nuget.org.
+Edit `Versions.props` only. Current pins: MuPDF.NET **4.1.0**, Office **2.1.0**. Restore looks in `LocalNuget/`, then nuget.org.
 
 ## License
 

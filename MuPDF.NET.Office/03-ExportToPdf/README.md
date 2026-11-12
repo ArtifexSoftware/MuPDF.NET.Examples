@@ -21,7 +21,7 @@ Export an Office document (DOCX) to PDF.
 |--|------|
 | Input | `Input/MuPDF.NET.Office/pages.docx` |
 | Output | `Output/MuPDF.NET.Office/03-ExportToPdf/pages.pdf` |
-| Expected | `Expected/pages.summary.txt` |
+| Expected | `Expected/pages.summary.txt` (page count + collapsed text; PDF bytes differ by OS fonts) |
 
 ## Run
 

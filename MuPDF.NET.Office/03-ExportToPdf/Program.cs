@@ -29,7 +29,9 @@ internal static class Program
         ConsoleEx.Info($"Opened: {input}");
         ConsoleEx.Info($"Wrote: {output} ({new System.IO.FileInfo(output).Length} bytes)");
 
-        check.Properties(PdfFingerprint.FromFile(output), "pages.summary.txt");
+        // ToPdf embeds OS fonts (Arial vs Liberation), so SHA-256 of GetText
+        // is not portable. Compare page count + collapsed per-page text.
+        check.Properties(PdfFingerprint.FromOfficePdf(output), "pages.summary.txt");
         check.Finish();
     }
 }
