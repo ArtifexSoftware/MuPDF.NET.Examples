@@ -31,10 +31,7 @@ internal static class Program
             Annot text = page.AddTextAnnot(new Point(rect.X0, rect.Y0), "Example note");
             text.SetInfo(
                 content: "Hello from 07-AnnotationsRedact",
-                title: "MuPDF.NET.Examples",
-                creationDate: null,
-                modDate: null,
-                subject: null);
+                title: "MuPDF.NET.Examples");
             text.Update(); // rebuild appearance stream
 
             // Rectangle markup annotation (red stroke).

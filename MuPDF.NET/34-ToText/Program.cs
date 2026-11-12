@@ -12,7 +12,7 @@ internal static class Program
     }
 
     /// <summary>
-    /// Convert a PDF to plain text via layout (requires pymupdf 2.0 layout worker).
+    /// Convert a PDF to plain text via layout (requires pymupdf 2.1 layout worker).
     /// </summary>
     static void ToText()
     {

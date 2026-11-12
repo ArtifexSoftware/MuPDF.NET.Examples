@@ -25,13 +25,13 @@ internal static class Program
         var check = new ResultCheck("MuPDF.NET", "29-PageOps");
         var report = new StringBuilder();
 
-        // Build a 3-page document: sample page + blank + sample page again.
+        // sample.pdf + one blank page + first page of sample.pdf again.
         using (var doc = Document.Open(a))
-        using (var blank = Document.Open(b))
-        using (var again = Document.Open(a))
         {
-            doc.InsertPdf(blank, fromPage: 0, toPage: 0, startAt: 1);
-            doc.InsertPdf(again, fromPage: 0, toPage: 0, startAt: 2);
+            using (var blank = Document.Open(b))
+                doc.InsertPdf(blank, fromPage: 0, toPage: 0, startAt: 1);
+            using (var again = Document.Open(a))
+                doc.InsertPdf(again, fromPage: 0, toPage: 0, startAt: 2);
             report.Append("built.pages=").Append(doc.PageCount).Append('\n');
 
             // Move last page to the front.
