@@ -32,3 +32,7 @@ dotnet run --project MuPDF.NET\34-ToText
 
 - `Utils.UseLayout(true)`
 - `Document.ToText`
+
+## Related
+
+- [`35-ToChunks`](../35-ToChunks/) — retrieval chunks from the same layout worker

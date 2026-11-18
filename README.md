@@ -1,8 +1,8 @@
 # MuPDF.NET.Examples
 
-Customer-facing sample apps for **[MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.1** and **[MuPDF.NET.Office](https://www.nuget.org/packages/MuPDF.NET.Office) 2.1.0**.
+Customer-facing sample apps for **[MuPDF.NET](https://mupdf.com/mupdf-dotnet) 4.1** and **[MuPDF.NET.Office](https://mupdf.com/mupdf-dotnet/office) 2.1.0**.
 
-Markdown / JSON / text extract (`Document.ToMarkdown`, `ToJson`, `ToText`) and RAG helpers (`Utils.LoadAiAsync`, `PDFMarkdownReader`, `Utils.MarkdownToPdf`) are in **MuPDF.NET 4.1**. Samples `PackageReference` **MuPDF.NET** and **MuPDF.NET.Office** only.
+Markdown / JSON / text extract (`Document.ToMarkdown`, `ToJson`, `ToText`, `ToChunks`) and RAG helpers (`Utils.LoadAiAsync`, `Utils.LlamaMarkdownReader`, `Utils.MarkdownToPdf`) are in **MuPDF.NET 4.1**. Samples `PackageReference` **MuPDF.NET** and **MuPDF.NET.Office** only.
 
 Each feature is a small console project. Packages are referenced via **NuGet only**.
 
@@ -39,9 +39,9 @@ Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Confi
 - .NET 8 SDK (Windows, Linux, or macOS)
 - Packages from [nuget.org](https://www.nuget.org/) (see `Versions.props`)
 - Optional `MUPDF_OFFICE_KEY` for Office unlock
-- `33-ToJsonLayout` / `34-ToText`: optional layout worker needs **Python 3.11+** (Ubuntu 22.04: `sudo apt install python3.11 python3.11-venv python3.11-full`) then `dotnet msbuild -t:MuPDFNetSetupLayoutPython` — [MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional)
-- `40-LoadAi`: optional `AZURE_OPENAI_*` (and `AZURE_SEARCH_*`) for a live model; default run needs no keys
-- `41-Ollama` / `42-OllamaMagazines`: local [Ollama](https://ollama.com) (`ollama pull mistral` and `ollama pull nomic-embed-text`); SKIP when Ollama is not running — see `MuPDF.NET/41-Ollama/README.md`
+- `33-ToJsonLayout` / `34-ToText` / `35-ToChunks`: optional layout worker needs **Python 3.11+** (Ubuntu 22.04: `sudo apt install python3.11 python3.11-venv python3.11-full`) then `dotnet msbuild -t:MuPDFNetSetupLayoutPython` — [MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional)
+- `41-LoadAi`: optional `AZURE_OPENAI_*` (and `AZURE_SEARCH_*`) for a live model; default run needs no keys
+- `42-Ollama` / `43-OllamaMagazines`: local [Ollama](https://ollama.com) (`ollama pull mistral` and `ollama pull nomic-embed-text`); SKIP when Ollama is not running — see `MuPDF.NET/42-Ollama/README.md`
 
 ## Run (compare against Expected/)
 
@@ -100,12 +100,12 @@ Each project folder has its own `README.md` (what it shows, inputs, how to run, 
 
 | Product | Projects |
 |---------|----------|
-| MuPDF.NET | Open/Save, Pages, Render, Parallel pixmap, Text, Recolor, Story/HTML, Annotations, Widgets, Insert/Replace/Extract images, Outline/Links, Tables, Barcodes, Embedded files, Metadata, TextWriter, Draw shapes, ZUGFeRD, Color management, Rewrite images, GetDrawings, Rotate/Crop, Encrypt, Compress, Watermark, Image→PDF, Image filters, Page ops, File annot, Markdown, JSON layout, Plain text, OCR, Tables→CSV, Llama markdown reader, GetKeyValues, Markdown→PDF, LoadAi (RAG ask/search), Ollama capitals, Ollama magazines |
+| MuPDF.NET | Open/Save, Pages, Render, Parallel pixmap, Text, Recolor, Story/HTML, Annotations, Widgets, Insert/Replace/Extract images, Outline/Links, Tables, Barcodes, Embedded files, Metadata, TextWriter, Draw shapes, ZUGFeRD, Color management, Rewrite images, GetDrawings, Rotate/Crop, Encrypt, Compress, Watermark, Image→PDF, Image filters, Page ops, File annot, Markdown, JSON layout, Plain text, OCR, Tables→CSV, Llama markdown reader, GetKeyValues, Markdown→PDF, LoadAi (RAG ask/search), Ollama capitals, Ollama magazines, Retrieval chunks |
 | MuPDF.NET.Office | Unlock/fonts, Open HWPX/DOCX, Export PDF, Export MD/JSON, Unlock then `Document.ToMarkdown` |
 
 ## Versions
 
-Edit `Versions.props` only. Current pins: MuPDF.NET **4.1.0**, Office **2.1.0**. Restore looks in `LocalNuget/`, then nuget.org.
+Edit `Versions.props` only. Current pins: MuPDF.NET **4.1.1**, Office **2.1.0**. Restore looks in `LocalNuget/`, then nuget.org.
 
 ## License
 

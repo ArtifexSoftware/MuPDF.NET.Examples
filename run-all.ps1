@@ -33,8 +33,8 @@ foreach ($p in $projects) {
     $name = $p.Directory.Name
 
     # Live Ollama samples: SKIP in the batch runner (slow, needs a local server).
-    # Run them directly: dotnet run --project MuPDF.NET\41-Ollama
-    if ($name -eq '41-Ollama' -or $name -eq '42-OllamaMagazines') {
+    # Run them directly: dotnet run --project MuPDF.NET\42-Ollama
+    if ($name -eq '42-Ollama' -or $name -eq '43-OllamaMagazines') {
         Write-Host "SKIP  $name  (live Ollama; see that project's README)"
         $skip++
         continue

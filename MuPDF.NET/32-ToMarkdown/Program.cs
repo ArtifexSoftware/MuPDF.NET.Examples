@@ -25,7 +25,7 @@ internal static class Program
         bool prior = Utils.LayoutEnabled;
         try
         {
-            // false = MuPdfRag markdown (no pymupdf-layout required).
+            // false = classic extract (no layout worker required).
             Utils.UseLayout(false);
 
             using Document doc = new Document(input);

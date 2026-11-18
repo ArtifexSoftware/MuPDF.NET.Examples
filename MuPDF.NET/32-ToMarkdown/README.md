@@ -31,4 +31,5 @@ dotnet run --project MuPDF.NET\32-ToMarkdown
 
 ## Related
 
-- [`40-LoadAi`](../40-LoadAi/) — index that Markdown, then Ask / Search
+- [`35-ToChunks`](../35-ToChunks/) — retrieval chunks (layout worker)
+- [`41-LoadAi`](../41-LoadAi/) — index that Markdown, then Ask / Search
