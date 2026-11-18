@@ -34,3 +34,7 @@ dotnet run --project MuPDF.NET\33-ToJsonLayout
 - `Utils.LayoutAvailable`
 - `Utils.UseLayout(true)`
 - `Document.ToJson`
+
+## Related
+
+- [`35-ToChunks`](../35-ToChunks/) — retrieval chunks from the same layout worker
