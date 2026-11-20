@@ -14,14 +14,11 @@ internal static class Program
         WriteAndReadBarcode();
     }
 
-    /// <summary>
-    /// Write a QR code to a PDF, then read it back.
-    /// </summary>
+    /// <summary>Write a QR code to a PDF, then read it back</summary>
     static void WriteAndReadBarcode()
     {
         const string payload = "MuPDF.NET.Examples";
-        string output = ExamplePaths.Output("MuPDF.NET", "12-Barcodes", "qr.pdf");
-        var check = new ResultCheck("MuPDF.NET", "12-Barcodes");
+        string output = "qr.pdf";
 
         // Create a small page and draw a QR into the given rectangle.
         using (var doc = Document.Open())
@@ -37,19 +34,10 @@ internal static class Program
         using (Page page = doc[0])
         {
             List<Barcode> found = page.ReadBarcodes().ToList();
-            var sb = new StringBuilder();
-            sb.Append("barcodeCount=").Append(found.Count).Append('\n');
             foreach (Barcode b in found.OrderBy(b => b.Text ?? "", StringComparer.Ordinal))
             {
-                sb.Append(b.BarcodeFormat).Append('\t').Append(b.Text ?? "").Append('\n');
             }
 
-            ConsoleEx.Info($"Wrote QR for: {payload}");
-            ConsoleEx.Info($"Read back: {found.Count} barcode(s)");
-            check.Text(sb.ToString(), "barcodes.txt");
-            check.Properties(PdfFingerprint.FromFile(output), "qr.summary.txt");
         }
-
-        check.Finish();
     }
 }

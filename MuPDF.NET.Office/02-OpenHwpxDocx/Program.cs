@@ -13,41 +13,28 @@ internal static class Program
         OpenHwpxDocx();
     }
 
-    /// <summary>
-    /// Unlock Office, then open DOCX and HWPX via Document.Open.
-    /// </summary>
+    /// <summary>Unlock Office, then open DOCX and HWPX via Document.Open</summary>
     static void OpenHwpxDocx()
     {
-        var check = new ResultCheck("MuPDF.NET.Office", "02-OpenHwpxDocx");
-
         // Must unlock before opening Office formats.
-        MuPDFOffice.Unlock(OfficeLicense.KeyFromEnvironment(), fontPathAuto: true);
+        string? key = Environment.GetEnvironmentVariable("MUPDF_OFFICE_KEY")?.Trim();
+        if (string.IsNullOrEmpty(key))
+            key = null;
+        MuPDFOffice.Unlock(key, fontPathAuto: true);
 
-        string docx = ExamplePaths.OfficeInput("pages.docx");
-        string hwpx = ExamplePaths.OfficeInput("sample.hwpx");
+        string docx = "pages.docx";
+        string hwpx = "sample.hwpx";
         int docxPages;
         int hwpxPages;
 
         using (var d1 = Document.Open(docx))
         {
             docxPages = d1.PageCount;
-            ConsoleEx.Info($"DOCX pages: {docxPages}");
         }
 
         using (var d2 = Document.Open(hwpx))
         {
             hwpxPages = d2.PageCount;
-            ConsoleEx.Info($"HWPX pages: {hwpxPages}");
         }
-
-        check.Properties(
-            new Dictionary<string, string>
-            {
-                ["docxPages"] = docxPages.ToString(),
-                ["hwpxPages"] = hwpxPages.ToString(),
-            },
-            "pages.summary.txt");
-
-        check.Finish();
     }
 }

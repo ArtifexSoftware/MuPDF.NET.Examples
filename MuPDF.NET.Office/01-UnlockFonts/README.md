@@ -13,8 +13,7 @@ Unlock Office document support and inspect font search directories.
 ## Prerequisites
 
 - Windows x64, Linux x64/arm64, or macOS (Office natives via RID packages).
-- Optional `MUPDF_OFFICE_KEY` environment variable.
-- Optional license key via environment variable `MUPDF_OFFICE_KEY` (restricted mode works for samples without a key).
+- Optional `MUPDF_OFFICE_KEY`. When it is empty, `Unlock` runs in restricted mode.
 
 ## Input / output
 

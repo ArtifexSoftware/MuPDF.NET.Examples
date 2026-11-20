@@ -12,14 +12,11 @@ internal static class Program
         ToJsonLayout();
     }
 
-    /// <summary>
-    /// Convert a PDF to layout JSON (requires pymupdf 2.1 layout worker).
-    /// </summary>
+    /// <summary>Convert a PDF to layout JSON (requires pymupdf 2.1 layout worker)</summary>
     static void ToJsonLayout()
     {
-        string input = ExamplePaths.MuPdfNetInput("columns.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "33-ToJsonLayout", "columns.json");
-        var check = new ResultCheck("MuPDF.NET", "33-ToJsonLayout");
+        string input = "columns.pdf";
+        string output = "columns.json";
 
         bool prior = Utils.LayoutEnabled;
         try
@@ -27,30 +24,18 @@ internal static class Program
             // ToJson needs the optional layout provider.
             if (!Utils.LayoutAvailable)
             {
-                ConsoleEx.Info("Layout provider unavailable — ToJson requires UseLayout=true.");
-                ConsoleEx.Info("Install pymupdf 2.1 (dotnet msbuild -t:MuPDFNetSetupLayoutPython) and re-run.");
-                check.Text("LAYOUT_UNAVAILABLE\n", "layout-status.txt");
-                check.Finish();
                 return;
             }
 
             Utils.UseLayout(true);
             using Document doc = new Document(input);
-            // ToJson embeds an absolute input path; keep only the file name for portable baselines.
             string json = NormalizeJsonFilename(doc.ToJson(useOcr: false) ?? "", input);
-            File.WriteAllText(output, json);
 
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info($"JSON length: {json.Length}");
-            check.Text("LAYOUT_AVAILABLE\n", "layout-status.txt");
-            check.Text(json, "columns.json");
         }
         finally
         {
             Utils.UseLayout(prior);
         }
-
-        check.Finish();
     }
 
     /// <summary>

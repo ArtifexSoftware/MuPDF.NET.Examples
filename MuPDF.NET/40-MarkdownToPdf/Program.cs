@@ -11,21 +11,13 @@ internal static class Program
         MarkdownToPdf();
     }
 
-    /// <summary>
-    /// Render a Markdown file to PDF (Story).
-    /// </summary>
+    /// <summary>Render a Markdown file to PDF (Story)</summary>
     static void MarkdownToPdf()
     {
-        string input = ExamplePaths.MuPdfNetInput("sample.md");
-        string output = ExamplePaths.Output("MuPDF.NET", "40-MarkdownToPdf", "sample.pdf");
-        var check = new ResultCheck("MuPDF.NET", "40-MarkdownToPdf");
+        string input = "sample.md";
+        string output = "sample.pdf";
 
         // When outputPath is set, the PDF is written to disk (return value is null).
         Utils.MarkdownToPdf(input, outputPath: output);
-
-        ConsoleEx.Info($"Markdown: {input}");
-        ConsoleEx.Info($"Wrote PDF: {output}");
-        check.Properties(PdfFingerprint.FromFile(output), "sample.summary.txt");
-        check.Finish();
     }
 }

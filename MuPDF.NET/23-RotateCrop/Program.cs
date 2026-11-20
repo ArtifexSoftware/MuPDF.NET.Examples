@@ -13,28 +13,20 @@ internal static class Program
         RotateCrop();
     }
 
-    /// <summary>
-    /// Rotate page 1 and set a CropBox, then save.
-    /// </summary>
+    /// <summary>Rotate page 1 and set a CropBox, then save</summary>
     static void RotateCrop()
     {
-        string input = ExamplePaths.MuPdfNetInput("sample.pdf");
-        string rotated = ExamplePaths.Output("MuPDF.NET", "23-RotateCrop", "rotated.pdf");
-        string cropped = ExamplePaths.Output("MuPDF.NET", "23-RotateCrop", "cropped.pdf");
-        var check = new ResultCheck("MuPDF.NET", "23-RotateCrop");
-        var report = new StringBuilder();
+        string input = "sample.pdf";
+        string rotated = "rotated.pdf";
+        string cropped = "cropped.pdf";
 
         using (var doc = Document.Open(input))
         using (Page page = doc[0])
         {
-            report.Append("before.rotation=").Append(page.Rotation).Append('\n');
-            report.Append("before.rect=").Append(Fmt(page.Rect)).Append('\n');
-            report.Append("before.cropbox=").Append(Fmt(page.CropBox)).Append('\n');
 
             // Rotate clockwise 90 degrees (PDF /Rotate).
             page.SetRotation(90);
             doc.Save(rotated);
-            report.Append("after.rotation=").Append(page.Rotation).Append('\n');
         }
 
         using (var doc = Document.Open(input))
@@ -49,14 +41,7 @@ internal static class Program
                 media.Y0 + media.Height / 2f);
             page.SetCropBox(crop);
             doc.Save(cropped);
-            report.Append("crop.rect=").Append(Fmt(crop)).Append('\n');
-            report.Append("after.cropbox=").Append(Fmt(page.CropBox)).Append('\n');
         }
-
-        check.Text(report.ToString(), "rotate-crop.txt");
-        check.Properties(PdfFingerprint.FromFile(rotated), "rotated.summary.txt");
-        check.Properties(PdfFingerprint.FromFile(cropped), "cropped.summary.txt");
-        check.Finish();
     }
 
     static string Fmt(Rect r) =>

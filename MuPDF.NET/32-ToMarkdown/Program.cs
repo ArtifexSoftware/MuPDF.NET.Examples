@@ -12,14 +12,11 @@ internal static class Program
         ToMarkdown();
     }
 
-    /// <summary>
-    /// Convert a PDF to Markdown (layout off = classic RAG path).
-    /// </summary>
+    /// <summary>Convert a PDF to Markdown (layout off = classic RAG path)</summary>
     static void ToMarkdown()
     {
-        string input = ExamplePaths.MuPdfNetInput("columns.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "32-ToMarkdown", "columns.md");
-        var check = new ResultCheck("MuPDF.NET", "32-ToMarkdown");
+        string input = "columns.pdf";
+        string output = "columns.md";
 
         // Remember prior layout flag so we restore it for other examples in the same process.
         bool prior = Utils.LayoutEnabled;
@@ -30,17 +27,11 @@ internal static class Program
 
             using Document doc = new Document(input);
             string markdown = doc.ToMarkdown(showProgress: false) ?? "";
-            File.WriteAllText(output, markdown);
 
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info($"Markdown length: {markdown.Length}");
-            check.Text(markdown, "columns.md");
         }
         finally
         {
             Utils.UseLayout(prior);
         }
-
-        check.Finish();
     }
 }

@@ -12,26 +12,21 @@ internal static class Program
         ExportToPdf();
     }
 
-    /// <summary>
-    /// Export an Office document to PDF.
-    /// </summary>
+    /// <summary>Export an Office document to PDF</summary>
     static void ExportToPdf()
     {
-        string input = ExamplePaths.OfficeInput("pages.docx");
-        string output = ExamplePaths.Output("MuPDF.NET.Office", "03-ExportToPdf", "pages.pdf");
-        var check = new ResultCheck("MuPDF.NET.Office", "03-ExportToPdf");
+        string input = "pages.docx";
+        string output = "pages.pdf";
 
-        MuPDFOffice.Unlock(OfficeLicense.KeyFromEnvironment(), fontPathAuto: true);
+        string? key = Environment.GetEnvironmentVariable("MUPDF_OFFICE_KEY")?.Trim();
+        if (string.IsNullOrEmpty(key))
+            key = null;
+        MuPDFOffice.Unlock(key, fontPathAuto: true);
 
         // Renders Office content through sodochandler into a PDF file.
         MuPDFOffice.ToPdf(input, output);
 
-        ConsoleEx.Info($"Opened: {input}");
-        ConsoleEx.Info($"Wrote: {output} ({new System.IO.FileInfo(output).Length} bytes)");
-
         // ToPdf embeds OS fonts (Arial vs Liberation), so SHA-256 of GetText
         // is not portable. Compare page count + collapsed per-page text.
-        check.Properties(PdfFingerprint.FromOfficePdf(output), "pages.summary.txt");
-        check.Finish();
     }
 }

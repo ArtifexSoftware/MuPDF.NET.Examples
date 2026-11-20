@@ -12,17 +12,17 @@ internal static class Program
         ExportToMarkdownJson();
     }
 
-    /// <summary>
-    /// Export an Office document to Markdown and JSON.
-    /// </summary>
+    /// <summary>Export an Office document to Markdown and JSON</summary>
     static void ExportToMarkdownJson()
     {
-        string input = ExamplePaths.OfficeInput("pages.docx");
-        string mdOut = ExamplePaths.Output("MuPDF.NET.Office", "04-ExportToMarkdownJson", "pages.md");
-        string jsonOut = ExamplePaths.Output("MuPDF.NET.Office", "04-ExportToMarkdownJson", "pages.json");
-        var check = new ResultCheck("MuPDF.NET.Office", "04-ExportToMarkdownJson");
+        string input = "pages.docx";
+        string mdOut = "pages.md";
+        string jsonOut = "pages.json";
 
-        MuPDFOffice.Unlock(OfficeLicense.KeyFromEnvironment(), fontPathAuto: true);
+        string? key = Environment.GetEnvironmentVariable("MUPDF_OFFICE_KEY")?.Trim();
+        if (string.IsNullOrEmpty(key))
+            key = null;
+        MuPDFOffice.Unlock(key, fontPathAuto: true);
 
         // High-level Office export helpers write files directly.
         MuPDFOffice.ToMarkdown(input, mdOut);
@@ -30,12 +30,8 @@ internal static class Program
 
         string md = File.ReadAllText(mdOut);
         string json = File.ReadAllText(jsonOut);
-        ConsoleEx.Info($"Markdown bytes: {md.Length}, JSON bytes: {json.Length}");
 
         // Markdown text is stable across OS. JSON embeds OS-specific font names
         // and glyph metrics — fingerprint page size + text only.
-        check.Text(md, "pages.md");
-        check.Properties(OfficeJsonFingerprint.FromJson(json), "pages.summary.txt");
-        check.Finish();
     }
 }

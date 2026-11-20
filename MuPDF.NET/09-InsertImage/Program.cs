@@ -12,14 +12,11 @@ internal static class Program
         InsertImage();
     }
 
-    /// <summary>
-    /// Create a page and insert a PNG into a rectangle.
-    /// </summary>
+    /// <summary>Create a page and insert a PNG into a rectangle</summary>
     static void InsertImage()
     {
-        string logo = ExamplePaths.MuPdfNetInput("logo.png");
-        string output = ExamplePaths.Output("MuPDF.NET", "09-InsertImage", "with-logo.pdf");
-        var check = new ResultCheck("MuPDF.NET", "09-InsertImage");
+        string logo = "logo.png";
+        string output = "with-logo.pdf";
 
         // Empty document + custom page size (points).
         using (var doc = Document.Open())
@@ -31,14 +28,8 @@ internal static class Program
 
             // Insert from file path; returns the image xref number.
             int xref = page.InsertImage(rect, filename: logo);
-            ConsoleEx.Info($"Inserted image xref={xref} from {logo}");
 
             doc.Save(output);
         }
-
-        var props = PdfFingerprint.FromFile(output);
-        props["imageFile"] = Path.GetFileName(logo);
-        check.Properties(props, "with-logo.summary.txt");
-        check.Finish();
     }
 }

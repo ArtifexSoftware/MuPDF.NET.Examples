@@ -14,13 +14,10 @@ internal static class Program
         OutlineLinks();
     }
 
-    /// <summary>
-    /// Build a TOC (bookmarks) and an internal go-to link.
-    /// </summary>
+    /// <summary>Build a TOC (bookmarks) and an internal go-to link</summary>
     static void OutlineLinks()
     {
-        string output = ExamplePaths.Output("MuPDF.NET", "10-OutlineLinks", "outline-links.pdf");
-        var check = new ResultCheck("MuPDF.NET", "10-OutlineLinks");
+        string output = "outline-links.pdf";
 
         using (var doc = Document.Open())
         {
@@ -67,35 +64,18 @@ internal static class Program
             doc.Save(output);
         }
 
-        // Re-open and dump TOC + links for the Expected/ baseline.
         using (var doc = Document.Open(output))
         {
-            var sb = new StringBuilder();
-            foreach (var item in doc.GetToc(simple: true))
-                sb.Append(item.level).Append('\t').Append(item.title).Append('\t').Append(item.page).Append('\n');
 
-            sb.Append("---links---\n");
             for (int i = 0; i < doc.PageCount; i++)
             {
                 using Page page = doc[i];
                 foreach (LinkInfo link in page.GetLinks().OrderBy(l => l.From?.Y0 ?? 0).ThenBy(l => l.From?.X0 ?? 0))
                 {
-                    sb.Append("p").Append(i + 1)
-                        .Append('\t').Append((int)link.Kind)
-                        .Append('\t').Append(link.Page)
-                        .Append('\t').Append(FormatRect(link.From))
-                        .Append('\n');
                 }
             }
 
-            string text = sb.ToString();
-            File.WriteAllText(ExamplePaths.Output("MuPDF.NET", "10-OutlineLinks", "outline-links.txt"), text);
-            ConsoleEx.Info($"Wrote: {output}");
-            check.Text(text, "outline-links.txt");
-            check.Properties(PdfFingerprint.FromFile(output), "outline-links.summary.txt");
         }
-
-        check.Finish();
     }
 
     static string FormatRect(Rect? r)

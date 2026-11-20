@@ -20,9 +20,7 @@ internal static class Program
         ColorManagement();
     }
 
-    /// <summary>
-    /// Run all color-management demos. Copy individual <c>Demo*</c> methods below into your project.
-    /// </summary>
+    // help:skip — calls the Demo* segments below.
     static void ColorManagement()
     {
         string inputPdf = ExamplePaths.MuPdfNetInput(Path.Combine("color", "test.pdf"));
@@ -30,53 +28,39 @@ internal static class Program
         string proofProfile = ExamplePaths.MuPdfNetInput(Path.Combine("color", "Proof.icc"));
         string outputDir = Path.GetDirectoryName(
             ExamplePaths.Output("MuPDF.NET", "19-ColorManagement", "_"))!;
-        var check = new ResultCheck("MuPDF.NET", "19-ColorManagement");
-        var report = new StringBuilder();
-
         ConsoleEx.Info($"Input PDF:       {inputPdf}");
         ConsoleEx.Info($"Display profile: {displayProfile}");
         ConsoleEx.Info($"Proof profile:   {proofProfile}");
         ConsoleEx.Info($"Output folder:   {outputDir}");
 
-        DemoPdfViewing(inputPdf, outputDir, check, report);
-        DemoDeviceColorspaces(inputPdf, outputDir, check, report);
-        DemoPdfObjectInspection(inputPdf, report);
-        DemoZoomAndNavigation(inputPdf, outputDir, check, report);
-        DemoIccProfiles(displayProfile, proofProfile, report);
-        DemoColorManagedRendering(inputPdf, displayProfile, outputDir, check, report);
-        DemoOutputIntent(inputPdf, report);
-        DemoDeviceNSpotColorsAndSeparations(inputPdf, outputDir, check, report);
-        DemoOverprint(inputPdf, report);
-        DemoRenderingIntentAndColorParameters(inputPdf, displayProfile, proofProfile, outputDir, check, report);
-        DemoPrepressAnalysis(inputPdf, report);
-        DemoSoftProof(inputPdf, displayProfile, proofProfile, outputDir, check, report);
-
-        check.Text(report.ToString(), "color-report.txt");
-        check.Finish();
+        DemoPdfViewing(inputPdf, outputDir);
+        DemoDeviceColorspaces(inputPdf, outputDir);
+        DemoPdfObjectInspection(inputPdf);
+        DemoZoomAndNavigation(inputPdf, outputDir);
+        DemoIccProfiles(displayProfile, proofProfile);
+        DemoColorManagedRendering(inputPdf, displayProfile, outputDir);
+        DemoOutputIntent(inputPdf);
+        DemoDeviceNSpotColorsAndSeparations(inputPdf, outputDir);
+        DemoOverprint(inputPdf);
+        DemoRenderingIntentAndColorParameters(inputPdf, displayProfile, proofProfile, outputDir);
+        DemoPrepressAnalysis(inputPdf);
+        DemoSoftProof(inputPdf, displayProfile, proofProfile, outputDir);
     }
 
-    /// <summary>High-performance first-page rendering suitable for a viewer.</summary>
-    static void DemoPdfViewing(string inputPdf, string outputDir, ResultCheck check, StringBuilder report)
+    /// <summary>High-performance first-page rendering suitable for a viewer</summary>
+    static void DemoPdfViewing(string inputPdf, string outputDir)
     {
-        Section("High-performance PDF viewing", report);
         using var document = Document.Open(inputPdf);
         using var page = document[0];
 
         string output = Path.Combine(outputDir, "viewer-page-1-144dpi.png");
         using var pixmap = page.GetPixmap(dpi: 144, cs: Colorspace.Rgb, alpha: false);
         pixmap.Save(output);
-
-        report.Append("viewer pages=").Append(document.PageCount)
-            .Append(" size=").Append(pixmap.Width).Append('x').Append(pixmap.Height)
-            .Append(" n=").Append(pixmap.N).Append('\n');
-        check.FileSha256(output, "viewer-page-1-144dpi.png.sha256");
-        ConsoleEx.Info($"Saved: {output}");
     }
 
-    /// <summary>DeviceRGB, DeviceGray, and DeviceCMYK output rendering.</summary>
-    static void DemoDeviceColorspaces(string inputPdf, string outputDir, ResultCheck check, StringBuilder report)
+    /// <summary>DeviceRGB, DeviceGray, and DeviceCMYK output rendering</summary>
+    static void DemoDeviceColorspaces(string inputPdf, string outputDir)
     {
-        Section("DeviceRGB / DeviceGray / DeviceCMYK", report);
         using var document = Document.Open(inputPdf);
         using var page = document[0];
 
@@ -84,16 +68,12 @@ internal static class Program
         {
             string path = Path.Combine(outputDir, "device-rgb.png");
             rgb.Save(path);
-            report.Append("device-rgb n=").Append(rgb.N).Append(" cs=").Append(rgb.Colorspace?.Name).Append('\n');
-            check.FileSha256(path, "device-rgb.png.sha256");
         }
 
         using (var gray = page.GetPixmap(dpi: 96, cs: Colorspace.Gray))
         {
             string path = Path.Combine(outputDir, "device-gray.png");
             gray.Save(path);
-            report.Append("device-gray n=").Append(gray.N).Append(" cs=").Append(gray.Colorspace?.Name).Append('\n');
-            check.FileSha256(path, "device-gray.png.sha256");
         }
 
         using (var cmyk = page.GetPixmap(dpi: 96, cs: Colorspace.Cmyk))
@@ -101,124 +81,84 @@ internal static class Program
             // PAM supports CMYK samples; PNG is RGB/Gray only.
             string path = Path.Combine(outputDir, "device-cmyk.pam");
             cmyk.Save(path);
-            report.Append("device-cmyk n=").Append(cmyk.N).Append(" cs=").Append(cmyk.Colorspace?.Name).Append('\n');
-            check.FileSha256(path, "device-cmyk.pam.sha256");
         }
     }
 
-    /// <summary>PDF catalog, trailer, xref, dictionary, and stream inspection.</summary>
-    static void DemoPdfObjectInspection(string inputPdf, StringBuilder report)
+    /// <summary>PDF catalog, trailer, xref, dictionary, and stream inspection</summary>
+    static void DemoPdfObjectInspection(string inputPdf)
     {
-        Section("PDF object inspection", report);
         using var document = Document.Open(inputPdf);
         if (!document.IsPdf)
         {
-            report.Append("not-pdf\n");
             return;
         }
 
-        report.Append("catalogXref=").Append(document.PdfCatalog).Append('\n');
-        report.Append("xrefLength=").Append(document.XrefLength).Append('\n');
-
         var outputIntents = document.XrefGetKey(document.PdfCatalog, "OutputIntents");
-        report.Append("outputIntents.type=").Append(outputIntents.type).Append('\n');
 
         int objectCount = Math.Max(0, Math.Min(8, document.XrefLength - 1));
         for (int xref = 1; xref <= objectCount; xref++)
         {
             var type = document.XrefGetKey(xref, "Type");
             var subtype = document.XrefGetKey(xref, "Subtype");
-            report.Append("xref=").Append(xref)
-                .Append(" stream=").Append(document.XrefIsStream(xref))
-                .Append(" Type=").Append(type.value)
-                .Append(" Subtype=").Append(subtype.value)
-                .Append('\n');
         }
     }
 
-    /// <summary>Matrix zoom, page iteration, links, and outline navigation.</summary>
-    static void DemoZoomAndNavigation(string inputPdf, string outputDir, ResultCheck check, StringBuilder report)
+    /// <summary>Matrix zoom, page iteration, links, and outline navigation</summary>
+    static void DemoZoomAndNavigation(string inputPdf, string outputDir)
     {
-        Section("Zoom and navigation", report);
         using var document = Document.Open(inputPdf);
         using var page = document[0];
         using var zoomed = page.GetPixmap(matrix: new Matrix(2, 2), cs: Colorspace.Rgb);
         string output = Path.Combine(outputDir, "zoomed-page-1.png");
         zoomed.Save(output);
-
-        report.Append("zoom pages=").Append(document.PageCount)
-            .Append(" links=").Append(page.GetLinks().Count)
-            .Append(" toc=").Append(document.GetToc().Count)
-            .Append(" size=").Append(zoomed.Width).Append('x').Append(zoomed.Height)
-            .Append('\n');
-        check.FileSha256(output, "zoomed-page-1.png.sha256");
     }
 
-    /// <summary>Create MuPDF ICC colorspaces from display/proof profile files.</summary>
-    static void DemoIccProfiles(string displayProfile, string proofProfile, StringBuilder report)
+    /// <summary>Create MuPDF ICC colorspaces from display/proof profile files</summary>
+    static void DemoIccProfiles(string displayProfile, string proofProfile)
     {
-        Section("ICC profile colorspaces", report);
         using (var display = LoadIccColorspace(displayProfile))
-            AppendNativeColorspace(report, "display", display);
+            AppendNativeColorspace(new StringBuilder(), "display", display);
 
         using (var proof = LoadIccColorspace(proofProfile))
-            AppendNativeColorspace(report, "proof", proof);
+            AppendNativeColorspace(new StringBuilder(), "proof", proof);
     }
 
-    /// <summary>Render page 1 directly into a display ICC colorspace.</summary>
-    static void DemoColorManagedRendering(
-        string inputPdf,
-        string displayProfile,
-        string outputDir,
-        ResultCheck check,
-        StringBuilder report)
+    /// <summary>Render page 1 directly into a display ICC colorspace</summary>
+    static void DemoColorManagedRendering(string inputPdf, string displayProfile, string outputDir)
     {
-        Section("Color-managed rendering with a display ICC profile", report);
         string output = Path.Combine(outputDir, "display-profile-render.png");
         RenderIccPage(inputPdf, displayProfile, proofProfile: null, output);
-        report.Append("display-profile-render=ok\n");
-        check.FileSha256(output, "display-profile-render.png.sha256");
     }
 
-    /// <summary>Read the PDF Output Intent semantically through MuPDF.</summary>
-    static void DemoOutputIntent(string inputPdf, StringBuilder report)
+    /// <summary>Read the PDF Output Intent semantically through MuPDF</summary>
+    static void DemoOutputIntent(string inputPdf)
     {
-        Section("Output Intent", report);
         using var document = new FzDocument(inputPdf);
         using var outputIntent = document.fz_document_output_intent();
 
         if (outputIntent == null || outputIntent.m_internal_value() == 0)
         {
-            report.Append("outputIntent=none\n");
             return;
         }
 
-        AppendNativeColorspace(report, "outputIntent", outputIntent);
+        AppendNativeColorspace(new StringBuilder(), "outputIntent", outputIntent);
     }
 
-    /// <summary>Enumerate DeviceN/spot plates and render all plates composited to RGB.</summary>
-    static void DemoDeviceNSpotColorsAndSeparations(
-        string inputPdf,
-        string outputDir,
-        ResultCheck check,
-        StringBuilder report)
+    /// <summary>Enumerate DeviceN/spot plates and render all plates composited to RGB</summary>
+    static void DemoDeviceNSpotColorsAndSeparations(string inputPdf, string outputDir)
     {
-        Section("DeviceN / spot colors / separations", report);
         using var document = new FzDocument(inputPdf);
         using var page = document.fz_load_page(0);
         using var separations = page.fz_page_separations();
 
         if (separations == null || separations.m_internal_value() == 0)
         {
-            report.Append("separations=none\n");
             return;
         }
 
         int count = separations.fz_count_separations();
-        report.Append("separationCount=").Append(count).Append('\n');
         for (int i = 0; i < count; i++)
         {
-            report.Append("sep[").Append(i).Append("]=").Append(separations.fz_separation_name(i)).Append('\n');
             separations.fz_set_separation_behavior(i, fz_separation_behavior.FZ_SEPARATION_COMPOSITE);
         }
 
@@ -227,13 +167,11 @@ internal static class Program
         using var pixmap = page.fz_new_pixmap_from_page_with_separations(matrix, rgb, separations, alpha: 0);
         string output = Path.Combine(outputDir, "separations-composited.png");
         pixmap.fz_save_pixmap_as_png(output);
-        check.FileSha256(output, "separations-composited.png.sha256");
     }
 
-    /// <summary>Detect overprint use and show the parameters used for simulation.</summary>
-    static void DemoOverprint(string inputPdf, StringBuilder report)
+    /// <summary>Detect overprint use and show the parameters used for simulation</summary>
+    static void DemoOverprint(string inputPdf)
     {
-        Section("Overprint simulation", report);
         using var document = new FzDocument(inputPdf);
         using var page = document.fz_load_page(0);
         bool usesOverprint = page.fz_page_uses_overprint() != 0;
@@ -245,27 +183,11 @@ internal static class Program
             bp = 1,
             ri = 1, // FZ_RI_RELATIVE_COLORIMETRIC
         };
-
-        report.Append("usesOverprint=").Append(usesOverprint).Append('\n');
-        report.Append("sim op=").Append(parameters.op)
-            .Append(" opm=").Append(parameters.opm)
-            .Append(" bp=").Append(parameters.bp)
-            .Append(" ri=").Append(parameters.ri)
-            .Append('\n');
     }
 
-    /// <summary>
-    /// Apply color parameters to a CMYK-to-display conversion and save comparable images.
-    /// </summary>
-    static void DemoRenderingIntentAndColorParameters(
-        string inputPdf,
-        string displayProfile,
-        string proofProfile,
-        string outputDir,
-        ResultCheck check,
-        StringBuilder report)
+    /// <summary>Apply color parameters to a CMYK-to-display conversion and save comparable images</summary>
+    static void DemoRenderingIntentAndColorParameters(string inputPdf, string displayProfile, string proofProfile, string outputDir)
     {
-        Section("Rendering intent and color parameters", report);
         using var document = new FzDocument(inputPdf);
         using var page = document.fz_load_page(0);
         using var matrix = new FzMatrix(1, 0, 0, 1, 0, 0);
@@ -298,21 +220,11 @@ internal static class Program
             display, proof, defaults, relativeParameters, keep_alpha: 0);
         string relativeOutput = Path.Combine(outputDir, "rendering-intent-relative-bpc-overprint.png");
         relative.fz_save_pixmap_as_png(relativeOutput);
-
-        report.Append("renderingIntent perceptual=ok relative=ok\n");
-        report.Append("ri=").Append(relativeParameters.ri)
-            .Append(" bp=").Append(relativeParameters.bp)
-            .Append(" op=").Append(relativeParameters.op)
-            .Append(" opm=").Append(relativeParameters.opm)
-            .Append('\n');
-        check.FileSha256(perceptualOutput, "rendering-intent-perceptual.png.sha256");
-        check.FileSha256(relativeOutput, "rendering-intent-relative-bpc-overprint.png.sha256");
     }
 
-    /// <summary>Show the primitives available for future prepress checks.</summary>
-    static void DemoPrepressAnalysis(string inputPdf, StringBuilder report)
+    /// <summary>Show the primitives available for future prepress checks</summary>
+    static void DemoPrepressAnalysis(string inputPdf)
     {
-        Section("Prepress analysis foundation", report);
         using var document = new FzDocument(inputPdf);
         using var outputIntent = document.fz_document_output_intent();
         bool hasOutputIntent = outputIntent != null && outputIntent.m_internal_value() != 0;
@@ -334,35 +246,17 @@ internal static class Program
                 pagesWithSeparations++;
             }
         }
-
-        report.Append("prepress outputIntent=").Append(hasOutputIntent)
-            .Append(" overprintPages=").Append(pagesWithOverprint)
-            .Append(" separationPages=").Append(pagesWithSeparations)
-            .Append(" pageCount=").Append(pageCount)
-            .Append('\n');
     }
 
-    /// <summary>
-    /// Render page 1 through an optional proof profile into an optional display profile.
-    /// </summary>
-    static void DemoSoftProof(
-        string inputPdf,
-        string displayProfile,
-        string proofProfile,
-        string outputDir,
-        ResultCheck check,
-        StringBuilder report)
+    /// <summary>Render page 1 through an optional proof profile into an optional display profile</summary>
+    static void DemoSoftProof(string inputPdf, string displayProfile, string proofProfile, string outputDir)
     {
-        Section("ICC soft proof", report);
-
         // ICC enable/disable affects MuPDF's shared context. A production wrapper
         // should serialize this setting with all rendering operations.
         mupdf.mupdf.fz_enable_icc();
 
         string output = Path.Combine(outputDir, "soft-proof.png");
         RenderIccPage(inputPdf, displayProfile, proofProfile, output);
-        report.Append("soft-proof=ok\n");
-        check.FileSha256(output, "soft-proof.png.sha256");
     }
 
     // ── helpers (also useful to copy) ─────────────────────────────────

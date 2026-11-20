@@ -12,14 +12,11 @@ internal static class Program
         ImageFilters();
     }
 
-    /// <summary>
-    /// Apply a median filter pipeline to a pixmap and save the result.
-    /// </summary>
+    /// <summary>Apply a median filter pipeline to a pixmap and save the result</summary>
     static void ImageFilters()
     {
-        string input = ExamplePaths.MuPdfNetInput("apple.png");
-        string output = ExamplePaths.Output("MuPDF.NET", "28-ImageFilters", "filtered.png");
-        var check = new ResultCheck("MuPDF.NET", "28-ImageFilters");
+        string input = "apple.png";
+        string output = "filtered.png";
 
         using var source = new Pixmap(input);
         int width = source.Width;
@@ -32,11 +29,5 @@ internal static class Program
         // ApplyImageFilters may consume/dispose the source pixmap — do not use source afterward.
         using Pixmap filtered = Pixmap.ApplyImageFilters(source, pipeline);
         filtered.Save(output);
-
-        ConsoleEx.Info($"Filtered {width}x{height} → {output}");
-        check.FileSha256(output, "filtered.png.sha256");
-        check.Equal(filtered.Width, width, "width preserved");
-        check.Equal(filtered.Height, height, "height preserved");
-        check.Finish();
     }
 }

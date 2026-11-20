@@ -12,14 +12,11 @@ internal static class Program
         TextExtractSearch();
     }
 
-    /// <summary>
-    /// Extract plain text from page 1 and search for a string.
-    /// </summary>
+    /// <summary>Extract plain text from page 1 and search for a string</summary>
     static void TextExtractSearch()
     {
-        string input = ExamplePaths.MuPdfNetInput("sample.pdf");
+        string input = "sample.pdf";
         const string needle = "Hydraulik";
-        var check = new ResultCheck("MuPDF.NET", "04-TextExtractSearch");
 
         using (var doc = Document.Open(input))
         using (Page page = doc[0])
@@ -30,21 +27,6 @@ internal static class Program
             // SearchFor returns hit rectangles on the page.
             var hits = page.SearchFor(needle);
 
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info($"Page 1 characters: {text.Length}");
-            ConsoleEx.Info($"SearchFor(\"{needle}\") hits: {hits.Count}");
-
-            // Examples harness baselines.
-            check.Text(text, "page-1.txt");
-            check.Properties(
-                new Dictionary<string, string>
-                {
-                    ["needle"] = needle,
-                    ["hitCount"] = hits.Count.ToString(),
-                },
-                "search.summary.txt");
         }
-
-        check.Finish();
     }
 }

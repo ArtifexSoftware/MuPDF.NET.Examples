@@ -24,6 +24,7 @@ Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Confi
 
 | Path | Role |
 |------|------|
+| [`docs/`](docs/index.html) | HTML how-to help (start at [`docs/index.html`](docs/index.html)) |
 | `Common/` | Paths, `ResultCheck`, PDF fingerprints |
 | `Input/` | Fixtures (committed) |
 | `Output/` | Generated files (gitignored) |
@@ -50,7 +51,7 @@ dotnet restore
 .\run-all.cmd          # Windows
 # or: .\run-all.ps1
 # or one project:
-dotnet run --project MuPDF.NET\01-OpenSave
+dotnet run --project MuPDF.NET\01-Basic
 ```
 
 ```bash
@@ -59,7 +60,7 @@ dotnet restore
 chmod +x ./run-all.sh
 ./run-all.sh
 # or: pwsh ./run-all.ps1
-dotnet run --project MuPDF.NET/01-OpenSave
+dotnet run --project MuPDF.NET/01-Basic
 ```
 
 ## Refresh baselines after a trusted package upgrade
@@ -68,7 +69,7 @@ dotnet run --project MuPDF.NET/01-OpenSave
 .\run-all.cmd --update-expected
 # or: .\run-all.ps1 -UpdateExpected
 # or:
-dotnet run --project MuPDF.NET\01-OpenSave -- --update-expected
+dotnet run --project MuPDF.NET\01-Basic -- --update-expected
 ```
 
 ## What is compared

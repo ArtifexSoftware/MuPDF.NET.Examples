@@ -14,16 +14,12 @@ internal static class Program
         FileAnnot();
     }
 
-    /// <summary>
-    /// Attach a file as a page annotation (paperclip), distinct from EmbeddedFiles.
-    /// </summary>
+    /// <summary>Attach a file as a page annotation (paperclip), distinct from EmbeddedFiles</summary>
     static void FileAnnot()
     {
-        string blank = ExamplePaths.MuPdfNetInput("Blank.pdf");
-        string note = ExamplePaths.MuPdfNetInput("note.txt");
-        string output = ExamplePaths.Output("MuPDF.NET", "30-FileAnnot", "with-file-annot.pdf");
-        var check = new ResultCheck("MuPDF.NET", "30-FileAnnot");
-        var report = new StringBuilder();
+        string blank = "Blank.pdf";
+        string note = "note.txt";
+        string output = "with-file-annot.pdf";
 
         byte[] payload = File.ReadAllBytes(note);
 
@@ -39,10 +35,7 @@ internal static class Program
                 desc: "Example file annotation");
             annot.Update();
 
-            report.Append("annotType=").Append(annot.TypeString).Append('\n');
             var fileInfo = annot.GetFileInfo();
-            report.Append("filename=").Append(fileInfo.GetValueOrDefault("filename") ?? "").Append('\n');
-            report.Append("size=").Append(fileInfo.GetValueOrDefault("size") ?? payload.Length).Append('\n');
             doc.Save(output, garbage: 3, deflate: 1);
         }
 
@@ -50,13 +43,6 @@ internal static class Program
         using (Page page = doc[0])
         {
             var annots = page.Annots().ToList();
-            report.Append("annotCount=").Append(annots.Count).Append('\n');
-            foreach (Annot a in annots)
-                report.Append("type=").Append(a.TypeString).Append('\n');
         }
-
-        check.Text(report.ToString(), "file-annot.txt");
-        check.Properties(PdfFingerprint.FromFile(output), "with-file-annot.summary.txt");
-        check.Finish();
     }
 }

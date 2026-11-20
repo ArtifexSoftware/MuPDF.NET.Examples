@@ -12,13 +12,10 @@ internal static class Program
         TextWriterHello();
     }
 
-    /// <summary>
-    /// Write text onto a new page with TextWriter + Font.
-    /// </summary>
+    /// <summary>Write text onto a new page with TextWriter + Font</summary>
     static void TextWriterHello()
     {
-        string output = ExamplePaths.Output("MuPDF.NET", "15-TextWriter", "hello.pdf");
-        var check = new ResultCheck("MuPDF.NET", "15-TextWriter");
+        string output = "hello.pdf";
 
         using (var doc = Document.Open())
         {
@@ -33,10 +30,6 @@ internal static class Program
             writer.WriteText(page);
 
             doc.Save(output);
-            ConsoleEx.Info($"Wrote: {output}");
         }
-
-        check.Properties(PdfFingerprint.FromFile(output), "hello.summary.txt");
-        check.Finish();
     }
 }

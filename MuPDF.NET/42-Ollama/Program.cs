@@ -12,9 +12,7 @@ internal static class Program
         OllamaCapitals(args).GetAwaiter().GetResult();
     }
 
-    /// <summary>
-    /// Index national-capitals.pdf with a local Ollama chat + embedding model, then Ask / Search.
-    /// </summary>
+    /// <summary>Index national-capitals.pdf with a local Ollama chat + embedding model, then Ask / Search</summary>
     static Task OllamaCapitals(string[] args)
     {
         bool repl = args.Any(a => string.Equals(a, "--repl", StringComparison.OrdinalIgnoreCase));

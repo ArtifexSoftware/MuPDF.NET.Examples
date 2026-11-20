@@ -1,0 +1,186 @@
+doc.PageCount = 3
+doc.IsPdf = True
+doc.IsEncrypted = False
+doc.NeedsPass = False
+doc.IsReflowable = False
+doc.IsDirty = False
+doc.IsFormPdf = False
+doc.IsRepaired = False
+doc.IsFastWebaccess = False
+doc.IsClosed = False
+doc.CanSaveIncrementally() = True
+doc.JournalIsEnabled = False
+doc.ChapterCount = 1
+doc.ChapterPageCount(0) = 3
+doc.VersionCount = 1
+doc.XrefLength = 56
+doc.PdfCatalog = 2
+doc.Language = 
+doc.PageLayout = SinglePage
+doc.PageMode = UseNone
+doc.NeedAppearances = False
+doc.GetSigFlags() = -1
+doc.Permissions = -4
+Constants.PDF_PERM_PRINT = True
+Constants.PDF_PERM_MODIFY = True
+Constants.PDF_PERM_COPY = True
+Constants.PDF_PERM_ANNOTATE = True
+Constants.PDF_PERM_FORM = True
+Constants.PDF_PERM_ACCESSIBILITY = True
+Constants.PDF_PERM_ASSEMBLE = True
+Constants.PDF_PERM_PRINT_HQ = True
+doc.FormFonts = 0 item(s)
+doc.EmbeddedFileCount = 0
+doc.HasAnnots() = False
+doc.HasLinks() = False
+doc.MarkInfo.Count = 0
+doc.Metadata.Count = 11
+doc.Metadata["format"] = PDF 1.7
+doc.Metadata["title"] = Schemaalpha
+doc.Metadata["author"] = 
+doc.Metadata["subject"] = 
+doc.Metadata["keywords"] = 
+doc.Metadata["creator"] = AutoCAD LT 2023 - Deutsch (German) 2023 (24.2)
+doc.Metadata["producer"] = pdfplot16.hdi 16.02.072.00000
+doc.Metadata["creationDate"] = D:20231211141625+01'00'
+doc.Metadata["modDate"] = D:20240502120953+02'00'
+doc.Metadata["trapped"] = 
+doc.Metadata["encryption"] = 
+doc.XrefXmlMetadata = 4
+doc.GetXmlMetadata() = <?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="XMP Core 6.0.0">
+	<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+		<rdf:Description rdf:about=""
+				xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+				xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:pdf="http://ns.adobe.com/pdf/1.3/">
+			<xmp:MetadataDate>2023-12-11T14:16:25+01:00</xmp:MetadataDate>
+			<xmp:CreateDate>2023-12-11T15:16:25+02:00</xmp:CreateDate>
+			<xmp:CreatorTool>AutoCAD LT 2023 - Deutsch (German) 2023 (24.2)</xmp:CreatorTool>
+			<xmp:ModifyDate>2024-05-02T12:09:53+02:00</xmp:ModifyDate>
+			<xmpMM:DocumentID>uuid:8c4c8716-0df7-483d-85ac-b432c71be8c7</xmpMM:DocumentID>
+			<xmpMM:InstanceID>uuid:0288dd4c-6465-4aca-b268-c5edcfae9e5a</xmpMM:InstanceID>
+			<dc:format>application/pdf</dc:format>
+			<dc:title>
+				<rdf:Alt>
+					<rdf:li xml:lang="x-default">Schemaalpha</rdf:li>
+				</rdf:Alt>
+			</dc:title>
+			<pdf:Producer>pdfplot16.hdi 16.02.072.00000</pdf:Producer>
+		</rdf:Description>
+	</rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                           
+<?xpacket end="w"?>
+doc.GetPageLabels().Count = 3
+  startpage = 0
+  prefix = [1] 589713a-Schemaalpha
+  firstpagenum = 1
+  startpage = 1
+  prefix = [2] 589713a-IBN DE
+  firstpagenum = 1
+  startpage = 2
+  prefix = [3] 589713a-Legende DE
+  firstpagenum = 1
+doc.GetToc().Count = 4
+  level=1 title=PlÃ¤ne und Ansichten page=-1
+  level=2 title=589713a-Schemaalpha page=1
+  level=2 title=589713a-IBN DE page=2
+  level=2 title=589713a-Legende DE page=3
+doc.ResolveNames().Count = 0
+doc.GetOcgs().Count = 0
+doc.GetLayers().Count = 0
+doc.LayerUiConfigs().Count = 0
+doc.PdfTrailer() = <<
+  /DecodeParms <<
+    /Columns 5
+    /Predictor 12
+  >>
+  /Filter /FlateDecode
+  /ID [ <526B726958BA2A459F9D0976B6F9CED0> <5E5FD9F028954F40A3EC0886A87D9F66> ]
+  /Info 1 0 R
+  /Length 166
+  /Root 2 0 R
+  /Size 56
+  /Type /XRef
+  /W [ 1 3 1 ]
+>>
+doc[0].GetLabel() = [1] 589713a-Schemaalpha
+doc[0].Xref = 12
+doc[0].Rotation = 270
+doc[0].Width = 842
+doc[0].Height = 595
+doc[0].Rect = Rect(0, 0, 842, 595)
+doc[0].MediaBox = Rect(0, 0, 595, 842)
+doc[0].CropBox = Rect(0, 0, 595, 842)
+doc[0].BleedBox = Rect(0, 0, 595, 842)
+doc[0].TrimBox = Rect(0, 0, 595, 842)
+doc[0].ArtBox = Rect(0, 0, 595, 842)
+doc.GetPageFonts(0).Count = 2
+  xref=19 ext=ttf type=Type0 baseName=TrebuchetMS name=F0 encoding=Identity-H
+  xref=20 ext=ttf type=Type0 baseName=ArialMT name=F1 encoding=Identity-H
+doc.GetPageImages(0).Count = 2
+  xref=21 name=Im0 width=193 height=535 bpc=8 cs=Indexed
+  xref=22 name=Im1 width=206 height=861 bpc=8 cs=DeviceRGB
+doc.GetPageXobjects(0).Count = 2
+  xref = 21
+  name = Im0
+  subtype = Image
+  xref = 22
+  name = Im1
+  subtype = Image
+doc.GetPageAnnotXrefs(0).Count = 0
+doc[1].GetLabel() = [2] 589713a-IBN DE
+doc[1].Xref = 13
+doc[1].Rotation = 270
+doc[1].Width = 842
+doc[1].Height = 595
+doc[1].Rect = Rect(0, 0, 842, 595)
+doc[1].MediaBox = Rect(0, 0, 595, 842)
+doc[1].CropBox = Rect(0, 0, 595, 842)
+doc[1].BleedBox = Rect(0, 0, 595, 842)
+doc[1].TrimBox = Rect(0, 0, 595, 842)
+doc[1].ArtBox = Rect(0, 0, 595, 842)
+doc.GetPageFonts(1).Count = 1
+  xref=25 ext=ttf type=Type0 baseName=TrebuchetMS name=F1 encoding=Identity-H
+doc.GetPageImages(1).Count = 0
+doc.GetPageXobjects(1).Count = 0
+doc.GetPageAnnotXrefs(1).Count = 0
+doc[2].GetLabel() = [3] 589713a-Legende DE
+doc[2].Xref = 14
+doc[2].Rotation = 270
+doc[2].Width = 842
+doc[2].Height = 595
+doc[2].Rect = Rect(0, 0, 842, 595)
+doc[2].MediaBox = Rect(0, 0, 595, 842)
+doc[2].CropBox = Rect(0, 0, 595, 842)
+doc[2].BleedBox = Rect(0, 0, 595, 842)
+doc[2].TrimBox = Rect(0, 0, 595, 842)
+doc[2].ArtBox = Rect(0, 0, 595, 842)
+doc.GetPageFonts(2).Count = 2
+  xref=27 ext=ttf type=Type0 baseName=TrebuchetMS name=F1 encoding=Identity-H
+  xref=28 ext=ttf type=Type0 baseName=ArialMT name=F2 encoding=Identity-H
+doc.GetPageImages(2).Count = 0
+doc.GetPageXobjects(2).Count = 0
+doc.GetPageAnnotXrefs(2).Count = 0

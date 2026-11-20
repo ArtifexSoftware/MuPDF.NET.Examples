@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MuPDF.NET.Examples.MuPDFNet.OpenSave</RootNamespace>
-    <AssemblyName>01-OpenSave</AssemblyName>
+    <RootNamespace>MuPDF.NET.Examples.MuPDFNet.Basic</RootNamespace>
+    <AssemblyName>01-Basic</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MuPDF.NET" Version="$(ArtifexMuPDFNetVersion)" />

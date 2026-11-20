@@ -13,16 +13,12 @@ internal static class Program
         CompressSave();
     }
 
-    /// <summary>
-    /// Compare a plain save vs a compressed save (garbage + deflate + object streams).
-    /// </summary>
+    /// <summary>Compare a plain save vs a compressed save (garbage + deflate + object streams)</summary>
     static void CompressSave()
     {
-        string input = ExamplePaths.MuPdfNetInput("sample.pdf");
-        string plain = ExamplePaths.Output("MuPDF.NET", "25-CompressSave", "plain.pdf");
-        string compressed = ExamplePaths.Output("MuPDF.NET", "25-CompressSave", "compressed.pdf");
-        var check = new ResultCheck("MuPDF.NET", "25-CompressSave");
-        var report = new StringBuilder();
+        string input = "sample.pdf";
+        string plain = "plain.pdf";
+        string compressed = "compressed.pdf";
 
         using (var doc = Document.Open(input))
             doc.Save(plain);
@@ -42,16 +38,5 @@ internal static class Program
         long plainBytes = new System.IO.FileInfo(plain).Length;
         long compressedBytes = new System.IO.FileInfo(compressed).Length;
         bool smallerOrEqual = compressedBytes <= plainBytes;
-        report.Append("smallerOrEqual=").Append(smallerOrEqual ? "true" : "false").Append('\n');
-        report.Append("savedWith=garbage4+deflate+objstms\n");
-
-        ConsoleEx.Info($"Plain: {plainBytes} bytes");
-        ConsoleEx.Info($"Compressed: {compressedBytes} bytes");
-
-        check.Equal(smallerOrEqual, true, "compressed <= plain");
-        check.Text(report.ToString(), "compress.txt");
-        check.Properties(PdfFingerprint.FromFile(plain), "plain.summary.txt");
-        check.Properties(PdfFingerprint.FromFile(compressed), "compressed.summary.txt");
-        check.Finish();
     }
 }

@@ -13,17 +13,13 @@ internal static class Program
         PageOps();
     }
 
-    /// <summary>
-    /// Delete, move, and select pages in a multi-page PDF.
-    /// </summary>
+    /// <summary>Delete, move, and select pages in a multi-page PDF</summary>
     static void PageOps()
     {
-        string a = ExamplePaths.MuPdfNetInput("sample.pdf");
-        string b = ExamplePaths.MuPdfNetInput("Blank.pdf");
-        string built = ExamplePaths.Output("MuPDF.NET", "29-PageOps", "built.pdf");
-        string selected = ExamplePaths.Output("MuPDF.NET", "29-PageOps", "selected.pdf");
-        var check = new ResultCheck("MuPDF.NET", "29-PageOps");
-        var report = new StringBuilder();
+        string a = "sample.pdf";
+        string b = "Blank.pdf";
+        string built = "built.pdf";
+        string selected = "selected.pdf";
 
         // sample.pdf + one blank page + first page of sample.pdf again.
         using (var doc = Document.Open(a))
@@ -32,15 +28,12 @@ internal static class Program
                 doc.InsertPdf(blank, fromPage: 0, toPage: 0, startAt: 1);
             using (var again = Document.Open(a))
                 doc.InsertPdf(again, fromPage: 0, toPage: 0, startAt: 2);
-            report.Append("built.pages=").Append(doc.PageCount).Append('\n');
 
             // Move last page to the front.
             doc.MovePage(doc.PageCount - 1, 0);
-            report.Append("afterMove.pages=").Append(doc.PageCount).Append('\n');
 
             // Delete the middle page (index 1).
             doc.DeletePage(1);
-            report.Append("afterDelete.pages=").Append(doc.PageCount).Append('\n');
 
             doc.Save(built);
         }
@@ -49,13 +42,7 @@ internal static class Program
         using (var doc = Document.Open(built))
         {
             doc.Select(new[] { 0 });
-            report.Append("afterSelect.pages=").Append(doc.PageCount).Append('\n');
             doc.Save(selected);
         }
-
-        check.Text(report.ToString(), "page-ops.txt");
-        check.Properties(PdfFingerprint.FromFile(built), "built.summary.txt");
-        check.Properties(PdfFingerprint.FromFile(selected), "selected.summary.txt");
-        check.Finish();
     }
 }

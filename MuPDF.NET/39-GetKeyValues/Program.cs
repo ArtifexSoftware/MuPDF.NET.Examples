@@ -13,21 +13,16 @@ internal static class Program
         GetKeyValues();
     }
 
-    /// <summary>
-    /// Extract AcroForm field names/values via Utils.GetKeyValues.
-    /// </summary>
+    /// <summary>Extract AcroForm field names/values via Utils.GetKeyValues</summary>
     static void GetKeyValues()
     {
-        string input = ExamplePaths.MuPdfNetInput("Widget.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "39-GetKeyValues", "keyvalues.txt");
-        var check = new ResultCheck("MuPDF.NET", "39-GetKeyValues");
+        string input = "Widget.pdf";
+        string output = "keyvalues.txt";
 
         // Returns fieldName → property bag (value, page, …) for interactive form fields.
         Dictionary<string, Dictionary<string, object>> fields =
             Utils.GetKeyValues(input, includeXrefs: false);
 
-        var sb = new StringBuilder();
-        sb.Append("fieldCount=").Append(fields.Count).Append('\n');
         foreach (string name in fields.Keys.OrderBy(k => k, StringComparer.Ordinal))
         {
             Dictionary<string, object> info = fields[name];
@@ -36,15 +31,8 @@ internal static class Program
                 ";",
                 info.OrderBy(kv => kv.Key, StringComparer.Ordinal)
                     .Select(kv => kv.Key + "=" + FormatValue(kv.Value)));
-            sb.Append(name).Append('\t').Append(props).Append('\n');
         }
 
-        string text = sb.ToString();
-        File.WriteAllText(output, text);
-        ConsoleEx.Info($"Opened: {input}");
-        ConsoleEx.Info($"Form fields: {fields.Count}");
-        check.Text(text, "keyvalues.txt");
-        check.Finish();
     }
 
     static string FormatValue(object? value)

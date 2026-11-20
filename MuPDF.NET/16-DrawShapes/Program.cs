@@ -12,13 +12,10 @@ internal static class Program
         DrawShapes();
     }
 
-    /// <summary>
-    /// Draw lines, rectangles, and circles on a page.
-    /// </summary>
+    /// <summary>Draw lines, rectangles, and circles on a page</summary>
     static void DrawShapes()
     {
-        string output = ExamplePaths.Output("MuPDF.NET", "16-DrawShapes", "shapes.pdf");
-        var check = new ResultCheck("MuPDF.NET", "16-DrawShapes");
+        string output = "shapes.pdf";
 
         using (var doc = Document.Open())
         {
@@ -40,11 +37,8 @@ internal static class Program
                 width: 1f);
 
             doc.Save(output);
-            ConsoleEx.Info($"Wrote: {output}");
         }
 
         // Drawing-only PDF may have little extractable text — fingerprint still records pageCount.
-        check.Properties(PdfFingerprint.FromFile(output), "shapes.summary.txt");
-        check.Finish();
     }
 }

@@ -14,15 +14,11 @@ internal static class Program
         GetDrawings();
     }
 
-    /// <summary>
-    /// Draw vector shapes, then extract path info with <see cref="Page.GetDrawings"/>.
-    /// </summary>
+    /// <summary>Draw vector shapes, then extract path info with &lt;see cref="Page.GetDrawings"/&gt;</summary>
     static void GetDrawings()
     {
-        string drawn = ExamplePaths.Output("MuPDF.NET", "22-GetDrawings", "drawn.pdf");
-        string redrawn = ExamplePaths.Output("MuPDF.NET", "22-GetDrawings", "redrawn.pdf");
-        var check = new ResultCheck("MuPDF.NET", "22-GetDrawings");
-        var report = new StringBuilder();
+        string drawn = "drawn.pdf";
+        string redrawn = "redrawn.pdf";
 
         // 1) Create a page with known vector content.
         using (var doc = Document.Open())
@@ -44,13 +40,10 @@ internal static class Program
         using (Page page = src[0])
         {
             List<PathInfo> paths = page.GetDrawings();
-            report.Append("pathCount=").Append(paths.Count).Append('\n');
 
             var typeCounts = paths
                 .GroupBy(p => p.Type ?? "?")
                 .OrderBy(g => g.Key, StringComparer.Ordinal);
-            foreach (var g in typeCounts)
-                report.Append("type.").Append(g.Key).Append('=').Append(g.Count()).Append('\n');
 
             using var outDoc = Document.Open();
             using Page outPage = outDoc.NewPage();
@@ -63,13 +56,7 @@ internal static class Program
                 outPage.DrawRect(path.Rect, color: new[] { 1f, 0f, 0f }, width: 0.5f);
                 redrawnRects++;
             }
-            report.Append("redrawnRects=").Append(redrawnRects).Append('\n');
             outDoc.Save(redrawn);
         }
-
-        check.Text(report.ToString(), "drawings.txt");
-        check.Properties(PdfFingerprint.FromFile(drawn), "drawn.summary.txt");
-        check.Properties(PdfFingerprint.FromFile(redrawn), "redrawn.summary.txt");
-        check.Finish();
     }
 }

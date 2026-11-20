@@ -14,14 +14,11 @@ internal static class Program
         TablesToCsv();
     }
 
-    /// <summary>
-    /// Detect tables and write the first table as CSV.
-    /// </summary>
+    /// <summary>Detect tables and write the first table as CSV</summary>
     static void TablesToCsv()
     {
-        string input = ExamplePaths.MuPdfNetInput("national-capitals.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "37-TablesCsv", "capitals.csv");
-        var check = new ResultCheck("MuPDF.NET", "37-TablesCsv");
+        string input = "national-capitals.pdf";
+        string output = "capitals.csv";
 
         using var doc = Document.Open(input);
         using Page page = doc[0];
@@ -33,25 +30,14 @@ internal static class Program
             vertical_strategy: "lines_strict",
             horizontal_strategy: "lines_strict");
 
-        var sb = new StringBuilder();
-        sb.Append("tableCount=").Append(tables.Count).Append('\n');
         if (tables.Count > 0)
         {
             Table table = tables[0];
-            sb.Append("rows=").Append(table.RowCount).Append(" cols=").Append(table.ColCount).Append('\n');
 
             // Extract() returns row → cell text.
             List<List<string?>> rows = table.Extract();
-            foreach (List<string?> row in rows)
-                sb.Append(string.Join(",", row.Select(CsvEscape))).Append('\n');
         }
 
-        string csv = sb.ToString();
-        File.WriteAllText(output, csv);
-        ConsoleEx.Info($"Opened: {input}");
-        ConsoleEx.Info($"Tables found: {tables.Count}");
-        check.Text(csv, "capitals.csv");
-        check.Finish();
     }
 
     static string CsvEscape(string? cell)

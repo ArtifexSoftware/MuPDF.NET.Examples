@@ -12,15 +12,12 @@ internal static class Program
         Watermark();
     }
 
-    /// <summary>
-    /// Insert a logo image as a watermark on every page.
-    /// </summary>
+    /// <summary>Insert a logo image as a watermark on every page</summary>
     static void Watermark()
     {
-        string input = ExamplePaths.MuPdfNetInput("sample.pdf");
-        string logo = ExamplePaths.MuPdfNetInput("logo.png");
-        string output = ExamplePaths.Output("MuPDF.NET", "26-Watermark", "watermarked.pdf");
-        var check = new ResultCheck("MuPDF.NET", "26-Watermark");
+        string input = "sample.pdf";
+        string logo = "logo.png";
+        string output = "watermarked.pdf";
 
         using var doc = Document.Open(input);
         // Insert once as a reusable xref, then place on each page (docs watermark tip).
@@ -42,12 +39,6 @@ internal static class Program
                 page.InsertImage(rect, xref: imageXref, keepProportion: true, overlay: "true");
         }
 
-        ConsoleEx.Info($"Watermark xref={imageXref} on {doc.PageCount} page(s)");
         doc.Save(output);
-
-        var props = PdfFingerprint.FromFile(output);
-        props["watermark"] = Path.GetFileName(logo);
-        check.Properties(props, "watermarked.summary.txt");
-        check.Finish();
     }
 }

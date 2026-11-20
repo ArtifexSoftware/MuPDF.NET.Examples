@@ -1,0 +1,931 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="Pages" href="pages.html"><link rel="prev" title="MuPDF.NET.Examples" href="../index.html">
+        <link rel="prefetch" href="../_static/sidebar-logo-dark.svg" as="image">
+        <link rel="prefetch" href="../_static/sidebar-logo-light.svg" as="image">
+
+    <link rel="shortcut icon" href="../_static/favicon.ico"><!-- Generated with Sphinx 9.2.0 and Furo 2025.12.19 -->
+        <title>Basic - MuPDF.NET Examples</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=edb659cc" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">MuPDF.NET Examples</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../_static/sidebar-logo-dark.svg" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../_static/sidebar-logo-light.svg" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">MuPDF.NET Examples</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">MuPDF.NET</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Basic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages.html">Pages</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MuPDF.NET.Office</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../office/unlock.html">Unlock</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/mupdfnet/basic.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          
+<div class="content-search">
+  <form class="sidebar-search-container top" method="get" action="../search.html" role="search">
+    <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+<section id="basic">
+<h1>Basic<a class="headerlink" href="#basic" title="Link to this heading">¶</a></h1>
+<p>Open a PDF and read document and page information.</p>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="nn">MuPDF.NET</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Document</span><span class="p">.</span><span class="n">Open</span><span class="p">(</span><span class="s">@"D:\sample.pdf"</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">DocumentIdentity</span><span class="p">(</span><span class="n">doc</span><span class="p">);</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.Document">Document.Open</a>.</p>
+<section id="open-a-pdf-and-read-its-page-count-and-kind">
+<h2>Open a PDF and read its page count and kind<a class="headerlink" href="#open-a-pdf-and-read-its-page-count-and-kind" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Open a PDF and read its page count, kind, and file name&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">DocumentIdentity</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.PageCount = {doc.PageCount}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.IsPdf = {doc.IsPdf}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.PageCount">PageCount</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsPDF">IsPdf</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.PageCount = 3
+doc.IsPdf = True
+</pre></div>
+</div>
+</section>
+<section id="see-whether-the-pdf-is-encrypted-or-still-needs-a-password">
+<h2>See whether the PDF is encrypted or still needs a password<a class="headerlink" href="#see-whether-the-pdf-is-encrypted-or-still-needs-a-password" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;See whether the PDF is encrypted or still needs a password&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Encryption</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.IsEncrypted = {doc.IsEncrypted}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.NeedsPass = {doc.NeedsPass}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsEncrypted">IsEncrypted</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.NeedsPass">NeedsPass</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.IsEncrypted = False
+doc.NeedsPass = False
+</pre></div>
+</div>
+</section>
+<section id="read-document-state-flags">
+<h2>Read document state flags<a class="headerlink" href="#read-document-state-flags" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read document state flags&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">DocumentFlags</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.IsReflowable = {doc.IsReflowable}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.IsDirty = {doc.IsDirty}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.IsFormPdf = {doc.IsFormPdf}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.IsRepaired = {doc.IsRepaired}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.IsFastWebaccess = {doc.IsFastWebaccess}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.IsClosed = {doc.IsClosed}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.CanSaveIncrementally() = {doc.CanSaveIncrementally()}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.JournalIsEnabled = {doc.JournalIsEnabled}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsReflowable">IsReflowable</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsDirty">IsDirty</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsFormPDF">IsFormPdf</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsRepaired">IsRepaired</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsFastWebaccess">IsFastWebaccess</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsClosed">IsClosed</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.CanSaveIncrementally">CanSaveIncrementally</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.IsEnabledJournal">JournalIsEnabled</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.IsReflowable = False
+doc.IsDirty = False
+doc.IsFormPdf = False
+doc.IsRepaired = False
+doc.IsFastWebaccess = False
+doc.IsClosed = False
+doc.CanSaveIncrementally() = True
+doc.JournalIsEnabled = False
+</pre></div>
+</div>
+</section>
+<section id="read-pdf-structure-chapters-versions-xref-length-and-catalog">
+<h2>Read PDF structure: chapters, versions, xref length, and catalog<a class="headerlink" href="#read-pdf-structure-chapters-versions-xref-length-and-catalog" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read PDF structure: chapters, versions, xref length, and catalog&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">PdfStructure</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.ChapterCount = {doc.ChapterCount}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">ChapterCount</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.ChapterPageCount({c}) = {doc.ChapterPageCount(c)}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.VersionCount = {doc.VersionCount}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.XrefLength = {doc.XrefLength}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.PdfCatalog = {doc.PdfCatalog}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.ChapterCount">ChapterCount</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetChapterPageCount">ChapterPageCount</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.VersionCount">VersionCount</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetXrefLength">XrefLength</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetPdfCatelog">PdfCatalog</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.ChapterCount = 1
+doc.ChapterPageCount(0) = 3
+doc.VersionCount = 1
+doc.XrefLength = 56
+doc.PdfCatalog = 2
+</pre></div>
+</div>
+</section>
+<section id="read-catalog-viewer-settings">
+<h2>Read catalog viewer settings<a class="headerlink" href="#read-catalog-viewer-settings" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read catalog viewer settings&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ViewerSettings</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.Language = {doc.Language}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.PageLayout = {doc.PageLayout}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.PageMode = {doc.PageMode}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.NeedAppearances = {doc.NeedAppearances}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetSigFlags() = {doc.GetSigFlags()}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.Language">Language</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.PageLayout">PageLayout</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.PageMode">PageMode</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.NeedAppearances">NeedAppearances</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetSigFlags">GetSigFlags</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.Language = 
+doc.PageLayout = SinglePage
+doc.PageMode = UseNone
+doc.NeedAppearances = False
+doc.GetSigFlags() = -1
+</pre></div>
+</div>
+</section>
+<section id="read-the-permission-bitmask">
+<h2>Read the permission bitmask<a class="headerlink" href="#read-the-permission-bitmask" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read the permission bitmask&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Permissions</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">perm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">Permissions</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.Permissions = {perm}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Constants.PDF_PERM_PRINT = {(perm &amp; Constants.PDF_PERM_PRINT) != 0}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Constants.PDF_PERM_MODIFY = {(perm &amp; Constants.PDF_PERM_MODIFY) != 0}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Constants.PDF_PERM_COPY = {(perm &amp; Constants.PDF_PERM_COPY) != 0}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Constants.PDF_PERM_ANNOTATE = {(perm &amp; Constants.PDF_PERM_ANNOTATE) != 0}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Constants.PDF_PERM_FORM = {(perm &amp; Constants.PDF_PERM_FORM) != 0}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Constants.PDF_PERM_ACCESSIBILITY = {(perm &amp; Constants.PDF_PERM_ACCESSIBILITY) != 0}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Constants.PDF_PERM_ASSEMBLE = {(perm &amp; Constants.PDF_PERM_ASSEMBLE) != 0}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"Constants.PDF_PERM_PRINT_HQ = {(perm &amp; Constants.PDF_PERM_PRINT_HQ) != 0}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.Permissions">Permissions</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/glossary/vars.html#PermissionCodes">PDF_PERM_PRINT</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/glossary/vars.html#PermissionCodes">PDF_PERM_MODIFY</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/glossary/vars.html#PermissionCodes">PDF_PERM_COPY</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/glossary/vars.html#PermissionCodes">PDF_PERM_ANNOTATE</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/glossary/vars.html#PermissionCodes">PDF_PERM_FORM</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/glossary/vars.html#PermissionCodes">PDF_PERM_ACCESSIBILITY</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/glossary/vars.html#PermissionCodes">PDF_PERM_ASSEMBLE</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/glossary/vars.html#PermissionCodes">PDF_PERM_PRINT_HQ</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.Permissions = -4
+Constants.PDF_PERM_PRINT = True
+Constants.PDF_PERM_MODIFY = True
+Constants.PDF_PERM_COPY = True
+Constants.PDF_PERM_ANNOTATE = True
+Constants.PDF_PERM_FORM = True
+Constants.PDF_PERM_ACCESSIBILITY = True
+Constants.PDF_PERM_ASSEMBLE = True
+Constants.PDF_PERM_PRINT_HQ = True
+</pre></div>
+</div>
+</section>
+<section id="list-acroform-font-names">
+<h2>List AcroForm font names<a class="headerlink" href="#list-acroform-font-names" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;List AcroForm font names&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">FormFonts</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">formFonts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">FormFonts</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.FormFonts = {(formFonts == null ? "</span><span class="p">(</span><span class="k">null</span><span class="p">)</span><span class="s">" : formFonts.Count + "</span><span class="w"> </span><span class="n">item</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="s">")}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">formFonts</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">formFonts</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  {name}"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.FormFonts">FormFonts</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.FormFonts = 0 item(s)
+</pre></div>
+</div>
+</section>
+<section id="list-embedded-file-names">
+<h2>List embedded file names<a class="headerlink" href="#list-embedded-file-names" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;List embedded file names&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">EmbeddedNames</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.EmbeddedFileCount = {doc.EmbeddedFileCount}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetEmbeddedFileNames</span><span class="p">())</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetEmbeddedFileNames(): {name}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetEmbfileCount">EmbeddedFileCount</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetEmbfileNames">GetEmbeddedFileNames</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.EmbeddedFileCount = 0
+</pre></div>
+</div>
+</section>
+<section id="check-whether-the-pdf-has-any-annotations-or-links">
+<h2>Check whether the PDF has any annotations or links<a class="headerlink" href="#check-whether-the-pdf-has-any-annotations-or-links" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Check whether the PDF has any annotations or links&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">AnnotsAndLinks</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.HasAnnots() = {doc.HasAnnots()}"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.HasLinks() = {doc.HasLinks()}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.HasAnnots">HasAnnots</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.HasLinks">HasLinks</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.HasAnnots() = False
+doc.HasLinks() = False
+</pre></div>
+</div>
+</section>
+<section id="read-markinfo-flags-from-the-catalog">
+<h2>Read MarkInfo flags from the catalog<a class="headerlink" href="#read-markinfo-flags-from-the-catalog" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read MarkInfo flags from the catalog&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">MarkInfo</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.MarkInfo.Count = {doc.MarkInfo.Count}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">kv</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">MarkInfo</span><span class="p">)</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.MarkInfo[\"{kv.Key}\"] = {kv.Value}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.MarkInfo">MarkInfo</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.MarkInfo.Count = 0
+</pre></div>
+</div>
+</section>
+<section id="read-the-standard-pdf-info-dictionary">
+<h2>Read the standard PDF Info dictionary<a class="headerlink" href="#read-the-standard-pdf-info-dictionary" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read the standard PDF Info dictionary&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ReadMetadata</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">meta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">Metadata</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.Metadata.Count = {meta.Count}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">kv</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">meta</span><span class="p">)</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.Metadata[\"{kv.Key}\"] = {kv.Value}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.MetaData">Metadata</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.Metadata.Count = 11
+doc.Metadata["format"] = PDF 1.7
+doc.Metadata["title"] = Schemaalpha
+doc.Metadata["author"] = 
+doc.Metadata["subject"] = 
+doc.Metadata["keywords"] = 
+doc.Metadata["creator"] = AutoCAD LT 2023 - Deutsch (German) 2023 (24.2)
+doc.Metadata["producer"] = pdfplot16.hdi 16.02.072.00000
+doc.Metadata["creationDate"] = D:20231211141625+01'00'
+doc.Metadata["modDate"] = D:20240502120953+02'00'
+doc.Metadata["trapped"] = 
+doc.Metadata["encryption"] = 
+</pre></div>
+</div>
+</section>
+<section id="read-the-xmp-metadata-stream">
+<h2>Read the XMP metadata stream<a class="headerlink" href="#read-the-xmp-metadata-stream" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read the XMP metadata stream&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">XmlMetadata</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.XrefXmlMetadata = {doc.XrefXmlMetadata}"</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">xml</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetXmlMetadata</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetXmlMetadata() = {xml}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.XrefXmlMetaData">XrefXmlMetadata</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetXmlMetadata">GetXmlMetadata</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.XrefXmlMetadata = 4
+doc.GetXmlMetadata() = &lt;?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?&gt;
+&lt;x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="XMP Core 6.0.0"&gt;
+	&lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"&gt;
+		&lt;rdf:Description rdf:about=""
+				xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+				xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:pdf="http://ns.adobe.com/pdf/1.3/"&gt;
+			&lt;xmp:MetadataDate&gt;2023-12-11T14:16:25+01:00&lt;/xmp:MetadataDate&gt;
+			&lt;xmp:CreateDate&gt;2023-12-11T15:16:25+02:00&lt;/xmp:CreateDate&gt;
+			&lt;xmp:CreatorTool&gt;AutoCAD LT 2023 - Deutsch (German) 2023 (24.2)&lt;/xmp:CreatorTool&gt;
+			&lt;xmp:ModifyDate&gt;2024-05-02T12:09:53+02:00&lt;/xmp:ModifyDate&gt;
+			&lt;xmpMM:DocumentID&gt;uuid:8c4c8716-0df7-483d-85ac-b432c71be8c7&lt;/xmpMM:DocumentID&gt;
+			&lt;xmpMM:InstanceID&gt;uuid:0288dd4c-6465-4aca-b268-c5edcfae9e5a&lt;/xmpMM:InstanceID&gt;
+			&lt;dc:format&gt;application/pdf&lt;/dc:format&gt;
+			&lt;dc:title&gt;
+				&lt;rdf:Alt&gt;
+					&lt;rdf:li xml:lang="x-default"&gt;Schemaalpha&lt;/rdf:li&gt;
+				&lt;/rdf:Alt&gt;
+			&lt;/dc:title&gt;
+			&lt;pdf:Producer&gt;pdfplot16.hdi 16.02.072.00000&lt;/pdf:Producer&gt;
+		&lt;/rdf:Description&gt;
+	&lt;/rdf:RDF&gt;
+&lt;/x:xmpmeta&gt;
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                           
+&lt;?xpacket end="w"?&gt;
+</pre></div>
+</div>
+</section>
+<section id="read-page-label-rules">
+<h2>Read page label rules<a class="headerlink" href="#read-page-label-rules" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read page label rules&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">PageLabels</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetPageLabels</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetPageLabels().Count = {labels.Count}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rule</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">labels</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">kv</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">rule</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  {kv.Key} = {kv.Value}"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetPageLabels">GetPageLabels</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.GetPageLabels().Count = 3
+  startpage = 0
+  prefix = [1] 589713a-Schemaalpha
+  firstpagenum = 1
+  startpage = 1
+  prefix = [2] 589713a-IBN DE
+  firstpagenum = 1
+  startpage = 2
+  prefix = [3] 589713a-Legende DE
+  firstpagenum = 1
+</pre></div>
+</div>
+</section>
+<section id="read-the-table-of-contents">
+<h2>Read the table of contents<a class="headerlink" href="#read-the-table-of-contents" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read the table of contents&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">TableOfContents</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">TocResult</span><span class="w"> </span><span class="n">toc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetToc</span><span class="p">(</span><span class="n">simple</span><span class="p">:</span><span class="w"> </span><span class="k">true</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetToc().Count = {toc.Count}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">item</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">toc</span><span class="p">)</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  level={item.level} title={item.title} page={item.page}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetToc">GetToc</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.GetToc().Count = 4
+  level=1 title=PlÃ¤ne und Ansichten page=-1
+  level=2 title=589713a-Schemaalpha page=1
+  level=2 title=589713a-IBN DE page=2
+  level=2 title=589713a-Legende DE page=3
+</pre></div>
+</div>
+</section>
+<section id="resolve-named-destinations">
+<h2>Resolve named destinations<a class="headerlink" href="#resolve-named-destinations" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Resolve named destinations&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">NamedDestinations</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">ResolveNames</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.ResolveNames().Count = {names.Count}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">dest</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">names</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  {dest.Key}"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">kv</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">dest</span><span class="p">.</span><span class="n">Value</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"    {kv.Key} = {kv.Value}"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.ResolveNames">ResolveNames</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.ResolveNames().Count = 0
+</pre></div>
+</div>
+</section>
+<section id="read-optional-content-groups-and-layer-ui">
+<h2>Read optional content groups and layer UI<a class="headerlink" href="#read-optional-content-groups-and-layer-ui" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read optional content groups and layer UI&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OptionalContent</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">ocgs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetOcgs</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetOcgs().Count = {ocgs.Count}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">ocg</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">ocgs</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  xref={ocg.Key}"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">kv</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">ocg</span><span class="p">.</span><span class="n">Value</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"    {kv.Key} = {kv.Value}"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">layers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetLayers</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetLayers().Count = {layers.Count}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">layer</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">layers</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">kv</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">layer</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  {kv.Key} = {kv.Value}"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">layerUi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">LayerUiConfigs</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.LayerUiConfigs().Count = {layerUi.Count}"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ui</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">layerUi</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">kv</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">ui</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  {kv.Key} = {kv.Value}"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetOcgs">GetOcgs</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetLayers">GetLayers</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.LayerUIConfigs">LayerUiConfigs</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.GetOcgs().Count = 0
+doc.GetLayers().Count = 0
+doc.LayerUiConfigs().Count = 0
+</pre></div>
+</div>
+</section>
+<section id="read-the-pdf-trailer-dictionary">
+<h2>Read the PDF trailer dictionary<a class="headerlink" href="#read-the-pdf-trailer-dictionary" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read the PDF trailer dictionary&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Trailer</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.PdfTrailer() = {doc.PdfTrailer()}"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetPdfTrailer">PdfTrailer</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc.PdfTrailer() = &lt;&lt;
+  /DecodeParms &lt;&lt;
+    /Columns 5
+    /Predictor 12
+  &gt;&gt;
+  /Filter /FlateDecode
+  /ID [ &lt;526B726958BA2A459F9D0976B6F9CED0&gt; &lt;5E5FD9F028954F40A3EC0886A87D9F66&gt; ]
+  /Info 1 0 R
+  /Length 166
+  /Root 2 0 R
+  /Size 56
+  /Type /XRef
+  /W [ 1 3 1 ]
+&gt;&gt;
+</pre></div>
+</div>
+</section>
+<section id="write-a-full-copy-of-the-open-pdf">
+<h2>Write a full copy of the open PDF<a class="headerlink" href="#write-a-full-copy-of-the-open-pdf" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Write a full copy of the open PDF&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">SaveCopy</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">output</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">doc</span><span class="p">.</span><span class="n">Save</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.Save">Save</a>.</p>
+</section>
+<section id="read-each-page-s-boxes-fonts-images-xobjects-and-annotation-xrefs">
+<h2>Read each page’s boxes, fonts, images, XObjects, and annotation xrefs<a class="headerlink" href="#read-each-page-s-boxes-fonts-images-xobjects-and-annotation-xrefs" title="Link to this heading">¶</a></h2>
+<div class="highlight-cs notranslate"><div class="highlight"><pre><span></span><span class="c1">/// &lt;summary&gt;Read each page's boxes, fonts, images, XObjects, and annotation xrefs&lt;/summary&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">PageProperties</span><span class="p">(</span><span class="n">Document</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">PageCount</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="nn">Page</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].GetLabel() = {page.GetLabel()}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].Xref = {page.Xref}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].Rotation = {page.Rotation}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].Width = {page.Width}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].Height = {page.Height}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].Rect = {page.Rect}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].MediaBox = {page.MediaBox}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].CropBox = {page.CropBox}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].BleedBox = {page.BleedBox}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].TrimBox = {page.TrimBox}"</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc[{i}].ArtBox = {page.ArtBox}"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">xref</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">ext</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">baseName</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">encoding</span><span class="p">,</span><span class="w"> </span><span class="kt">int?</span><span class="w"> </span><span class="n">referencer</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fonts</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="n">doc</span><span class="p">.</span><span class="n">GetPageFonts</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetPageFonts({i}).Count = {fonts.Count}"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">font</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">fonts</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  xref={font.xref} ext={font.ext} type={font.type} baseName={font.baseName} name={font.name} encoding={font.encoding}"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Entry</span><span class="o">&gt;</span><span class="w"> </span><span class="n">images</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetPageImages</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetPageImages({i}).Count = {images.Count}"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="n">Entry</span><span class="w"> </span><span class="n">img</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">images</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  xref={img.Xref} name={img.Name} width={img.Width} height={img.Height} bpc={img.Bpc} cs={img.CsName}"</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">xobjects</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetPageXobjects</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetPageXobjects({i}).Count = {xobjects.Count}"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="n">Dictionary</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">xo</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">xobjects</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">kv</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">xo</span><span class="p">)</span>
+<span class="w">                </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  {kv.Key} = {kv.Value}"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">xref</span><span class="p">,</span><span class="w"> </span><span class="n">AnnotationType</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">annots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">doc</span><span class="p">.</span><span class="n">GetPageAnnotXrefs</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"doc.GetPageAnnotXrefs({i}).Count = {annots.Count}"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">annot</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">annots</span><span class="p">)</span>
+<span class="w">            </span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$"  xref={annot.xref} type={annot.type} id={annot.id}"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>API: <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.LoadPage">LoadPage</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.GetLabel">GetLabel</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.Xref">Xref</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.Rotation">Rotation</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.Rect">Width</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.Rect">Height</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.Rect">Rect</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.MediaBox">MediaBox</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.CropBox">CropBox</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.BleedBox">BleedBox</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.TrimBox">TrimBox</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.ArtBox">ArtBox</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetPageFonts">GetPageFonts</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetPageImages">GetPageImages</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Document.html#Document.GetPageXObjects">GetPageXobjects</a>, <a class="reference external" href="https://mupdfnet.readthedocs.io/en/latest/classes/Page.html#Page.GetAnnotXrefs">GetPageAnnotXrefs</a>.</p>
+<p>Result:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc[0].GetLabel() = [1] 589713a-Schemaalpha
+doc[0].Xref = 12
+doc[0].Rotation = 270
+doc[0].Width = 842
+doc[0].Height = 595
+doc[0].Rect = Rect(0, 0, 842, 595)
+doc[0].MediaBox = Rect(0, 0, 595, 842)
+doc[0].CropBox = Rect(0, 0, 595, 842)
+doc[0].BleedBox = Rect(0, 0, 595, 842)
+doc[0].TrimBox = Rect(0, 0, 595, 842)
+doc[0].ArtBox = Rect(0, 0, 595, 842)
+doc.GetPageFonts(0).Count = 2
+  xref=19 ext=ttf type=Type0 baseName=TrebuchetMS name=F0 encoding=Identity-H
+  xref=20 ext=ttf type=Type0 baseName=ArialMT name=F1 encoding=Identity-H
+doc.GetPageImages(0).Count = 2
+  xref=21 name=Im0 width=193 height=535 bpc=8 cs=Indexed
+  xref=22 name=Im1 width=206 height=861 bpc=8 cs=DeviceRGB
+doc.GetPageXobjects(0).Count = 2
+  xref = 21
+  name = Im0
+  subtype = Image
+  xref = 22
+  name = Im1
+  subtype = Image
+doc.GetPageAnnotXrefs(0).Count = 0
+doc[1].GetLabel() = [2] 589713a-IBN DE
+doc[1].Xref = 13
+doc[1].Rotation = 270
+doc[1].Width = 842
+doc[1].Height = 595
+doc[1].Rect = Rect(0, 0, 842, 595)
+doc[1].MediaBox = Rect(0, 0, 595, 842)
+doc[1].CropBox = Rect(0, 0, 595, 842)
+doc[1].BleedBox = Rect(0, 0, 595, 842)
+doc[1].TrimBox = Rect(0, 0, 595, 842)
+doc[1].ArtBox = Rect(0, 0, 595, 842)
+doc.GetPageFonts(1).Count = 1
+  xref=25 ext=ttf type=Type0 baseName=TrebuchetMS name=F1 encoding=Identity-H
+doc.GetPageImages(1).Count = 0
+doc.GetPageXobjects(1).Count = 0
+doc.GetPageAnnotXrefs(1).Count = 0
+doc[2].GetLabel() = [3] 589713a-Legende DE
+doc[2].Xref = 14
+doc[2].Rotation = 270
+doc[2].Width = 842
+doc[2].Height = 595
+doc[2].Rect = Rect(0, 0, 842, 595)
+doc[2].MediaBox = Rect(0, 0, 595, 842)
+doc[2].CropBox = Rect(0, 0, 595, 842)
+doc[2].BleedBox = Rect(0, 0, 595, 842)
+doc[2].TrimBox = Rect(0, 0, 595, 842)
+doc[2].ArtBox = Rect(0, 0, 595, 842)
+doc.GetPageFonts(2).Count = 2
+  xref=27 ext=ttf type=Type0 baseName=TrebuchetMS name=F1 encoding=Identity-H
+  xref=28 ext=ttf type=Type0 baseName=ArialMT name=F2 encoding=Identity-H
+doc.GetPageImages(2).Count = 0
+doc.GetPageXobjects(2).Count = 0
+doc.GetPageAnnotXrefs(2).Count = 0
+</pre></div>
+</div>
+</section>
+</section>
+
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="pages.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Pages</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023-2026, Artifex
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Basic</a><ul>
+<li><a class="reference internal" href="#open-a-pdf-and-read-its-page-count-and-kind">Open a PDF and read its page count and kind</a></li>
+<li><a class="reference internal" href="#see-whether-the-pdf-is-encrypted-or-still-needs-a-password">See whether the PDF is encrypted or still needs a password</a></li>
+<li><a class="reference internal" href="#read-document-state-flags">Read document state flags</a></li>
+<li><a class="reference internal" href="#read-pdf-structure-chapters-versions-xref-length-and-catalog">Read PDF structure: chapters, versions, xref length, and catalog</a></li>
+<li><a class="reference internal" href="#read-catalog-viewer-settings">Read catalog viewer settings</a></li>
+<li><a class="reference internal" href="#read-the-permission-bitmask">Read the permission bitmask</a></li>
+<li><a class="reference internal" href="#list-acroform-font-names">List AcroForm font names</a></li>
+<li><a class="reference internal" href="#list-embedded-file-names">List embedded file names</a></li>
+<li><a class="reference internal" href="#check-whether-the-pdf-has-any-annotations-or-links">Check whether the PDF has any annotations or links</a></li>
+<li><a class="reference internal" href="#read-markinfo-flags-from-the-catalog">Read MarkInfo flags from the catalog</a></li>
+<li><a class="reference internal" href="#read-the-standard-pdf-info-dictionary">Read the standard PDF Info dictionary</a></li>
+<li><a class="reference internal" href="#read-the-xmp-metadata-stream">Read the XMP metadata stream</a></li>
+<li><a class="reference internal" href="#read-page-label-rules">Read page label rules</a></li>
+<li><a class="reference internal" href="#read-the-table-of-contents">Read the table of contents</a></li>
+<li><a class="reference internal" href="#resolve-named-destinations">Resolve named destinations</a></li>
+<li><a class="reference internal" href="#read-optional-content-groups-and-layer-ui">Read optional content groups and layer UI</a></li>
+<li><a class="reference internal" href="#read-the-pdf-trailer-dictionary">Read the PDF trailer dictionary</a></li>
+<li><a class="reference internal" href="#write-a-full-copy-of-the-open-pdf">Write a full copy of the open PDF</a></li>
+<li><a class="reference internal" href="#read-each-page-s-boxes-fonts-images-xobjects-and-annotation-xrefs">Read each page’s boxes, fonts, images, XObjects, and annotation xrefs</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>

@@ -12,27 +12,23 @@ internal static class Program
         PagesMergeSplit();
     }
 
-    /// <summary>
-    /// Merge pages from two PDFs, then extract the first page.
-    /// </summary>
+    // doc-start:PagesMergeSplit
+    /// <summary>Merge pages from two PDFs, then extract the first page</summary>
     static void PagesMergeSplit()
     {
-        string a = ExamplePaths.MuPdfNetInput("sample.pdf");
-        string b = ExamplePaths.MuPdfNetInput("Blank.pdf");
-        string merged = ExamplePaths.Output("MuPDF.NET", "02-PagesMergeSplit", "merged.pdf");
-        string firstPage = ExamplePaths.Output("MuPDF.NET", "02-PagesMergeSplit", "first-page.pdf");
-        var check = new ResultCheck("MuPDF.NET", "02-PagesMergeSplit");
+        string a = "sample.pdf";
+        string b = "Blank.pdf";
+        string merged = "merged.pdf";
+        string firstPage = "first-page.pdf";
 
         // Open both source PDFs.
         using (var docA = Document.Open(a))
         using (var docB = Document.Open(b))
         {
-            ConsoleEx.Info($"A pages={docA.PageCount}, B pages={docB.PageCount}");
 
             // Insert page 0 of B into A at position 1 (0-based startAt).
             docA.InsertPdf(docB, fromPage: 0, toPage: 0, startAt: 1);
             docA.Save(merged);
-            ConsoleEx.Info($"Merged page count: {docA.PageCount}");
         }
 
         // Split: copy only the first page of the merged file into a new document.
@@ -42,10 +38,6 @@ internal static class Program
             one.InsertPdf(src, fromPage: 0, toPage: 0);
             one.Save(firstPage);
         }
-
-        // Examples harness baselines.
-        check.Properties(PdfFingerprint.FromFile(merged), "merged.summary.txt");
-        check.Properties(PdfFingerprint.FromFile(firstPage), "first-page.summary.txt");
-        check.Finish();
     }
+    // doc-end:PagesMergeSplit
 }

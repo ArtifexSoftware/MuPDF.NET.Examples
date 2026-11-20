@@ -12,9 +12,7 @@ internal static class Program
         OllamaMagazines(args).GetAwaiter().GetResult();
     }
 
-    /// <summary>
-    /// Index Magazines-PDF.pdf with a local Ollama chat + embedding model, then Ask / Search.
-    /// </summary>
+    /// <summary>Index Magazines-PDF.pdf with a local Ollama chat + embedding model, then Ask / Search</summary>
     static Task OllamaMagazines(string[] args)
     {
         bool repl = args.Any(a => string.Equals(a, "--repl", StringComparison.OrdinalIgnoreCase));

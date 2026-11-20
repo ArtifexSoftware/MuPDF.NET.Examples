@@ -12,14 +12,11 @@ internal static class Program
         ImageToPdf();
     }
 
-    /// <summary>
-    /// Create a one-page PDF sized to an image and place the image full-bleed.
-    /// </summary>
+    /// <summary>Create a one-page PDF sized to an image and place the image full-bleed</summary>
     static void ImageToPdf()
     {
-        string imagePath = ExamplePaths.MuPdfNetInput("apple.png");
-        string output = ExamplePaths.Output("MuPDF.NET", "27-ImageToPdf", "apple.pdf");
-        var check = new ResultCheck("MuPDF.NET", "27-ImageToPdf");
+        string imagePath = "apple.png";
+        string output = "apple.pdf";
 
         using var pixmap = new Pixmap(imagePath);
         // PDF page size in points: map 72 dpi → 1 point per pixel.
@@ -30,14 +27,5 @@ internal static class Program
         using Page page = doc.NewPage(width: width, height: height);
         page.InsertImage(page.Rect, filename: imagePath);
         doc.Save(output);
-
-        ConsoleEx.Info($"Page {width}x{height} pt from {Path.GetFileName(imagePath)}");
-
-        var props = PdfFingerprint.FromFile(output);
-        props["source"] = Path.GetFileName(imagePath);
-        props["width"] = ((int)width).ToString();
-        props["height"] = ((int)height).ToString();
-        check.Properties(props, "apple.summary.txt");
-        check.Finish();
     }
 }

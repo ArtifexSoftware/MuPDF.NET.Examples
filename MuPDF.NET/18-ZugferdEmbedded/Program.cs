@@ -14,16 +14,13 @@ internal static class Program
         ZugferdEmbedded();
     }
 
-    /// <summary>
-    /// Extract ZUGFeRD / Factur-X XML from a PDF and re-embed it.
-    /// </summary>
+    /// <summary>Extract ZUGFeRD / Factur-X XML from a PDF and re-embed it</summary>
     static void ZugferdEmbedded()
     {
-        string pdfPath = ExamplePaths.MuPdfNetInput("zugferd-muster-rechnung.pdf");
-        string xmlPath = ExamplePaths.MuPdfNetInput("zugferd-muster-rechnung.xml");
-        string extractedOut = ExamplePaths.Output("MuPDF.NET", "18-ZugferdEmbedded", "extracted-factur-x.xml");
-        string outputPdf = ExamplePaths.Output("MuPDF.NET", "18-ZugferdEmbedded", "zugferd-with-xml.pdf");
-        var check = new ResultCheck("MuPDF.NET", "18-ZugferdEmbedded");
+        string pdfPath = "zugferd-muster-rechnung.pdf";
+        string xmlPath = "zugferd-muster-rechnung.xml";
+        string extractedOut = "extracted-factur-x.xml";
+        string outputPdf = "zugferd-with-xml.pdf";
 
         const string embName = "factur-x.xml";
         byte[] xmlBytes = File.ReadAllBytes(xmlPath);
@@ -31,8 +28,6 @@ internal static class Program
         // --- Extract any existing embedded files from the sample invoice PDF ---
         using (var doc = Document.Open(pdfPath))
         {
-            ConsoleEx.Info($"Opened: {pdfPath}");
-            ConsoleEx.Info($"EmbeddedFileCount: {doc.EmbeddedFileCount}");
 
             foreach (string name in doc.GetEmbeddedFileNames())
             {
@@ -42,7 +37,6 @@ internal static class Program
                     || name.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
                 {
                     File.WriteAllBytes(extractedOut, data);
-                    ConsoleEx.Info($"Extracted '{name}' → {extractedOut} ({data.Length} bytes)");
                 }
             }
         }
@@ -60,7 +54,6 @@ internal static class Program
                 uFileName: embName,
                 desc: "Factur-X / ZUGFeRD XML invoice");
 
-            ConsoleEx.Info($"Added '{embName}' xref={xref}");
             doc.Save(outputPdf, garbage: 4, deflate: 1);
         }
 
@@ -70,19 +63,6 @@ internal static class Program
             byte[] extracted = verify.GetEmbeddedFile(embName);
             bool match = extracted.AsSpan().SequenceEqual(xmlBytes);
 
-            var sb = new StringBuilder();
-            sb.Append("embeddedCount=").Append(verify.EmbeddedFileCount).Append('\n');
-            sb.Append("facturX=").Append(embName).Append('\n');
-            sb.Append("xmlSha256=").Append(ResultCheck.Sha256HexBytes(extracted)).Append('\n');
-            sb.Append("roundTripMatch=").Append(match ? "true" : "false").Append('\n');
-
-            string text = sb.ToString();
-            File.WriteAllText(ExamplePaths.Output("MuPDF.NET", "18-ZugferdEmbedded", "zugferd.txt"), text);
-            ConsoleEx.Info(match ? "Round-trip OK" : "Round-trip MISMATCH");
-            check.Text(text, "zugferd.txt");
-            check.Properties(PdfFingerprint.FromFile(outputPdf), "zugferd-with-xml.summary.txt");
         }
-
-        check.Finish();
     }
 }

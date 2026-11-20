@@ -12,15 +12,12 @@ internal static class Program
         ReplaceImage();
     }
 
-    /// <summary>
-    /// Replace the first image on a page with the Artifex logo at its native aspect ratio.
-    /// </summary>
+    /// <summary>Replace the first image on a page with the Artifex logo at its native aspect ratio</summary>
     static void ReplaceImage()
     {
-        string input = ExamplePaths.MuPdfNetInput("Color.pdf");
-        string replacement = ExamplePaths.MuPdfNetInput("logo.png");
-        string output = ExamplePaths.Output("MuPDF.NET", "17-ReplaceImage", "replaced.pdf");
-        var check = new ResultCheck("MuPDF.NET", "17-ReplaceImage");
+        string input = "Color.pdf";
+        string replacement = "logo.png";
+        string output = "replaced.pdf";
 
         using (var doc = Document.Open(input))
         using (Page page = doc[0])
@@ -36,19 +33,10 @@ internal static class Program
                 throw new InvalidOperationException("Image xref is not drawn on page 1.");
             Rect place = places[0].Rect;
 
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info($"Replacing image xref={xref} with {Path.GetFileName(replacement)}");
-            ConsoleEx.Info($"Placement: {place}");
-
             // Clear the old image, then insert into the same rect keeping the logo ratio.
             page.DeleteImage(xref);
             page.InsertImage(place, filename: replacement, keepProportion: true);
             doc.Save(output);
         }
-
-        var props = PdfFingerprint.FromFile(output);
-        props["replacement"] = Path.GetFileName(replacement);
-        check.Properties(props, "replaced.summary.txt");
-        check.Finish();
     }
 }

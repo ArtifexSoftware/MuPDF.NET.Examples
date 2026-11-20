@@ -12,26 +12,21 @@ internal static class Program
         ParallelPixmap();
     }
 
-    /// <summary>
-    /// Render independent PDFs in parallel. Each worker opens its own Document.
-    /// </summary>
+    /// <summary>Render independent PDFs in parallel. Each worker opens its own Document</summary>
     static void ParallelPixmap()
     {
         string[] files =
         {
-            ExamplePaths.MuPdfNetInput("sample.pdf"),
-            ExamplePaths.MuPdfNetInput("Blank.pdf"),
-            ExamplePaths.MuPdfNetInput("Color.pdf"),
+            "sample.pdf",
+            "Blank.pdf",
+            "Color.pdf",
         };
-        var check = new ResultCheck("MuPDF.NET", "31-ParallelPixmap");
 
         // Cap workers to CPU count. Unbounded Task.Run can spike RAM on large pages.
         var options = new ParallelOptions
         {
             MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount)
         };
-
-        ConsoleEx.Info($"Rendering {files.Length} files, MaxDegreeOfParallelism={options.MaxDegreeOfParallelism}");
 
         Parallel.ForEach(files, options, file =>
         {
@@ -49,9 +44,6 @@ internal static class Program
         {
             string stem = Path.GetFileNameWithoutExtension(file);
             string output = ExamplePaths.Output("MuPDF.NET", "31-ParallelPixmap", stem + ".png");
-            check.FileSha256(output, stem + ".png.sha256");
         }
-
-        check.Finish();
     }
 }

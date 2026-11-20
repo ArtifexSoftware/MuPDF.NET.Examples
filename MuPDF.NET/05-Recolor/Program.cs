@@ -12,14 +12,11 @@ internal static class Program
         Recolor();
     }
 
-    /// <summary>
-    /// Recolor page images/vectors to DeviceCMYK (4 components). Copy this method into your project.
-    /// </summary>
+    /// <summary>Recolor</summary>
     static void Recolor()
     {
-        string input = ExamplePaths.MuPdfNetInput("Color.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "05-Recolor", "recolor.pdf");
-        var check = new ResultCheck("MuPDF.NET", "05-Recolor");
+        string input = "Color.pdf";
+        string output = "recolor.pdf";
 
         using (var doc = Document.Open(input))
         {
@@ -30,8 +27,6 @@ internal static class Program
             // GetPageImages: CsName is the PDF /ColorSpace name (e.g. DeviceRGB).
             // AltCsName is only set for some alternate spaces — usually empty.
             string csBefore = before[0].CsName ?? "";
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info($"Page 1 image colorspace before: {csBefore}");
 
             // Recolor page 0 → 4 components (DeviceCMYK / ICC-based CMYK).
             doc.Recolor(0, 4);
@@ -43,19 +38,9 @@ internal static class Program
 
             // ExtractImage gives component count + a richer cs-name (includes ICC profile).
             ImageInfo extracted = doc.ExtractImage(after[0].Xref);
-            ConsoleEx.Info($"Page 1 image colorspace after: {csAfter}");
-            ConsoleEx.Info($"ExtractImage: n={extracted.ColorSpace}, cs-name={extracted.CsName}");
 
             doc.Save(output);
 
-            var props = PdfFingerprint.FromFile(output);
-            props["csBefore"] = csBefore;
-            props["csAfter"] = csAfter;
-            props["extractCsName"] = extracted.CsName ?? "";
-            props["extractComponents"] = extracted.ColorSpace.ToString();
-            check.Properties(props, "recolor.summary.txt");
         }
-
-        check.Finish();
     }
 }

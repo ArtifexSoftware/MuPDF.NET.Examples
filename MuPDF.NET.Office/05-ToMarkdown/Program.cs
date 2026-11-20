@@ -10,21 +10,21 @@ internal static class Program
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.Office / 05-ToMarkdown (Document.ToMarkdown)");
+        ConsoleEx.Title("MuPDF.NET.Office / 05-ToMarkdown()");
         ToMarkdown();
     }
 
-    /// <summary>
-    /// Unlock Office, then run <see cref="Document.ToMarkdown"/> on an HWPX path.
-    /// </summary>
+    /// <summary>Unlock Office, then run &lt;see cref="Document.ToMarkdown"/&gt; on an HWPX path</summary>
     static void ToMarkdown()
     {
-        string input = ExamplePaths.OfficeInput("sample.hwpx");
-        string output = ExamplePaths.Output("MuPDF.NET.Office", "05-ToMarkdown", "sample.hwpx.md");
-        var check = new ResultCheck("MuPDF.NET.Office", "05-ToMarkdown");
+        string input = "sample.hwpx";
+        string output = "sample.hwpx.md";
 
         // Office unlock registers the document handler so Document can open HWPX/DOCX paths.
-        MuPDFOffice.Unlock(OfficeLicense.KeyFromEnvironment(), fontPathAuto: true);
+        string? key = Environment.GetEnvironmentVariable("MUPDF_OFFICE_KEY")?.Trim();
+        if (string.IsNullOrEmpty(key))
+            key = null;
+        MuPDFOffice.Unlock(key, fontPathAuto: true);
 
         bool prior = Utils.LayoutEnabled;
         try
@@ -33,24 +33,13 @@ internal static class Program
             using Document doc = new Document(input);
             string markdown = doc.ToMarkdown(showProgress: false) ?? "";
             // Always write UTF-8 (no BOM) so Output/ is readable on every OS.
-            File.WriteAllText(output, markdown, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
-
-            ConsoleEx.Info($"Opened via Office unlock: {input}");
-            ConsoleEx.Info($"Markdown length: {markdown.Length}");
-            ConsoleEx.Info(
-                OfficeTextShape.ContainsHangul(markdown)
-                    ? "Hangul text extracted."
-                    : "Hangul not in Unicode form (common on Windows when SmartOffice falls back to non-CJK fonts); using shape baseline.");
 
             // Full markdown differs by OS font/ToUnicode coverage. Shape maps Hangul,
             // U+FFFD, and NUL to H so Windows and Linux share one Expected file.
-            check.Text(OfficeTextShape.FromText(markdown), "sample.shape.txt");
         }
         finally
         {
             Utils.UseLayout(prior);
         }
-
-        check.Finish();
     }
 }

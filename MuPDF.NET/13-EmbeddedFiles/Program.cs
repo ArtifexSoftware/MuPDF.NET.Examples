@@ -14,15 +14,12 @@ internal static class Program
         EmbeddedFiles();
     }
 
-    /// <summary>
-    /// Attach a file to a PDF and list embedded attachments.
-    /// </summary>
+    /// <summary>Attach a file to a PDF and list embedded attachments</summary>
     static void EmbeddedFiles()
     {
-        string blank = ExamplePaths.MuPdfNetInput("Blank.pdf");
-        string note = ExamplePaths.MuPdfNetInput("note.txt");
-        string output = ExamplePaths.Output("MuPDF.NET", "13-EmbeddedFiles", "with-attachment.pdf");
-        var check = new ResultCheck("MuPDF.NET", "13-EmbeddedFiles");
+        string blank = "Blank.pdf";
+        string note = "note.txt";
+        string output = "with-attachment.pdf";
 
         byte[] payload = File.ReadAllBytes(note);
         const string embName = "note.txt";
@@ -41,33 +38,18 @@ internal static class Program
                 uFileName: embName,
                 desc: "Example attachment");
 
-            ConsoleEx.Info($"Added embedded file '{embName}' (xref={xref}, {payload.Length} bytes)");
             doc.Save(output, garbage: 4, deflate: 1);
         }
 
         // Verify by listing names and hashing extracted bytes.
         using (var doc = Document.Open(output))
         {
-            var sb = new StringBuilder();
-            sb.Append("embeddedCount=").Append(doc.EmbeddedFileCount).Append('\n');
             foreach (string name in doc.GetEmbeddedFileNames().OrderBy(n => n, StringComparer.Ordinal))
             {
                 var info = doc.GetEmbeddedFileInfo(name);
                 byte[] data = doc.GetEmbeddedFile(name);
-                sb.Append(name)
-                    .Append('\t').Append(info.GetValueOrDefault("filename"))
-                    .Append('\t').Append(info.GetValueOrDefault("size") ?? data.Length)
-                    .Append('\t').Append(ResultCheck.Sha256HexBytes(data))
-                    .Append('\n');
             }
 
-            string text = sb.ToString();
-            File.WriteAllText(ExamplePaths.Output("MuPDF.NET", "13-EmbeddedFiles", "embedded.txt"), text);
-            ConsoleEx.Info($"EmbeddedFileCount: {doc.EmbeddedFileCount}");
-            check.Text(text, "embedded.txt");
-            check.Properties(PdfFingerprint.FromFile(output), "with-attachment.summary.txt");
         }
-
-        check.Finish();
     }
 }

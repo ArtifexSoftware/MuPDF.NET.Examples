@@ -13,14 +13,11 @@ internal static class Program
         FindTables();
     }
 
-    /// <summary>
-    /// Detect tables on a page and export Markdown.
-    /// </summary>
+    /// <summary>Detect tables on a page and export Markdown</summary>
     static void FindTables()
     {
-        string input = ExamplePaths.MuPdfNetInput("err_table.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "11-Tables", "tables.md");
-        var check = new ResultCheck("MuPDF.NET", "11-Tables");
+        string input = "err_table.pdf";
+        string output = "tables.md";
 
         using var doc = Document.Open(input);
         using Page page = doc[0];
@@ -32,29 +29,17 @@ internal static class Program
             vertical_strategy: "lines_strict",
             horizontal_strategy: "lines_strict");
 
-        var sb = new StringBuilder();
-        sb.Append("tableCount=").Append(tables.Count).Append('\n');
         for (int i = 0; i < tables.Count; i++)
         {
             Table t = tables[i];
-            sb.Append("table[").Append(i).Append("] rows=").Append(t.RowCount)
-                .Append(" cols=").Append(t.ColCount).Append('\n');
             try
             {
                 // ToMarkdown builds a GitHub-style markdown table from cell text.
-                sb.Append(t.ToMarkdown() ?? "").Append('\n');
             }
             catch (Exception ex)
             {
-                sb.Append("ToMarkdown failed: ").Append(ex.Message).Append('\n');
             }
         }
 
-        string text = sb.ToString();
-        File.WriteAllText(output, text);
-        ConsoleEx.Info($"Opened: {input}");
-        ConsoleEx.Info($"Tables found: {tables.Count}");
-        check.Text(text, "tables.md");
-        check.Finish();
     }
 }
