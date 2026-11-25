@@ -1,3 +1,4 @@
+using System.Text;
 using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
 
@@ -12,13 +13,46 @@ internal static class Program
         ImageFilters();
     }
 
-    /// <summary>Apply a median filter pipeline to a pixmap and save the result</summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void ImageFilters()
     {
-        string input = "apple.png";
-        string output = "filtered.png";
+        string input = ExamplePaths.MuPdfNetInput("image-filters.png");
+        string output = ExamplePaths.Output("MuPDF.NET", "28-ImageFilters", "filtered.png");
+        string sourcePng = ExamplePaths.Output("MuPDF.NET", "28-ImageFilters", "source.png");
+        var check = new ResultCheck("MuPDF.NET", "28-ImageFilters");
+        var sb = new StringBuilder();
 
-        using var source = new Pixmap(input);
+        ConsoleEx.Info($"Opened: {input}");
+        File.Copy(input, sourcePng, overwrite: true);
+
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                ImageFilters(input, output);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        check.Text(captured, "image-filters.txt");
+        check.FileSha256(sourcePng, "source.png.sha256");
+        check.FileSha256(output, "filtered.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:ImageFilters
+    /// <summary>Apply a median filter pipeline to a pixmap and save the result</summary>
+    static void ImageFilters(string inputPath, string outputPath)
+    {
+        using var source = new Pixmap(inputPath);
         int width = source.Width;
         int height = source.Height;
 
@@ -28,6 +62,12 @@ internal static class Program
 
         // ApplyImageFilters may consume/dispose the source pixmap — do not use source afterward.
         using Pixmap filtered = Pixmap.ApplyImageFilters(source, pipeline);
-        filtered.Save(output);
+        Console.WriteLine($"width={width}");
+        Console.WriteLine($"height={height}");
+        Console.WriteLine($"n={filtered.N}");
+        Console.WriteLine($"filterCount={pipeline.Filters.Count}");
+        Console.WriteLine($"filter={pipeline.Filters[0].Type}");
+        filtered.Save(outputPath);
     }
+    // doc-end:ImageFilters
 }

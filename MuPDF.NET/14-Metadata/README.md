@@ -1,6 +1,6 @@
 # 14-Metadata
 
-Read and update PDF document metadata (`title`, `author`, …).
+Read `basic.pdf` metadata, update it with `SetMetadata`, and print before / after.
 
 ## Sample method
 
@@ -14,9 +14,9 @@ Read and update PDF document metadata (`title`, `author`, …).
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET/sample.pdf` |
-| Output | `with-metadata.pdf`, `metadata.txt` |
-| Expected | `metadata.txt`, `with-metadata.summary.txt` |
+| Input | `Input/MuPDF.NET/basic.pdf` (user password `user`) |
+| Output | `Output/MuPDF.NET/14-Metadata/with-metadata.pdf` |
+| Expected | `metadata.txt`, `with-metadata.summary.txt`, `with-metadata.png.sha256` |
 
 ## Run
 
@@ -26,5 +26,6 @@ dotnet run --project MuPDF.NET\14-Metadata
 
 ## APIs used
 
-- `Document.MetaData`
+- `Document.Authenticate`
+- `Document.Metadata`
 - `Document.SetMetadata`

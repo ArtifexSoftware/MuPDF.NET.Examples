@@ -14,9 +14,9 @@ Apply an `ImageFilterPipeline` (median) to a pixmap and save a PNG.
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET/apple.png` |
-| Output | `filtered.png` |
-| Expected | `filtered.png.sha256` |
+| Input | `Input/MuPDF.NET/image-filters.png` |
+| Output | `Output/MuPDF.NET/28-ImageFilters/filtered.png`, `source.png` |
+| Expected | `image-filters.txt` + PNG SHA-256 |
 
 ## Run
 
@@ -24,7 +24,15 @@ Apply an `ImageFilterPipeline` (median) to a pixmap and save a PNG.
 dotnet run --project MuPDF.NET\28-ImageFilters
 ```
 
+Recreate the fixture: `python Test/create_image_filters_png.py` from `D:\Artifex\Work`.
+
 ## APIs used
 
-- `ImageFilterPipeline` / `Pixmap.ApplyImageFilters`
-- `ImageProcessingFilterType.Median`
+- `ImageFilterPipeline.AddMedian`
+- `Pixmap.ApplyImageFilters`
+
+## Related
+
+- [`27-ImageToPdf`](../27-ImageToPdf/) — wrap an image as a one-page PDF
+- [`05-Recolor`](../05-Recolor/) — convert page colorspace
+- [`20-RewriteImages`](../20-RewriteImages/) — downsample / recompress embedded images

@@ -10,14 +10,14 @@ internal static class Program
     {
         ExampleArgs.Parse(args);
         ConsoleEx.Title("MuPDF.NET / 01-Basic");
-        OpenSave();
+        Basic();
     }
 
     // help:skip — calls the feature segments below, then checks the harness baseline.
-    static void OpenSave()
+    static void Basic()
     {
-        string input = ExamplePaths.MuPdfNetInput("sample.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "01-Basic", "sample-copy.pdf");
+        string input = ExamplePaths.MuPdfNetInput("basic.pdf");
+        string output = ExamplePaths.Output("MuPDF.NET", "01-Basic", "basic-copy.pdf");
         string infoPath = ExamplePaths.Output("MuPDF.NET", "01-Basic", "document-info.txt");
         var check = new ResultCheck("MuPDF.NET", "01-Basic");
         var sb = new StringBuilder();
@@ -30,8 +30,9 @@ internal static class Program
             Console.SetOut(capture);
             try
             {
-                DocumentIdentity(doc);
                 Encryption(doc);
+                doc.Authenticate("user");
+                DocumentIdentity(doc);
                 DocumentFlags(doc);
                 PdfStructure(doc);
                 ViewerSettings(doc);
@@ -61,7 +62,7 @@ internal static class Program
         Console.Write(sb.ToString());
 
         check.Text(sb.ToString(), "document-info.txt");
-        check.Properties(PdfFingerprint.FromFile(output), "sample-copy.summary.txt");
+        check.Properties(PdfFingerprint.FromFile(output), "basic-copy.summary.txt");
         check.Finish();
     }
 
@@ -283,9 +284,9 @@ internal static class Program
 
     // doc-start:SaveCopy
     /// <summary>Write a full copy of the open PDF</summary>
-    static void SaveCopy(Document doc, string output)
+    static void SaveCopy(Document doc, string outputPath)
     {
-        doc.Save(output);
+        doc.Save(outputPath);
     }
     // doc-end:SaveCopy
 

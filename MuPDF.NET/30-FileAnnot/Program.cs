@@ -14,35 +14,89 @@ internal static class Program
         FileAnnot();
     }
 
-    /// <summary>Attach a file as a page annotation (paperclip), distinct from EmbeddedFiles</summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void FileAnnot()
     {
-        string blank = "Blank.pdf";
-        string note = "note.txt";
-        string output = "with-file-annot.pdf";
+        string input = ExamplePaths.MuPdfNetInput("file-annot.pdf");
+        string note = ExamplePaths.MuPdfNetInput("spare-list.txt");
+        string output = ExamplePaths.Output("MuPDF.NET", "30-FileAnnot", "with-file-annot.pdf");
+        string beforePng = ExamplePaths.Output("MuPDF.NET", "30-FileAnnot", "before.png");
+        string afterPng = ExamplePaths.Output("MuPDF.NET", "30-FileAnnot", "after.png");
+        var check = new ResultCheck("MuPDF.NET", "30-FileAnnot");
+        var sb = new StringBuilder();
 
-        byte[] payload = File.ReadAllBytes(note);
+        ConsoleEx.Info($"Opened: {input}");
+        using (var doc = Document.Open(input))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(beforePng);
 
-        using (var doc = Document.Open(blank))
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                FileAnnot(input, note, output);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        using (var doc = Document.Open(output))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(afterPng);
+
+        check.Text(captured, "file-annot.txt");
+        check.Properties(PdfFingerprint.FromFile(output), "with-file-annot.summary.txt");
+        check.FileSha256(beforePng, "before.png.sha256");
+        check.FileSha256(afterPng, "after.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:FileAnnot
+    /// <summary>Attach a file as a page annotation (paperclip), distinct from EmbeddedFiles</summary>
+    static void FileAnnot(string inputPath, string notePath, string outputPath)
+    {
+        byte[] payload = File.ReadAllBytes(notePath);
+
+        using (var doc = Document.Open(inputPath))
         using (Page page = doc[0])
         {
             // Page-level file attachment annotation (vs Document.AddEmbeddedFile).
             Annot annot = page.AddFileAnnot(
-                point: new Point(72, 72),
+                point: new Point(448, 16),
                 buffer_: payload,
-                filename: "note.txt",
-                uFileName: "note.txt",
-                desc: "Example file annotation");
+                filename: "spare-list.txt",
+                uFileName: "spare-list.txt",
+                desc: "Harbor spare list",
+                icon: "Paperclip");
             annot.Update();
 
             var fileInfo = annot.GetFileInfo();
-            doc.Save(output, garbage: 3, deflate: 1);
+            Console.WriteLine($"annotType={annot.TypeString}");
+            Console.WriteLine($"filename={fileInfo["filename"]}");
+            Console.WriteLine($"desc={fileInfo["desc"]}");
+            Console.WriteLine($"size={payload.Length}");
+            doc.Save(outputPath, garbage: 3, deflate: 1);
         }
 
-        using (var doc = Document.Open(output))
+        using (var doc = Document.Open(outputPath))
         using (Page page = doc[0])
         {
             var annots = page.Annots().ToList();
+            Console.WriteLine($"annotCount={annots.Count}");
+            Console.WriteLine($"type={annots[0].TypeString}");
+            byte[] extracted = annots[0].GetFile();
+            Console.WriteLine($"extractedSize={extracted.Length}");
+            Console.WriteLine($"roundtrip={extracted.SequenceEqual(payload)}");
         }
     }
+    // doc-end:FileAnnot
 }

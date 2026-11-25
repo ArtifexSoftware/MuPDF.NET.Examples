@@ -1,6 +1,8 @@
 # 04-ExportToMarkdownJson
 
-Export an Office document to Markdown and JSON.
+Export an Office document to Markdown and JSON with `MuPDFOffice.ToMarkdown` and `MuPDFOffice.ToJson`.
+
+`pier-yard.docx` is the same one-page North Pier yard board as 03-ExportToPdf (heading, mark image, status shapes, berth table). The sample never prints the license key. Markdown is compared in full. Full JSON embeds OS font names and glyph metrics, so Expected fingerprints page size + text and the sample listing only prints block type and text.
 
 ## Sample method
 
@@ -12,34 +14,25 @@ Export an Office document to Markdown and JSON.
 
 ## Prerequisites
 
-- `MuPDFOffice.Unlock` first.
-- Optional `MUPDF_OFFICE_KEY`.
+- Call `MuPDFOffice.Unlock` before exporting Office formats.
+- Optional `MUPDF_OFFICE_KEY`. Empty / unset is restricted mode (first 3 pages).
 
 ## Input / output
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET.Office/pages.docx` |
-| Output | `pages.md`, `pages.json` under `Output/MuPDF.NET.Office/04-ExportToMarkdownJson/` |
-| Expected | `pages.md`, `pages.summary.txt` |
-
-`pages.json` is still written for inspection. The golden check uses
-`pages.summary.txt` (page size + text) because SmartOffice font substitution
-differs by OS (e.g. Arial / Liberation Sans on Windows vs Liberation Serif on
-Linux), which also changes glyph metrics in the full JSON.
-
-To improve visual font parity on Linux, install Liberation fonts
-(`fonts-liberation` / `fonts-liberation2` on Debian/Ubuntu). Exact Windows
-font names still will not match unless you ship and force the same TTF files
-via `MuPDFOffice.Unlock(..., fontPath: ...)`.
+| Input | `Input/MuPDF.NET.Office/pier-yard.docx` |
+| Output | `Output/MuPDF.NET.Office/04-ExportToMarkdownJson/pier-yard.md`, `pier-yard.json` |
+| Expected | `pier-yard.md`, `json.summary.txt`, dump |
 
 ## Run
 
-```bash
-dotnet run --project MuPDF.NET.Office/04-ExportToMarkdownJson
+```powershell
+dotnet run --project MuPDF.NET.Office\04-ExportToMarkdownJson
 ```
 
 ## APIs used
 
+- `MuPDFOffice.Unlock` (`fontPathAuto` is `true`)
 - `MuPDFOffice.ToMarkdown`
 - `MuPDFOffice.ToJson`

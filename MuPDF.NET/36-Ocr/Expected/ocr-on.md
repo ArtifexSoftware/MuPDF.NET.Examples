@@ -1,18 +1,6 @@
-MENARDS ‑ FRANKLIN Rebate Receipt 
+# NORTH PIER 
 
-3706000036311561045758319509 
+Issue 12 
 
-11% Rebate on Everything (15A) Rebate #3706 
-
-Offer valid 04‑07‑25 Thru 04‑13‑25 
-
-You have one year from purchase date to mail in rebates. Store: 3195 
-
-To obtain rebate form, pickup at Rebate Center in store, or go to www.menards.com and download as needed. Rebate is in the form of a Menards Merchandise Credit Check. 
-
-See rebate form for terms and conditions related to rebate submission. 
-
-11% Rebate Amount 3.63 62449 11 5610 04/13/25 11:51AM 3195 
-
-3.63 
+.24 Nov 2026  Berth notice Berth 4 is open. Tide 07:40. Wind SW 12 kn. Unload timber before nooh. Inspect the crane rail. Spare list at the north gate: 12 bolts 12 nuts 2 shackles Next shift starts at 13:00. Keep this copy with the noon report: File with the minutes. Ncrth Pier ‑ Berth 4 ‑ staniding orders 
 

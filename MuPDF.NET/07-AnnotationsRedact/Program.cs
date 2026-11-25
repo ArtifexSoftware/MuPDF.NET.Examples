@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text;
 using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
 
@@ -13,13 +14,52 @@ internal static class Program
         AnnotationsRedact();
     }
 
-    /// <summary>Add text/rect annotations and apply a redaction</summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void AnnotationsRedact()
     {
-        string input = "Blank.pdf";
-        string output = "annotated.pdf";
+        string input = ExamplePaths.MuPdfNetInput("Blank.pdf");
+        string output = ExamplePaths.Output("MuPDF.NET", "07-AnnotationsRedact", "annotated.pdf");
+        string png = ExamplePaths.Output("MuPDF.NET", "07-AnnotationsRedact", "annotated.png");
+        var check = new ResultCheck("MuPDF.NET", "07-AnnotationsRedact");
+        var sb = new StringBuilder();
 
-        using (var doc = Document.Open(input))
+        ConsoleEx.Info($"Opened: {input}");
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                AnnotationsRedact(input, output);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        using (var doc = Document.Open(output))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(png);
+
+        string info = string.Join(
+            "\n",
+            captured.Split('\n').Where(line => line.StartsWith("annotCount=", StringComparison.Ordinal)));
+        check.Text(info + "\n", "annot-info.txt");
+        check.Properties(PdfFingerprint.FromFile(output), "annotated.summary.txt");
+        check.FileSha256(png, "annotated.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:AnnotationsRedact
+    /// <summary>Add text/rect annotations and apply a redaction</summary>
+    static void AnnotationsRedact(string inputPath, string outputPath)
+    {
+        using (var doc = Document.Open(inputPath))
         using (Page page = doc[0])
         {
             var rect = new Rect(72, 72, 300, 120);
@@ -42,8 +82,9 @@ internal static class Program
             page.ApplyRedactions();
 
             int annotCount = page.Annots().Count();
-            doc.Save(output);
-
+            Console.WriteLine($"annotCount={annotCount}");
+            doc.Save(outputPath);
         }
     }
+    // doc-end:AnnotationsRedact
 }

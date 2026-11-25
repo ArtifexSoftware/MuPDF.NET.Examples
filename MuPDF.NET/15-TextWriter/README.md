@@ -4,7 +4,7 @@ Write text onto a new page with `TextWriter` and a built-in font.
 
 ## Sample method
 
-`TextWriterHello()` in `Program.cs`.
+`WriteTextPage()` in `Program.cs`.
 
 ## Package
 
@@ -14,8 +14,8 @@ Write text onto a new page with `TextWriter` and a built-in font.
 
 | | Path |
 |--|------|
-| Output | `Output/MuPDF.NET/15-TextWriter/hello.pdf` |
-| Expected | `Expected/hello.summary.txt` |
+| Output | `Output/MuPDF.NET/15-TextWriter/textwriter.pdf` |
+| Expected | `Expected/textwriter.txt`, `Expected/textwriter.summary.txt` |
 
 ## Run
 
@@ -25,5 +25,5 @@ dotnet run --project MuPDF.NET\15-TextWriter
 
 ## APIs used
 
-- `TextWriter.FillTextbox` / `WriteText`
+- `TextWriter.FillTextbox` / `Append` / `WriteText`
 - `Font`

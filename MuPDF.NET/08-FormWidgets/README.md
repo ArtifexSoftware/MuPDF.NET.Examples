@@ -2,10 +2,6 @@
 
 List AcroForm widgets on page 1 (field name, type, value).
 
-## Sample method
-
-`FormWidgets()` in `Program.cs`.
-
 ## Package
 
 - [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET)
@@ -14,8 +10,9 @@ List AcroForm widgets on page 1 (field name, type, value).
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET/Widget.pdf` |
-| Expected | `Expected/widgets.txt` |
+| Input | `Input/MuPDF.NET/widgets.pdf` |
+| Output | `Output/MuPDF.NET/08-FormWidgets/widgets.png` |
+| Expected | `widgets.txt`, `widgets.png.sha256` |
 
 ## Run
 
@@ -27,3 +24,7 @@ dotnet run --project MuPDF.NET\08-FormWidgets
 
 - `Page.Widgets`
 - `Widget.FieldName` / `FieldTypeString` / `FieldValue`
+
+## Related
+
+- [`39-GetKeyValues`](../39-GetKeyValues/) — same PDF, `Utils.GetKeyValues` returns field name → value bags

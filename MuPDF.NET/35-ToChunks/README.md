@@ -1,6 +1,8 @@
 # 35-ToChunks
 
-Split a PDF into retrieval-ready chunks (`Document.ToChunks`). Requires the optional **pymupdf 2.1** layout worker.
+Split a PDF into retrieval-ready chunks with `Document.ToChunks`. Requires `Utils.UseLayout(true)` and the optional layout worker.
+
+Uses the same `bulletin.pdf` as [`32-ToMarkdown`](../32-ToMarkdown/), [`33-ToJsonLayout`](../33-ToJsonLayout/), and [`34-ToText`](../34-ToText/).
 
 ## Sample method
 
@@ -8,25 +10,27 @@ Split a PDF into retrieval-ready chunks (`Document.ToChunks`). Requires the opti
 
 ## Package
 
-- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.1
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET)
 
 ## Prerequisites
 
-- Same layout setup as `33-ToJsonLayout` ([MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional)). Without it, the sample records `LAYOUT_UNAVAILABLE` and skips chunking.
+- Same layout setup as `33-ToJsonLayout`. Without layout, the sample prints `LAYOUT_UNAVAILABLE` and skips chunking.
 
 ## Input / output
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET/columns.pdf` |
-| Output | `Output/MuPDF.NET/35-ToChunks/columns.chunks.txt` |
-| Expected | `layout-status.txt`, `columns.chunks.txt` |
+| Input | `Input/MuPDF.NET/bulletin.pdf` |
+| Output | `Output/MuPDF.NET/35-ToChunks/bulletin.chunks.txt`, `page.png` |
+| Expected | `bulletin.chunks.txt` + summary + PNG SHA-256 |
 
 ## Run
 
 ```powershell
 dotnet run --project MuPDF.NET\35-ToChunks
 ```
+
+Recreate the fixture: `python Test/create_bulletin_pdf.py` from `D:\Artifex\Work`.
 
 ## APIs used
 
@@ -37,7 +41,8 @@ dotnet run --project MuPDF.NET\35-ToChunks
 
 ## Related
 
-- [`32-ToMarkdown`](../32-ToMarkdown/) — classic markdown (no layout worker)
-- [`33-ToJsonLayout`](../33-ToJsonLayout/) — layout JSON
-- [`34-ToText`](../34-ToText/) — layout plain text
-- [`41-LoadAi`](../41-LoadAi/) — index pages and Ask / Search
+- [`32-ToMarkdown`](../32-ToMarkdown/) — same PDF, classic Markdown
+- [`33-ToJsonLayout`](../33-ToJsonLayout/) — same PDF, layout JSON
+- [`34-ToText`](../34-ToText/) — same PDF, layout plain text
+- [`36-Ocr`](../36-Ocr/) — scanned page, layout OCR on vs off
+- [`38-LlamaMarkdownReader`](../38-LlamaMarkdownReader/) — one LlamaIndex document per page (layout off)
