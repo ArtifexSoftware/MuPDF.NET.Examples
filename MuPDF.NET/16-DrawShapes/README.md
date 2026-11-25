@@ -1,6 +1,6 @@
 # 16-DrawShapes
 
-Draw dashed lines, a rectangle, and a filled circle.
+Draw several vector shapes on a new page: line, rectangle, circle, oval, polyline, Bézier, zigzag, and sector.
 
 ## Sample method
 
@@ -15,7 +15,7 @@ Draw dashed lines, a rectangle, and a filled circle.
 | | Path |
 |--|------|
 | Output | `Output/MuPDF.NET/16-DrawShapes/shapes.pdf` |
-| Expected | `Expected/shapes.summary.txt` |
+| Expected | `Expected/shapes.txt`, `Expected/shapes.summary.txt` |
 
 ## Run
 
@@ -25,6 +25,5 @@ dotnet run --project MuPDF.NET\16-DrawShapes
 
 ## APIs used
 
-- `Page.DrawLine`
-- `Page.DrawRect`
-- `Page.DrawCircle`
+- `Page.DrawLine` / `DrawRect` / `DrawCircle` / `DrawOval`
+- `Page.DrawPolyline` / `DrawBezier` / `DrawZigzag` / `DrawSector`

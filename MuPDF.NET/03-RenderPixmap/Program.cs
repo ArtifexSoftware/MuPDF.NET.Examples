@@ -12,30 +12,33 @@ internal static class Program
         RenderPixmap();
     }
 
-    /// <summary>
-    /// Render page 1 to a PNG pixmap at 2× zoom.
-    /// </summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void RenderPixmap()
     {
-        string input = ExamplePaths.MuPdfNetInput("sample.pdf");
+        string input = ExamplePaths.MuPdfNetInput("color-shapes.pdf");
         string output = ExamplePaths.Output("MuPDF.NET", "03-RenderPixmap", "page-1.png");
         var check = new ResultCheck("MuPDF.NET", "03-RenderPixmap");
 
+        ConsoleEx.Info($"Opened: {input}");
+        RenderPixmap(input, output);
+
+        check.FileSha256(output, "page-1.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:RenderPixmap
+    /// <summary>Render page 1 to a PNG pixmap at 2× zoom</summary>
+    static void RenderPixmap(string inputPath, string outputPath)
+    {
         // Open document and first page.
-        using (var doc = Document.Open(input))
+        using (var doc = Document.Open(inputPath))
         using (Page page = doc[0])
         // Matrix(2,2) = 2× resolution (about 144 dpi from a 72 dpi page).
         using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
         {
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info($"Page 1 size: {page.Rect.Width:0.#} x {page.Rect.Height:0.#}");
-
             // Save the rendered bitmap as PNG.
-            pix.Save(output);
+            pix.Save(outputPath);
         }
-
-        // Examples harness: compare PNG by SHA-256.
-        check.FileSha256(output, "page-1.png.sha256");
-        check.Finish();
     }
+    // doc-end:RenderPixmap
 }

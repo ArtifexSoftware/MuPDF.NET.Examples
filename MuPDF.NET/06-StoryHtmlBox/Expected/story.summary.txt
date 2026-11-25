@@ -1,3 +1,2 @@
 pageCount=1
-scale=1
-textSha256=8b2f83baf0e7379c33b469e8a1361771d69ddc8ccceaf9f14ef325e500cee72d
+textSha256=a16497b5172eed5eb17af7a24ccb68b6fcfcf4f7540a82f0c1fe70ca60a2e7e9

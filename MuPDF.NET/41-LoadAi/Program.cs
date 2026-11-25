@@ -1,7 +1,9 @@
+using System.Linq;
 using System.Text;
 using Microsoft.Extensions.AI;
-using MuPDF.NET.Examples.Common;
 using MuPDF.NET;
+using MuPDF.NET.Examples.Common;
+
 namespace MuPDF.NET.Examples.Llm.LoadAi;
 
 internal static class Program
@@ -13,103 +15,126 @@ internal static class Program
         LoadAi().GetAwaiter().GetResult();
     }
 
-    /// <summary>
-    /// Index PDFs for RAG, then Search / Ask / Summarize.
-    /// </summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static async Task LoadAi()
     {
-        string capitals = ExamplePaths.MuPdfNetInput("national-capitals.pdf");
-        string nato = ExamplePaths.MuPdfNetInput("nato-members.pdf");
+        string orders = ExamplePaths.MuPdfNetInput("pier-orders.pdf");
+        string schedule = ExamplePaths.MuPdfNetInput("pier-schedule.pdf");
         string output = ExamplePaths.Output("MuPDF.NET", "41-LoadAi", "load-ai.txt");
+        string pngOrders = ExamplePaths.Output("MuPDF.NET", "41-LoadAi", "orders.png");
+        string pngSchedule = ExamplePaths.Output("MuPDF.NET", "41-LoadAi", "schedule.png");
         var check = new ResultCheck("MuPDF.NET", "41-LoadAi");
+        var sb = new StringBuilder();
 
-        bool azure = HasAzureOpenAi();
-        var options = azure
-            ? Utils.CreateAzureAiOptions(
-                Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT")!,
-                Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY")!,
-                Environment.GetEnvironmentVariable("AZURE_OPENAI_CHAT_DEPLOYMENT")!,
-                Environment.GetEnvironmentVariable("AZURE_OPENAI_EMBEDDING_DEPLOYMENT")!,
-                Environment.GetEnvironmentVariable("AZURE_SEARCH_ENDPOINT") ?? "",
-                Environment.GetEnvironmentVariable("AZURE_SEARCH_API_KEY") ?? "",
-                Environment.GetEnvironmentVariable("AZURE_SEARCH_INDEX") ?? "")
-            : Utils.CreateDevelopmentAiOptions(chatClient: new ExampleRagChatClient());
+        ConsoleEx.Info($"Opened: {orders}");
+        ConsoleEx.Info($"Opened: {schedule}");
+        using (var doc = Document.Open(orders))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(pngOrders);
+        using (var doc = Document.Open(schedule))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(pngSchedule);
 
-        ConsoleEx.Info(azure
-            ? "Pipeline: Azure OpenAI (live model — ask/search text not compared to Expected/)"
-            : "Pipeline: development (in-memory index + local IChatClient)");
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                await LoadAi(new[] { orders, schedule }, output);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
 
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        var dump = new StringBuilder();
+        foreach (string line in captured.Split('\n'))
+        {
+            if (line.StartsWith("Consider using the pymupdf_layout", StringComparison.Ordinal)
+                || line.Contains("pymupdf-layout", StringComparison.OrdinalIgnoreCase)
+                || line.Contains("greatly improved page layout", StringComparison.OrdinalIgnoreCase))
+                continue;
+            dump.Append(line).Append('\n');
+        }
+        captured = dump.ToString();
+        Console.Write(captured);
+
+        check.Text(captured, "load-ai-dump.txt");
+        if (File.Exists(output))
+            check.Text(File.ReadAllText(output), "load-ai.txt");
+        check.FileSha256(pngOrders, "orders.png.sha256");
+        check.FileSha256(pngSchedule, "schedule.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:LoadAi
+    /// <summary>Index PDFs with Utils.LoadAiAsync, then Ask / Summarize / Search</summary>
+    static async Task LoadAi(string[] inputPaths, string outputPath)
+    {
+        // Remember prior layout flag so we restore it for other examples in the same process.
         bool prior = Utils.LayoutEnabled;
         try
         {
-            // Classic extract so Expected/ stays stable without the layout worker.
+            // false = classic extract (no layout worker required).
             Utils.UseLayout(false);
+
+            // Hash embeddings + in-memory index. Swap ExampleRagChatClient for a real IChatClient.
+            var options = Utils.CreateDevelopmentAiOptions(chatClient: new ExampleRagChatClient());
             options.UseLayout = false;
 
-            // PDF → chunks → embed → vector index (Microsoft.Extensions.AI).
-            var aiDocs = await Utils.LoadAiAsync(
-                new[] { capitals, nato },
-                options);
+            var aiDocs = await Utils.LoadAiAsync(inputPaths, options);
 
-            const string question =
-                "Which NATO member countries have capitals with more than 5 million people?";
-            const string searchQuery = "capital cities with more than 50% of national population";
+            const string question = "Which berth is open for the timber barge?";
+            const string searchQuery = "timber barge";
 
             string answer = await aiDocs.AskAsync(question);
-            string summary = await aiDocs.SummarizeAsync("national-capitals.pdf");
-            var hits = await aiDocs.SearchAsync(searchQuery, topK: 5);
+            string summary = await aiDocs.SummarizeAsync("pier-orders.pdf");
+            var hits = await aiDocs.SearchAsync(searchQuery, topK: 3);
 
-            var report = new StringBuilder();
-            report.Append("chunkCount=").Append(aiDocs.ChunkCount).Append('\n');
-            foreach (string source in aiDocs.SourceFiles.OrderBy(s => s, StringComparer.OrdinalIgnoreCase))
-                report.Append("source=").Append(source).Append('\n');
+            var listing = new StringBuilder();
+            listing.AppendLine($"chunkCount={aiDocs.ChunkCount}");
+            listing.AppendLine($"layoutEnabled={Utils.LayoutEnabled}");
+            foreach (string source in aiDocs.SourceFiles.OrderBy(s => s, StringComparer.Ordinal))
+                listing.AppendLine($"source={source}");
 
-            // Index shape is local extraction — comparable even with Azure embeddings.
-            check.Text(report.ToString(), "index.summary.txt");
+            listing.AppendLine();
+            listing.AppendLine("--- ask ---");
+            listing.AppendLine($"question={question}");
+            listing.AppendLine(answer.Trim());
 
-            var search = new StringBuilder();
-            search.Append("query=").Append(searchQuery).Append('\n');
+            listing.AppendLine();
+            listing.AppendLine("--- summarize ---");
+            listing.AppendLine("source=pier-orders.pdf");
+            listing.AppendLine(summary.Trim());
+
+            listing.AppendLine();
+            listing.AppendLine("--- search ---");
+            listing.AppendLine($"query={searchQuery}");
+            listing.AppendLine("rank  source              page");
+            listing.AppendLine("----  ------------------  ----");
             for (int i = 0; i < hits.Count; i++)
             {
                 var hit = hits[i];
-                search.Append(i + 1).Append(". ")
-                    .Append(hit.Chunk.SourceFileName)
-                    .Append(" p").Append(hit.Chunk.PageNumber)
-                    .Append('\n');
+                listing.AppendLine(
+                    $"{i + 1,-4}  {hit.Chunk.SourceFileName,-18}  {hit.Chunk.PageNumber}");
             }
 
-            File.WriteAllText(output, report.ToString()
-                + "--- ask ---\n" + ResultCheck.NormalizeText(answer) + "\n"
-                + "--- summarize ---\n" + ResultCheck.NormalizeText(summary) + "\n"
-                + "--- search ---\n" + search);
-
-            ConsoleEx.Info($"Indexed {aiDocs.ChunkCount} chunks");
-            ConsoleEx.Info($"Ask: {answer.Replace('\n', ' ')[..Math.Min(120, answer.Length)]}");
-
-            if (!azure)
-            {
-                check.Text(ResultCheck.NormalizeText(answer) + "\n", "ask.txt");
-                check.Text(ResultCheck.NormalizeText(summary) + "\n", "summarize.txt");
-                check.Text(search.ToString(), "search.txt");
-            }
+            string text = listing.ToString();
+            File.WriteAllText(outputPath, text, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            Console.Write(text);
         }
         finally
         {
             Utils.UseLayout(prior);
         }
-
-        check.Finish();
     }
 
-    static bool HasAzureOpenAi()
-    {
-        return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT"))
-            && !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY"))
-            && !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("AZURE_OPENAI_CHAT_DEPLOYMENT"))
-            && !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("AZURE_OPENAI_EMBEDDING_DEPLOYMENT"));
-    }
-
-    /// <summary>Offline chat client so the sample runs with no API keys.</summary>
+    /// <summary>Offline IChatClient so the sample runs with no API keys.</summary>
     sealed class ExampleRagChatClient : IChatClient
     {
         public ChatClientMetadata Metadata { get; } = new("example-rag");
@@ -119,29 +144,12 @@ internal static class Program
             ChatOptions? options = null,
             CancellationToken cancellationToken = default)
         {
-            var list = messages.ToList();
-            string system = list.FirstOrDefault(m => m.Role == ChatRole.System)?.Text ?? "";
-            string user = list.LastOrDefault(m => m.Role == ChatRole.User)?.Text ?? "";
-
-            string answer;
-            if (system.Contains("Summarize", StringComparison.OrdinalIgnoreCase))
-            {
-                answer =
-                    "Development-mode summary (set AZURE_OPENAI_* for a real model).\n\n" +
-                    "The document lists capital cities with population figures. " +
-                    "Several capitals exceed 5 million residents.";
-            }
-            else
-            {
-                int idx = user.IndexOf("Question:", StringComparison.Ordinal);
-                string question = idx >= 0 ? user[(idx + "Question:".Length)..].Trim() : user;
-                answer =
-                    "Development-mode answer (set AZURE_OPENAI_* environment variables for a real model).\n\n" +
-                    "Based on indexed excerpts, the United Kingdom (London) and Turkey (Ankara) " +
-                    "are NATO members whose capitals exceed 5 million people.\n\n" +
-                    $"Question: {question}";
-            }
-
+            string system = messages.FirstOrDefault(m => m.Role == ChatRole.System)?.Text ?? "";
+            string answer = system.Contains("Summarize", StringComparison.OrdinalIgnoreCase)
+                ? "Development-mode summary (no API keys).\n\n"
+                  + "Standing orders for North Pier: tide 07:40, wind SW 12 kn. Berth 4 is open. Unload timber before noon."
+                : "Development-mode answer (no API keys).\n\n"
+                  + "Berth 4 is open for the timber barge. Unload timber before noon.";
             return Task.FromResult(new ChatResponse(new ChatMessage(ChatRole.Assistant, answer)));
         }
 
@@ -155,4 +163,5 @@ internal static class Program
 
         public void Dispose() { }
     }
+    // doc-end:LoadAi
 }

@@ -1,47 +1,39 @@
 # 05-ToMarkdown
 
-Unlock **MuPDF.NET.Office**, then run `Document.ToMarkdown` on an HWPX path (same extract API as PDF).
+Unlock Office, then run `Document.ToMarkdown` on an HWPX path (same extract API as PDF).
+
+`pier-notice.hwpx` is the same one-page Hancom HWPX berth notice as 02-OpenHwpxDocx. `Utils.UseLayout(false)` selects the classic extract path (no layout worker). `useOcr` is `false` because this document is already text. This is `Document.ToMarkdown` after Unlock, not `MuPDFOffice.ToMarkdown`. The listing is UTF-8 without a BOM. The sample never prints the license key.
 
 ## Sample method
 
 `ToMarkdown()` in `Program.cs`.
 
-## Packages
+## Package
 
 - [MuPDF.NET.Office](https://www.nuget.org/packages/MuPDF.NET.Office)
-- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) (via Office + `Common`)
 
 ## Prerequisites
 
-- `MuPDFOffice.Unlock` registers the Office document handler so `Document` can open HWPX/DOCX.
-- Optional `MUPDF_OFFICE_KEY`.
+- Call `MuPDFOffice.Unlock` before opening HWPX/DOCX with `Document`.
+- Optional `MUPDF_OFFICE_KEY`. Empty / unset is restricted mode (first 3 pages).
 
 ## Input / output
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET.Office/sample.hwpx` |
-| Output | `Output/MuPDF.NET.Office/05-ToMarkdown/sample.hwpx.md` |
-| Expected | `Expected/sample.shape.txt` (portable) |
-
-`sample.hwpx.md` under Expected/ is the correct Hangul reference
-(`안녕하세요 이건 테스트 파일입니다.`). On Linux, SmartOffice typically
-extracts that Unicode text. On Windows it often falls back to
-Arial/Liberation **without Hangul glyphs**, so `ToMarkdown` yields U+FFFD
-placeholders (and you may see `cannot create ToUnicode mapping for …Arial`).
-
-The golden check therefore compares a **text shape** (`H` = Hangul or
-replacement/NUL), which matches on both OS. Full markdown is still written
-to `Output/` for inspection.
+| Input | `Input/MuPDF.NET.Office/pier-notice.hwpx` |
+| Output | `Output/MuPDF.NET.Office/05-ToMarkdown/pier-notice.md` |
+| Expected | `pier-notice.md` + dump |
 
 ## Run
 
-```bash
-dotnet run --project MuPDF.NET.Office/05-ToMarkdown
+```powershell
+dotnet run --project MuPDF.NET.Office\05-ToMarkdown
 ```
 
 ## APIs used
 
-- `MuPDFOffice.Unlock`
-- `Utils.UseLayout(false)`
-- `Document.ToMarkdown`
+- `MuPDFOffice.Unlock` (`fontPathAuto` is `true`)
+- `Utils.UseLayout` (`false`)
+- `Document.Open`
+- `Document.ToMarkdown` (`useOcr` is `false`)

@@ -1,8 +1,8 @@
 # 17-ReplaceImage
 
-**Replace** an existing page image while keeping the replacement’s width/height ratio (`InsertImage` with `keepProportion: true`).
+Replace the first image on `images.pdf` with `Page.ReplaceImage`.
 
-`Page.ReplaceImage` swaps image bytes but keeps the old draw matrix (it can stretch). This sample clears the old image (`DeleteImage`) and inserts into the same rectangle with `keepProportion: true`.
+`images.pdf` is a two-image fixture (`triangle.png` and `rectangle.png`). The sample swaps the first xref (`triangle.png`) with `circle.png`. `ReplaceImage` keeps the old draw matrix.
 
 To **add** a new image, see [`09-InsertImage`](../09-InsertImage/).
 
@@ -18,9 +18,9 @@ To **add** a new image, see [`09-InsertImage`](../09-InsertImage/).
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET/Color.pdf`, `logo.png` |
-| Output | `Output/MuPDF.NET/17-ReplaceImage/replaced.pdf` |
-| Expected | `Expected/replaced.summary.txt` |
+| Input | `Input/MuPDF.NET/images.pdf`, `circle.png` |
+| Output | `Output/MuPDF.NET/17-ReplaceImage/replaced.pdf`, `before.png`, `after.png` |
+| Expected | `replaced.txt`, `replaced.summary.txt`, `before.png.sha256`, `after.png.sha256` |
 
 ## Run
 
@@ -28,12 +28,12 @@ To **add** a new image, see [`09-InsertImage`](../09-InsertImage/).
 dotnet run --project MuPDF.NET\17-ReplaceImage
 ```
 
+Recreate the fixture with `python Test/create_images_pdf.py`.
+
 ## APIs used
 
 - `Page.GetImages`
-- `Page.GetImageRects`
-- `Page.DeleteImage`
-- `Page.InsertImage` (`keepProportion: true`)
+- `Page.ReplaceImage`
 
 ## Related
 

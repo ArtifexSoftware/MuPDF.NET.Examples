@@ -1,6 +1,6 @@
 # 12-Barcodes
 
-Write a QR code into a PDF, then read it back.
+Write several barcode types (including QR) into a PDF, then read them back.
 
 ## Sample method
 
@@ -14,9 +14,9 @@ Write a QR code into a PDF, then read it back.
 
 | | Path |
 |--|------|
-| Input | Payload string in code (`MuPDF.NET.Examples`) |
-| Output | `Output/MuPDF.NET/12-Barcodes/qr.pdf` |
-| Expected | `barcodes.txt`, `qr.summary.txt` |
+| Input | Payloads in code (QR, Aztec, Code 128, Code 39, EAN-8, PDF417) |
+| Output | `Output/MuPDF.NET/12-Barcodes/barcodes.pdf` |
+| Expected | `barcodes.txt`, `barcodes.summary.txt`, `barcodes.png.sha256` |
 
 ## Run
 
@@ -26,5 +26,6 @@ dotnet run --project MuPDF.NET\12-Barcodes
 
 ## APIs used
 
-- `Page.WriteBarcode` (`BarcodeFormat.QR`)
+- `Page.WriteBarcode`
 - `Page.ReadBarcodes`
+- `BarcodeFormat` (`QR`, `AZTEC`, `CODE128`, `CODE39`, `EAN8`, `PDF417`)

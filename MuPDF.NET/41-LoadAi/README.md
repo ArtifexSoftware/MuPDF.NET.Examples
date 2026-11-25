@@ -1,12 +1,8 @@
 # 41-LoadAi
 
-Index PDFs into a RAG pipeline (`LoadAiAsync`), then **search**, **ask**, and **summarize**. MuPDF.NET 4.1 extracts page text and hands it to `Microsoft.Extensions.AI` (`IEmbeddingGenerator` / `IChatClient`).
+Index PDFs with `Utils.LoadAiAsync`, then **Ask**, **Summarize**, and **Search**.
 
-Default run needs **no API keys**. It uses `Utils.CreateDevelopmentAiOptions` (hash embeddings + in-memory index) and a local `IChatClient` so `dotnet run` and `run-all` always PASS.
-
-If all of `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_CHAT_DEPLOYMENT`, and `AZURE_OPENAI_EMBEDDING_DEPLOYMENT` are set, the **same** `AskAsync` / `SearchAsync` calls use Azure OpenAI (optional Azure AI Search via `AZURE_SEARCH_*`). Live model text is written to `Output/` and is **not** compared to `Expected/`.
-
-Swap the stub `IChatClient` for OpenAI, Azure, Ollama, or any `Microsoft.Extensions.AI` client. The MuPDF.NET extract/RAG API stays the same. Ready-made Ollama samples: [`42-Ollama`](../42-Ollama/) and [`43-OllamaMagazines`](../43-OllamaMagazines/).
+Uses two dedicated North Pier PDFs (`pier-orders.pdf`, `pier-schedule.pdf`). `Utils.UseLayout(false)` selects the classic extract path. `CreateDevelopmentAiOptions` uses hash embeddings and an in-memory index. `ExampleRagChatClient` is a local `IChatClient` so `dotnet run` needs **no API keys**. Swap that client for OpenAI, Azure, or Ollama — the MuPDF.NET extract/RAG API stays the same.
 
 ## Sample method
 
@@ -14,16 +10,16 @@ Swap the stub `IChatClient` for OpenAI, Azure, Ollama, or any `Microsoft.Extensi
 
 ## Package
 
-- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.1
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET)
 - [Microsoft.Extensions.AI](https://www.nuget.org/packages/Microsoft.Extensions.AI)
 
 ## Input / output
 
 | | Path |
 |--|------|
-| Input | `national-capitals.pdf`, `nato-members.pdf` |
-| Output | `load-ai.txt` |
-| Expected | `index.summary.txt` (+ `ask.txt` / `summarize.txt` / `search.txt` in development mode) |
+| Input | `Input/MuPDF.NET/pier-orders.pdf`, `pier-schedule.pdf` |
+| Output | `Output/MuPDF.NET/41-LoadAi/load-ai.txt`, `orders.png`, `schedule.png` |
+| Expected | `load-ai.txt` + dump + PNG SHA-256 |
 
 ## Run
 
@@ -31,14 +27,17 @@ Swap the stub `IChatClient` for OpenAI, Azure, Ollama, or any `Microsoft.Extensi
 dotnet run --project MuPDF.NET\41-LoadAi
 ```
 
+Recreate the fixtures: `python Test/create_load_ai_pdfs.py` from `D:\Artifex\Work`.
+
 ## APIs used
 
+- `Utils.UseLayout(false)`
+- `Utils.CreateDevelopmentAiOptions`
 - `Utils.LoadAiAsync`
-- `Utils.CreateDevelopmentAiOptions` (or `Utils.CreateAzureAiOptions`)
-- `AskAsync` / `SummarizeAsync` / `SearchAsync` on the returned collection
+- `AskAsync` / `SummarizeAsync` / `SearchAsync`
 
 ## Related
 
-- [`32-ToMarkdown`](../32-ToMarkdown/) — the Markdown this pipeline indexes
-- [`38-LlamaMarkdownReader`](../38-LlamaMarkdownReader/) — LlamaIndex-shaped chunks without embed/ask
-- [`42-Ollama`](../42-Ollama/) — same pipeline with a local Ollama chat + embedding model
+- [`32-ToMarkdown`](../32-ToMarkdown/) — PDF to Markdown (the text this pipeline indexes)
+- [`35-ToChunks`](../35-ToChunks/) — layout retrieval chunks, no embed/ask
+- [`38-LlamaMarkdownReader`](../38-LlamaMarkdownReader/) — one LlamaIndex document per page, no embed/ask

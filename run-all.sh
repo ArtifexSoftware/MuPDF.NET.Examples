@@ -26,5 +26,5 @@ elif command -v powershell >/dev/null 2>&1; then
 fi
 
 echo "PowerShell (pwsh) is required. Install: https://aka.ms/powershell"
-echo "Or run projects individually with: dotnet run --project MuPDF.NET/01-OpenSave"
+echo "Or run projects individually with: dotnet run --project MuPDF.NET/01-Basic"
 exit 1

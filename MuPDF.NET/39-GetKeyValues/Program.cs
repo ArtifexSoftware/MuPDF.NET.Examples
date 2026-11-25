@@ -1,7 +1,8 @@
 using System.Linq;
 using System.Text;
-using MuPDF.NET.Examples.Common;
 using MuPDF.NET;
+using MuPDF.NET.Examples.Common;
+
 namespace MuPDF.NET.Examples.Llm.GetKeyValues;
 
 internal static class Program
@@ -13,45 +14,101 @@ internal static class Program
         GetKeyValues();
     }
 
-    /// <summary>
-    /// Extract AcroForm field names/values via Utils.GetKeyValues.
-    /// </summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void GetKeyValues()
     {
-        string input = ExamplePaths.MuPdfNetInput("Widget.pdf");
+        string input = ExamplePaths.MuPdfNetInput("widgets.pdf");
         string output = ExamplePaths.Output("MuPDF.NET", "39-GetKeyValues", "keyvalues.txt");
+        string png = ExamplePaths.Output("MuPDF.NET", "39-GetKeyValues", "page.png");
         var check = new ResultCheck("MuPDF.NET", "39-GetKeyValues");
-
-        // Returns fieldName → property bag (value, page, …) for interactive form fields.
-        Dictionary<string, Dictionary<string, object>> fields =
-            Utils.GetKeyValues(input, includeXrefs: false);
-
         var sb = new StringBuilder();
-        sb.Append("fieldCount=").Append(fields.Count).Append('\n');
+
+        ConsoleEx.Info($"Opened: {input}");
+        using (var doc = Document.Open(input))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(png);
+
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                GetKeyValues(input, output);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        check.Text(captured, "keyvalues-dump.txt");
+        if (File.Exists(output))
+            check.Text(File.ReadAllText(output), "keyvalues.txt");
+        check.FileSha256(png, "page.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:GetKeyValues
+    /// <summary>Extract AcroForm field names and values via Utils.GetKeyValues</summary>
+    static void GetKeyValues(string inputPath, string outputPath)
+    {
+        // includeXrefs:false omits widget xref numbers (they change if the PDF is rebuilt).
+        Dictionary<string, Dictionary<string, object>> fields =
+            Utils.GetKeyValues(inputPath, includeXrefs: false);
+
+        string[] headers = { "name", "field_value", "pages", "terminal" };
+        var rows = new List<string[]>();
         foreach (string name in fields.Keys.OrderBy(k => k, StringComparer.Ordinal))
         {
             Dictionary<string, object> info = fields[name];
-            // Property keys may vary slightly by form; dump a stable sorted view.
-            string props = string.Join(
-                ";",
-                info.OrderBy(kv => kv.Key, StringComparer.Ordinal)
-                    .Select(kv => kv.Key + "=" + FormatValue(kv.Value)));
-            sb.Append(name).Append('\t').Append(props).Append('\n');
+            rows.Add(new[]
+            {
+                name,
+                FormatValue(info.GetValueOrDefault("field_value")),
+                FormatValue(info.GetValueOrDefault("pages")),
+                FormatValue(info.GetValueOrDefault("terminal")),
+            });
         }
 
-        string text = sb.ToString();
-        File.WriteAllText(output, text);
-        ConsoleEx.Info($"Opened: {input}");
-        ConsoleEx.Info($"Form fields: {fields.Count}");
-        check.Text(text, "keyvalues.txt");
-        check.Finish();
+        int[] widths = new int[headers.Length];
+        for (int c = 0; c < headers.Length; c++)
+        {
+            int w = headers[c].Length;
+            foreach (string[] row in rows)
+                w = Math.Max(w, row[c].Length);
+            widths[c] = w;
+        }
+
+        var listing = new StringBuilder();
+        listing.AppendLine($"fieldCount={fields.Count}");
+        listing.AppendLine(FormatRow(headers, widths));
+        listing.AppendLine(string.Join("  ", widths.Select(w => new string('-', w))));
+        foreach (string[] row in rows)
+            listing.AppendLine(FormatRow(row, widths));
+
+        string text = listing.ToString();
+        File.WriteAllText(outputPath, text, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+        Console.Write(text);
     }
+
+    static string FormatRow(string[] cells, int[] widths) =>
+        string.Join("  ", cells.Select((cell, i) => cell.PadRight(widths[i])));
 
     static string FormatValue(object? value)
     {
         if (value == null)
             return "";
+        if (value is List<int> pages)
+            return "[" + string.Join(",", pages) + "]";
+        if (value is bool flag)
+            return flag ? "True" : "False";
         string s = value.ToString() ?? "";
         return s.Replace('\t', ' ').Replace('\n', ' ').Replace('\r', ' ');
     }
+    // doc-end:GetKeyValues
 }

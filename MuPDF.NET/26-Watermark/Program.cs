@@ -1,3 +1,4 @@
+using System.Text;
 using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
 
@@ -12,18 +13,65 @@ internal static class Program
         Watermark();
     }
 
-    /// <summary>
-    /// Insert a logo image as a watermark on every page.
-    /// </summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void Watermark()
     {
-        string input = ExamplePaths.MuPdfNetInput("sample.pdf");
-        string logo = ExamplePaths.MuPdfNetInput("logo.png");
+        string input = ExamplePaths.MuPdfNetInput("watermark.pdf");
+        string stamp = ExamplePaths.MuPdfNetInput("watermark.png");
         string output = ExamplePaths.Output("MuPDF.NET", "26-Watermark", "watermarked.pdf");
+        string beforePng = ExamplePaths.Output("MuPDF.NET", "26-Watermark", "before.png");
+        string after0 = ExamplePaths.Output("MuPDF.NET", "26-Watermark", "page-0.png");
+        string after1 = ExamplePaths.Output("MuPDF.NET", "26-Watermark", "page-1.png");
         var check = new ResultCheck("MuPDF.NET", "26-Watermark");
+        var sb = new StringBuilder();
 
-        using var doc = Document.Open(input);
-        // Insert once as a reusable xref, then place on each page (docs watermark tip).
+        ConsoleEx.Info($"Opened: {input}");
+        using (var doc = Document.Open(input))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(beforePng);
+
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                Watermark(input, stamp, output);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        using (var doc = Document.Open(output))
+        {
+            using (Page page = doc[0])
+            using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+                pix.Save(after0);
+            using (Page page = doc[1])
+            using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+                pix.Save(after1);
+        }
+
+        check.Text(captured, "watermark.txt");
+        check.Properties(PdfFingerprint.FromFile(output), "watermarked.summary.txt");
+        check.FileSha256(beforePng, "before.png.sha256");
+        check.FileSha256(after0, "page-0.png.sha256");
+        check.FileSha256(after1, "page-1.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:Watermark
+    /// <summary>Insert a stamp image as a watermark on every page</summary>
+    static void Watermark(string inputPath, string stampPath, string outputPath)
+    {
+        using var doc = Document.Open(inputPath);
+        // Insert once as a reusable xref, then place on each page.
         int imageXref = -1;
         for (int i = 0; i < doc.PageCount; i++)
         {
@@ -37,17 +85,15 @@ internal static class Program
             var rect = new Rect(x0, y0, x0 + w, y0 + h);
 
             if (imageXref < 0)
-                imageXref = page.InsertImage(rect, filename: logo, keepProportion: true, overlay: "true");
+                imageXref = page.InsertImage(rect, filename: stampPath, keepProportion: true, overlay: "true");
             else
                 page.InsertImage(rect, xref: imageXref, keepProportion: true, overlay: "true");
+            Console.WriteLine($"page={i} xref={imageXref}");
         }
 
-        ConsoleEx.Info($"Watermark xref={imageXref} on {doc.PageCount} page(s)");
-        doc.Save(output);
-
-        var props = PdfFingerprint.FromFile(output);
-        props["watermark"] = Path.GetFileName(logo);
-        check.Properties(props, "watermarked.summary.txt");
-        check.Finish();
+        Console.WriteLine($"pageCount={doc.PageCount}");
+        Console.WriteLine($"xref={imageXref}");
+        doc.Save(outputPath);
     }
+    // doc-end:Watermark
 }

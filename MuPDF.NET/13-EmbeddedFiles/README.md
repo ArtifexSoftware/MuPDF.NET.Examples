@@ -1,6 +1,6 @@
 # 13-EmbeddedFiles
 
-Attach a text file to a PDF and list embedded attachments.
+Attach `note.txt` to `Blank.pdf` and list embedded attachments.
 
 ## Sample method
 
@@ -16,7 +16,7 @@ Attach a text file to a PDF and list embedded attachments.
 |--|------|
 | Input | `Input/MuPDF.NET/Blank.pdf`, `note.txt` |
 | Output | `Output/MuPDF.NET/13-EmbeddedFiles/with-attachment.pdf` |
-| Expected | `embedded.txt`, `with-attachment.summary.txt` |
+| Expected | `embedded.txt`, `with-attachment.summary.txt`, `with-attachment.png.sha256` |
 
 ## Run
 
@@ -28,3 +28,7 @@ dotnet run --project MuPDF.NET\13-EmbeddedFiles
 
 - `Document.AddEmbeddedFile` / `DeleteEmbeddedFile`
 - `Document.GetEmbeddedFileNames` / `GetEmbeddedFile` / `GetEmbeddedFileInfo`
+
+## Related
+
+- [`30-FileAnnot`](../30-FileAnnot/) — page-level file attachment annotation

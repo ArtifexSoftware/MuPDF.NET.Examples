@@ -36,3 +36,4 @@ dotnet run --project MuPDF.NET\09-InsertImage
 | Example | Topic |
 |---------|--------|
 | [`17-ReplaceImage`](../17-ReplaceImage/) | Replace an existing image by xref |
+| [`27-ImageToPdf`](../27-ImageToPdf/) | Wrap an image as a one-page PDF |

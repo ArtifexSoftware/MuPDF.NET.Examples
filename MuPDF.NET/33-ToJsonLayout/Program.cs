@@ -1,6 +1,9 @@
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
+
 namespace MuPDF.NET.Examples.Llm.ToJsonLayout;
 
 internal static class Program
@@ -12,51 +15,59 @@ internal static class Program
         ToJsonLayout();
     }
 
-    /// <summary>
-    /// Convert a PDF to layout JSON (requires pymupdf 2.1 layout worker).
-    /// </summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void ToJsonLayout()
     {
-        string input = ExamplePaths.MuPdfNetInput("columns.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "33-ToJsonLayout", "columns.json");
+        string input = ExamplePaths.MuPdfNetInput("bulletin.pdf");
+        string output = ExamplePaths.Output("MuPDF.NET", "33-ToJsonLayout", "bulletin.json");
+        string png = ExamplePaths.Output("MuPDF.NET", "33-ToJsonLayout", "page.png");
         var check = new ResultCheck("MuPDF.NET", "33-ToJsonLayout");
+        var sb = new StringBuilder();
 
-        bool prior = Utils.LayoutEnabled;
-        try
+        ConsoleEx.Info($"Opened: {input}");
+        using (var doc = Document.Open(input))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(png);
+
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
         {
-            // ToJson needs the optional layout provider.
-            if (!Utils.LayoutAvailable)
+            Console.SetOut(capture);
+            try
             {
-                ConsoleEx.Info("Layout provider unavailable — ToJson requires UseLayout=true.");
-                ConsoleEx.Info("Install pymupdf 2.1 (dotnet msbuild -t:MuPDFNetSetupLayoutPython) and re-run.");
-                check.Text("LAYOUT_UNAVAILABLE\n", "layout-status.txt");
-                check.Finish();
-                return;
+                ToJsonLayout(input, output);
             }
-
-            Utils.UseLayout(true);
-            using Document doc = new Document(input);
-            // ToJson embeds an absolute input path; keep only the file name for portable baselines.
-            string json = NormalizeJsonFilename(doc.ToJson(useOcr: false) ?? "", input);
-            File.WriteAllText(output, json);
-
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info($"JSON length: {json.Length}");
-            check.Text("LAYOUT_AVAILABLE\n", "layout-status.txt");
-            check.Text(json, "columns.json");
+            finally
+            {
+                Console.SetOut(previous);
+            }
         }
-        finally
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        var dump = new StringBuilder();
+        foreach (string line in captured.Split('\n'))
         {
-            Utils.UseLayout(prior);
+            if (line.Contains("pymupdf-layout", StringComparison.OrdinalIgnoreCase)
+                || line.Contains("pymupdf_layout", StringComparison.OrdinalIgnoreCase)
+                || line.Contains("greatly improved page layout", StringComparison.OrdinalIgnoreCase))
+                continue;
+            dump.Append(line).Append('\n');
         }
 
+        check.Text(dump.ToString(), "layout.txt");
+        if (File.Exists(output))
+        {
+            string json = NormalizeJsonFilename(File.ReadAllText(output), input);
+            File.WriteAllText(output, json, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            check.Text(json, "bulletin.json");
+        }
+        check.FileSha256(png, "page.png.sha256");
         check.Finish();
     }
 
-    /// <summary>
-    /// Replace the absolute <c>filename</c> field with <see cref="Path.GetFileName"/> so Expected/
-    /// baselines do not depend on the machine checkout path.
-    /// </summary>
     static string NormalizeJsonFilename(string json, string inputPath)
     {
         string name = Path.GetFileName(inputPath);
@@ -66,5 +77,84 @@ internal static class Program
             "\"filename\":\"" + name.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"",
             RegexOptions.CultureInvariant,
             TimeSpan.FromSeconds(2));
+    }
+
+    // doc-start:ToJsonLayout
+    /// <summary>Convert a PDF to layout JSON (requires the optional layout worker)</summary>
+    static void ToJsonLayout(string inputPath, string outputPath)
+    {
+        // Remember prior layout flag so we restore it for other examples in the same process.
+        bool prior = Utils.LayoutEnabled;
+        try
+        {
+            // ToJson requires UseLayout=true and a registered layout worker.
+            if (!Utils.LayoutAvailable)
+            {
+                Console.WriteLine("LAYOUT_UNAVAILABLE");
+                return;
+            }
+
+            Utils.UseLayout(true);
+
+            using var doc = Document.Open(inputPath);
+            string json = doc.ToJson(showProgress: false, useOcr: false) ?? "";
+            File.WriteAllText(outputPath, json, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            Console.WriteLine($"pageCount={doc.PageCount}");
+            Console.WriteLine($"layoutEnabled={Utils.LayoutEnabled}");
+            WriteBoxes(json);
+        }
+        finally
+        {
+            Utils.UseLayout(prior);
+        }
+    }
+    // doc-end:ToJsonLayout
+
+    /// <summary>Print each layout box class and its first span so the JSON is easy to scan</summary>
+    static void WriteBoxes(string json)
+    {
+        using var parsed = JsonDocument.Parse(string.IsNullOrWhiteSpace(json) ? "{}" : json);
+        JsonElement root = parsed.RootElement;
+        int boxCount = 0;
+        if (root.TryGetProperty("pages", out JsonElement pages) &&
+            pages.ValueKind == JsonValueKind.Array)
+        {
+            foreach (JsonElement page in pages.EnumerateArray())
+            {
+                if (!page.TryGetProperty("boxes", out JsonElement boxes) ||
+                    boxes.ValueKind != JsonValueKind.Array)
+                    continue;
+                foreach (JsonElement box in boxes.EnumerateArray())
+                {
+                    string boxClass = box.TryGetProperty("boxclass", out JsonElement cls)
+                        ? cls.GetString() ?? ""
+                        : "";
+                    string text = "";
+                    if (box.TryGetProperty("textlines", out JsonElement lines) &&
+                        lines.ValueKind == JsonValueKind.Array)
+                    {
+                        foreach (JsonElement line in lines.EnumerateArray())
+                        {
+                            if (!line.TryGetProperty("spans", out JsonElement spans) ||
+                                spans.ValueKind != JsonValueKind.Array)
+                                continue;
+                            foreach (JsonElement span in spans.EnumerateArray())
+                            {
+                                if (span.TryGetProperty("text", out JsonElement value))
+                                {
+                                    text = (value.GetString() ?? "").Replace('\n', ' ').Trim();
+                                    break;
+                                }
+                            }
+                            if (text.Length > 0)
+                                break;
+                        }
+                    }
+                    Console.WriteLine($"{boxCount} {boxClass} {text}");
+                    boxCount++;
+                }
+            }
+        }
+        Console.WriteLine($"boxCount={boxCount}");
     }
 }

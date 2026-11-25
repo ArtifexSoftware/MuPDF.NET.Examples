@@ -14,36 +14,59 @@ internal static class Program
         FormWidgets();
     }
 
-    /// <summary>
-    /// List AcroForm widgets on page 1 (name, type, value).
-    /// </summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void FormWidgets()
     {
-        string input = ExamplePaths.MuPdfNetInput("Widget.pdf");
+        string input = ExamplePaths.MuPdfNetInput("widgets.pdf");
+        string png = ExamplePaths.Output("MuPDF.NET", "08-FormWidgets", "widgets.png");
         var check = new ResultCheck("MuPDF.NET", "08-FormWidgets");
-
-        using var doc = Document.Open(input);
-        using Page page = doc[0];
-
-        // Widgets() walks the page's form fields.
-        var widgets = page.Widgets().ToList();
-
         var sb = new StringBuilder();
-        sb.Append("widgetCount=").Append(widgets.Count).Append('\n');
-        foreach (Widget w in widgets.OrderBy(w => w.FieldName ?? "", StringComparer.Ordinal))
-        {
-            // FieldTypeString is human-readable (Text, CheckBox, …).
-            sb.Append(w.FieldName ?? "(unnamed)")
-                .Append('\t')
-                .Append(w.FieldTypeString)
-                .Append('\t')
-                .Append(w.FieldValue ?? "")
-                .Append('\n');
-        }
 
         ConsoleEx.Info($"Opened: {input}");
-        ConsoleEx.Info($"Widgets on page 1: {widgets.Count}");
-        check.Text(sb.ToString(), "widgets.txt");
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                FormWidgets(input);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        using (var doc = Document.Open(input))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(png);
+
+        check.Text(captured, "widgets.txt");
+        check.FileSha256(png, "widgets.png.sha256");
         check.Finish();
     }
+
+    // doc-start:FormWidgets
+    /// <summary>List AcroForm widgets on page 1 (name, type, value)</summary>
+    static void FormWidgets(string inputPath)
+    {
+        using (var doc = Document.Open(inputPath))
+        using (Page page = doc[0])
+        {
+            // Widgets() walks the page's form fields.
+            var widgets = page.Widgets().ToList();
+            Console.WriteLine($"widgetCount={widgets.Count}");
+
+            foreach (Widget w in widgets.OrderBy(w => w.FieldName ?? "", StringComparer.Ordinal))
+            {
+                // FieldTypeString is human-readable (Text, CheckBox, …).
+                Console.WriteLine($"{w.FieldName}\t{w.FieldTypeString}\t{w.FieldValue}");
+            }
+        }
+    }
+    // doc-end:FormWidgets
 }

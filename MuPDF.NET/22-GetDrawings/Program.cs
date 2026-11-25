@@ -14,21 +14,59 @@ internal static class Program
         GetDrawings();
     }
 
-    /// <summary>
-    /// Draw vector shapes, then extract path info with <see cref="Page.GetDrawings"/>.
-    /// </summary>
+    // help:skip — resolves output paths, calls the documented overload, then checks the harness baseline.
     static void GetDrawings()
     {
         string drawn = ExamplePaths.Output("MuPDF.NET", "22-GetDrawings", "drawn.pdf");
         string redrawn = ExamplePaths.Output("MuPDF.NET", "22-GetDrawings", "redrawn.pdf");
+        string drawnPng = ExamplePaths.Output("MuPDF.NET", "22-GetDrawings", "drawn.png");
+        string redrawnPng = ExamplePaths.Output("MuPDF.NET", "22-GetDrawings", "redrawn.png");
         var check = new ResultCheck("MuPDF.NET", "22-GetDrawings");
-        var report = new StringBuilder();
+        var sb = new StringBuilder();
 
-        // 1) Create a page with known vector content.
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                GetDrawings(drawn, redrawn);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        using (var doc = Document.Open(drawn))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(drawnPng);
+
+        using (var doc = Document.Open(redrawn))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(redrawnPng);
+
+        check.Text(captured, "drawings.txt");
+        check.Properties(PdfFingerprint.FromFile(drawn), "drawn.summary.txt");
+        check.Properties(PdfFingerprint.FromFile(redrawn), "redrawn.summary.txt");
+        check.FileSha256(drawnPng, "drawn.png.sha256");
+        check.FileSha256(redrawnPng, "redrawn.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:GetDrawings
+    /// <summary>Draw vector shapes, then extract path info with Page.GetDrawings</summary>
+    static void GetDrawings(string drawnPath, string redrawnPath)
+    {
         using (var doc = Document.Open())
         {
-            using Page page = doc.NewPage();
-            page.DrawLine(new Point(72, 100), new Point(500, 100), width: 1f, dashes: "[5] 0");
+            using Page page = doc.NewPage(width: 540, height: 320);
+            page.DrawLine(new Point(72, 100), new Point(468, 100), width: 1f, dashes: "[5] 0");
             page.DrawRect(new Rect(72, 180, 220, 280), color: new[] { 0f, 0f, 1f }, width: 1.5f);
             page.DrawCircle(
                 new Point(350, 230),
@@ -36,40 +74,48 @@ internal static class Program
                 color: new[] { 0f, 0f, 0f },
                 fill: new[] { 0f, 0.6f, 0f },
                 width: 1f);
-            doc.Save(drawn);
+            doc.Save(drawnPath);
         }
 
-        // 2) Extract drawings and rewrite a subset onto a blank page.
-        using (var src = Document.Open(drawn))
+        using (var src = Document.Open(drawnPath))
         using (Page page = src[0])
         {
             List<PathInfo> paths = page.GetDrawings();
-            report.Append("pathCount=").Append(paths.Count).Append('\n');
-
-            var typeCounts = paths
-                .GroupBy(p => p.Type ?? "?")
-                .OrderBy(g => g.Key, StringComparer.Ordinal);
-            foreach (var g in typeCounts)
-                report.Append("type.").Append(g.Key).Append('=').Append(g.Count()).Append('\n');
+            Console.WriteLine($"pathCount={paths.Count}");
+            foreach (PathInfo path in paths)
+            {
+                string itemTypes = path.Items == null
+                    ? ""
+                    : string.Join(",", path.Items.Select(i => i.Type));
+                string rect = path.Rect == null
+                    ? "none"
+                    : $"{path.Rect.X0:0},{path.Rect.Y0:0},{path.Rect.X1:0},{path.Rect.Y1:0}";
+                Console.WriteLine($"seq={path.SeqNo} type={path.Type} items={itemTypes} rect={rect}");
+            }
 
             using var outDoc = Document.Open();
-            using Page outPage = outDoc.NewPage();
+            using Page outPage = outDoc.NewPage(width: 540, height: 320);
             int redrawnRects = 0;
             foreach (PathInfo path in paths)
             {
-                if (path.Rect == null || path.Rect.IsEmpty)
+                Rect box = path.Rect;
+                if (box == null)
                     continue;
-                // Stroke each path's bounding box so the sample stays short and stable.
-                outPage.DrawRect(path.Rect, color: new[] { 1f, 0f, 0f }, width: 0.5f);
+                // A horizontal/vertical stroke has a degenerate bbox (IsEmpty). Draw that
+                // segment instead of skipping it so every GetDrawings path is visible.
+                if (box.IsEmpty)
+                    outPage.DrawLine(
+                        new Point(box.X0, box.Y0),
+                        new Point(box.X1, box.Y1),
+                        color: new[] { 1f, 0f, 0f },
+                        width: 0.5f);
+                else
+                    outPage.DrawRect(box, color: new[] { 1f, 0f, 0f }, width: 0.5f);
                 redrawnRects++;
             }
-            report.Append("redrawnRects=").Append(redrawnRects).Append('\n');
-            outDoc.Save(redrawn);
+            Console.WriteLine($"redrawnRects={redrawnRects}");
+            outDoc.Save(redrawnPath);
         }
-
-        check.Text(report.ToString(), "drawings.txt");
-        check.Properties(PdfFingerprint.FromFile(drawn), "drawn.summary.txt");
-        check.Properties(PdfFingerprint.FromFile(redrawn), "redrawn.summary.txt");
-        check.Finish();
     }
+    // doc-end:GetDrawings
 }

@@ -13,58 +13,97 @@ internal static class Program
         ToChunks();
     }
 
-    /// <summary>
-    /// Split a PDF into retrieval-ready chunks (requires pymupdf 2.1 layout worker).
-    /// </summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void ToChunks()
     {
-        string input = ExamplePaths.MuPdfNetInput("columns.pdf");
-        string output = ExamplePaths.Output("MuPDF.NET", "35-ToChunks", "columns.chunks.txt");
+        string input = ExamplePaths.MuPdfNetInput("bulletin.pdf");
+        string output = ExamplePaths.Output("MuPDF.NET", "35-ToChunks", "bulletin.chunks.txt");
+        string png = ExamplePaths.Output("MuPDF.NET", "35-ToChunks", "page.png");
         var check = new ResultCheck("MuPDF.NET", "35-ToChunks");
+        var sb = new StringBuilder();
 
+        ConsoleEx.Info($"Opened: {input}");
+        using (var doc = Document.Open(input))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(png);
+
+        var previous = Console.Out;
+        using (var capture = new StringWriter(sb))
+        {
+            Console.SetOut(capture);
+            try
+            {
+                ToChunks(input, output);
+            }
+            finally
+            {
+                Console.SetOut(previous);
+            }
+        }
+
+        string captured = ResultCheck.NormalizeText(sb.ToString());
+        Console.Write(captured);
+
+        var dump = new StringBuilder();
+        foreach (string line in captured.Split('\n'))
+        {
+            if (line.Contains("pymupdf-layout", StringComparison.OrdinalIgnoreCase)
+                || line.Contains("pymupdf_layout", StringComparison.OrdinalIgnoreCase)
+                || line.Contains("greatly improved page layout", StringComparison.OrdinalIgnoreCase))
+                continue;
+            dump.Append(line).Append('\n');
+        }
+
+        check.Text(dump.ToString(), "to-chunks.txt");
+        if (File.Exists(output))
+            check.Text(File.ReadAllText(output), "bulletin.chunks.txt");
+        check.FileSha256(png, "page.png.sha256");
+        check.Finish();
+    }
+
+    // doc-start:ToChunks
+    /// <summary>Split a PDF into retrieval-ready chunks (requires the optional layout worker)</summary>
+    static void ToChunks(string inputPath, string outputPath)
+    {
+        // Remember prior layout flag so we restore it for other examples in the same process.
         bool prior = Utils.LayoutEnabled;
         try
         {
-            // ToChunks is layout-only (classic extract throws NotSupportedException).
+            // ToChunks requires UseLayout=true and a registered layout worker.
             if (!Utils.LayoutAvailable)
             {
-                ConsoleEx.Info("Layout provider unavailable — ToChunks requires UseLayout=true.");
-                ConsoleEx.Info("Install pymupdf 2.1 (dotnet msbuild -t:MuPDFNetSetupLayoutPython) and re-run.");
-                check.Text("LAYOUT_UNAVAILABLE\n", "layout-status.txt");
+                Console.WriteLine("LAYOUT_UNAVAILABLE");
                 return;
             }
 
             Utils.UseLayout(true);
-            using Document doc = new Document(input);
+
+            using var doc = Document.Open(inputPath);
             ChunkedDocument chunks = doc.ToChunks(useOcr: false, maxTokens: 400, minTokens: 120);
 
-            var sb = new StringBuilder();
-            sb.AppendLine(chunks.ToString());
-            sb.AppendLine();
+            var listing = new StringBuilder();
+            listing.AppendLine($"pageCount={doc.PageCount}");
+            listing.AppendLine($"layoutEnabled={Utils.LayoutEnabled}");
+            listing.AppendLine($"chunkCount={chunks.Count}");
             foreach (Chunk c in chunks)
             {
                 int tokens = c.Metadata?.TokenCount ?? 0;
                 int pageStart = c.Metadata?.PageStart ?? 0;
                 int pageEnd = c.Metadata?.PageEnd ?? 0;
-                sb.Append(c.Id).Append("  tokens=").Append(tokens)
-                    .Append("  pages=").Append(pageStart).Append('-').Append(pageEnd).Append('\n');
-                sb.AppendLine(c.Text ?? "");
-                sb.AppendLine();
+                listing.AppendLine();
+                listing.AppendLine($"{c.Id} tokens={tokens} pages={pageStart}-{pageEnd}");
+                listing.AppendLine(c.Text ?? "");
             }
 
-            string report = sb.ToString();
-            File.WriteAllText(output, report);
-
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info(chunks.ToString());
-            check.Text("LAYOUT_AVAILABLE\n", "layout-status.txt");
-            check.Text(report, "columns.chunks.txt");
+            string text = listing.ToString();
+            File.WriteAllText(outputPath, text, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            Console.Write(text);
         }
         finally
         {
             Utils.UseLayout(prior);
         }
-
-        check.Finish();
     }
+    // doc-end:ToChunks
 }

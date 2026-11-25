@@ -12,50 +12,44 @@ internal static class Program
         Recolor();
     }
 
-    /// <summary>
-    /// Recolor page images/vectors to DeviceCMYK (4 components). Copy this method into your project.
-    /// </summary>
+    // help:skip — resolves fixtures, calls the documented overload, then checks the harness baseline.
     static void Recolor()
     {
-        string input = ExamplePaths.MuPdfNetInput("Color.pdf");
+        string input = ExamplePaths.MuPdfNetInput("color-shapes.pdf");
         string output = ExamplePaths.Output("MuPDF.NET", "05-Recolor", "recolor.pdf");
+        string beforePng = ExamplePaths.Output("MuPDF.NET", "05-Recolor", "before.png");
+        string afterPng = ExamplePaths.Output("MuPDF.NET", "05-Recolor", "after.png");
         var check = new ResultCheck("MuPDF.NET", "05-Recolor");
 
+        ConsoleEx.Info($"Opened: {input}");
         using (var doc = Document.Open(input))
-        {
-            List<Entry> before = doc.GetPageImages(0);
-            if (before.Count == 0)
-                throw new InvalidOperationException("No images on page 1.");
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(beforePng);
 
-            // GetPageImages: CsName is the PDF /ColorSpace name (e.g. DeviceRGB).
-            // AltCsName is only set for some alternate spaces — usually empty.
-            string csBefore = before[0].CsName ?? "";
-            ConsoleEx.Info($"Opened: {input}");
-            ConsoleEx.Info($"Page 1 image colorspace before: {csBefore}");
+        Recolor(input, output);
 
-            // Recolor page 0 → 4 components (DeviceCMYK / ICC-based CMYK).
-            doc.Recolor(0, 4);
+        using (var doc = Document.Open(output))
+        using (Page page = doc[0])
+        using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
+            pix.Save(afterPng);
 
-            List<Entry> after = doc.GetPageImages(0);
-            // Prefer CsName (not AltCsName). Use null/empty coalescing carefully:
-            // AltCsName is often "" after recolor; `??` does NOT fall through empty strings.
-            string csAfter = string.IsNullOrEmpty(after[0].CsName) ? "" : after[0].CsName;
-
-            // ExtractImage gives component count + a richer cs-name (includes ICC profile).
-            ImageInfo extracted = doc.ExtractImage(after[0].Xref);
-            ConsoleEx.Info($"Page 1 image colorspace after: {csAfter}");
-            ConsoleEx.Info($"ExtractImage: n={extracted.ColorSpace}, cs-name={extracted.CsName}");
-
-            doc.Save(output);
-
-            var props = PdfFingerprint.FromFile(output);
-            props["csBefore"] = csBefore;
-            props["csAfter"] = csAfter;
-            props["extractCsName"] = extracted.CsName ?? "";
-            props["extractComponents"] = extracted.ColorSpace.ToString();
-            check.Properties(props, "recolor.summary.txt");
-        }
-
+        check.Properties(PdfFingerprint.FromFile(output), "recolor.summary.txt");
+        check.FileSha256(beforePng, "before.png.sha256");
+        check.FileSha256(afterPng, "after.png.sha256");
         check.Finish();
     }
+
+    // doc-start:Recolor
+    /// <summary>Recolor page 1 to CMYK (4 components) and save</summary>
+    static void Recolor(string inputPath, string outputPath)
+    {
+        using (var doc = Document.Open(inputPath))
+        {
+            // Recolor page 0 → 4 components (DeviceCMYK / ICC-based CMYK).
+            doc.Recolor(0, 4);
+            doc.Save(outputPath);
+        }
+    }
+    // doc-end:Recolor
 }

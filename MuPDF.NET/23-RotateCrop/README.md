@@ -14,9 +14,9 @@ Rotate a page (`Page.SetRotation`) and set a crop box (`Page.SetCropBox`).
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET/sample.pdf` |
-| Output | `rotated.pdf`, `cropped.pdf` |
-| Expected | `rotate-crop.txt` + PDF fingerprints |
+| Input | `Input/MuPDF.NET/rotate-crop.pdf` |
+| Output | `Output/MuPDF.NET/23-RotateCrop/rotated.pdf`, `cropped.pdf`, `original.png`, `rotated.png`, `cropped.png` |
+| Expected | `rotate-crop.txt` + PDF fingerprints + PNG SHA-256 |
 
 ## Run
 
@@ -24,8 +24,10 @@ Rotate a page (`Page.SetRotation`) and set a crop box (`Page.SetCropBox`).
 dotnet run --project MuPDF.NET\23-RotateCrop
 ```
 
+Recreate the fixture: `python Test/create_rotate_crop_pdf.py` from `D:\Artifex\Work`.
+
 ## APIs used
 
 - `Page.SetRotation`
 - `Page.SetCropBox`
-- `Page.Rotation` / `CropBox`
+- `Page.Rotation` / `Rect` / `CropBox`

@@ -16,7 +16,7 @@ Build a table of contents (bookmarks) and an internal go-to link.
 |--|------|
 | Input | Created in code (two pages + text) |
 | Output | `Output/MuPDF.NET/10-OutlineLinks/outline-links.pdf` |
-| Expected | `outline-links.txt`, `outline-links.summary.txt` |
+| Expected | `outline-links.txt`, `outline-links.summary.txt`, `outline-links.png.sha256` |
 
 ## Run
 

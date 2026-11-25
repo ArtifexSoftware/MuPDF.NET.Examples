@@ -1,6 +1,8 @@
 # 34-ToText
 
-Convert a PDF to plain text via layout. Requires the **pymupdf 2.1** layout worker.
+Convert a PDF to plain text with `Document.ToText`. Requires `Utils.UseLayout(true)` and the optional layout worker.
+
+Uses the same `bulletin.pdf` as [`32-ToMarkdown`](../32-ToMarkdown/) and [`33-ToJsonLayout`](../33-ToJsonLayout/).
 
 ## Sample method
 
@@ -8,19 +10,19 @@ Convert a PDF to plain text via layout. Requires the **pymupdf 2.1** layout work
 
 ## Package
 
-- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.1
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET)
 
 ## Prerequisites
 
-- Same layout setup as `33-ToJsonLayout` ([MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional)). Without it, the sample records `LAYOUT_UNAVAILABLE`.
+- Same layout setup as `33-ToJsonLayout`. Without layout, the sample prints `LAYOUT_UNAVAILABLE` and skips text.
 
 ## Input / output
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET/columns.pdf` |
-| Output | `Output/MuPDF.NET/34-ToText/columns.txt` |
-| Expected | `layout-status.txt`, `columns.txt` |
+| Input | `Input/MuPDF.NET/bulletin.pdf` |
+| Output | `Output/MuPDF.NET/34-ToText/bulletin.txt`, `page.png` |
+| Expected | `bulletin.txt` + summary + PNG SHA-256 |
 
 ## Run
 
@@ -28,11 +30,17 @@ Convert a PDF to plain text via layout. Requires the **pymupdf 2.1** layout work
 dotnet run --project MuPDF.NET\34-ToText
 ```
 
+Recreate the fixture: `python Test/create_bulletin_pdf.py` from `D:\Artifex\Work`.
+
 ## APIs used
 
+- `Utils.LayoutAvailable`
 - `Utils.UseLayout(true)`
 - `Document.ToText`
 
 ## Related
 
-- [`35-ToChunks`](../35-ToChunks/) — retrieval chunks from the same layout worker
+- [`04-TextExtractSearch`](../04-TextExtractSearch/) — `Page.GetText` (no layout worker)
+- [`32-ToMarkdown`](../32-ToMarkdown/) — same PDF, classic Markdown
+- [`33-ToJsonLayout`](../33-ToJsonLayout/) — same PDF, layout JSON
+- [`35-ToChunks`](../35-ToChunks/) — same PDF, retrieval chunks

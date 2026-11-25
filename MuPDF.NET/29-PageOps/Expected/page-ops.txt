@@ -1,4 +1,9 @@
-built.pages=5
-afterMove.pages=5
-afterDelete.pages=4
-afterSelect.pages=1
+before=A,B,C
+afterInsert=A,X,A,B,C
+afterInsert.pageCount=5
+afterMove=C,A,X,A,B
+afterMove.pageCount=5
+afterDelete=C,X,A,B
+afterDelete.pageCount=4
+afterSelect=C
+afterSelect.pageCount=1

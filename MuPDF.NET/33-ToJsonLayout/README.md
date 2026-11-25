@@ -1,6 +1,8 @@
 # 33-ToJsonLayout
 
-Convert a PDF to layout JSON. Requires the optional **pymupdf 2.1** layout worker.
+Convert a PDF to layout JSON with `Document.ToJson`. Requires `Utils.UseLayout(true)` and the optional layout worker.
+
+Uses the same `bulletin.pdf` as [`32-ToMarkdown`](../32-ToMarkdown/).
 
 ## Sample method
 
@@ -8,26 +10,27 @@ Convert a PDF to layout JSON. Requires the optional **pymupdf 2.1** layout worke
 
 ## Package
 
-- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET) 4.1
+- [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET)
 
 ## Prerequisites
 
-- One-time layout setup: **Python 3.11+** on `PATH`, then `dotnet msbuild -t:MuPDFNetSetupLayoutPython` so `Utils.LayoutAvailable` is true. Ubuntu 22.04's `python3` is 3.10 — install `python3.11` first. Full steps: [MuPDF.NET README — Layout analysis](https://github.com/ArtifexSoftware/MuPDF.NET#layout-analysis-optional).
-- Without layout, the sample records `LAYOUT_UNAVAILABLE` and skips JSON.
+- One-time layout setup: **Python 3.11+** on `PATH`, then `dotnet msbuild -t:MuPDFNetSetupLayoutPython` so `Utils.LayoutAvailable` is true. Without layout, the sample prints `LAYOUT_UNAVAILABLE` and skips JSON.
 
 ## Input / output
 
 | | Path |
 |--|------|
-| Input | `Input/MuPDF.NET/columns.pdf` |
-| Output | `Output/MuPDF.NET/33-ToJsonLayout/columns.json` |
-| Expected | `layout-status.txt`, `columns.json` |
+| Input | `Input/MuPDF.NET/bulletin.pdf` |
+| Output | `Output/MuPDF.NET/33-ToJsonLayout/bulletin.json`, `page.png` |
+| Expected | box listing + `bulletin.json` + PNG SHA-256 |
 
 ## Run
 
 ```powershell
 dotnet run --project MuPDF.NET\33-ToJsonLayout
 ```
+
+Recreate the fixture: `python Test/create_bulletin_pdf.py` from `D:\Artifex\Work`.
 
 ## APIs used
 
@@ -37,4 +40,6 @@ dotnet run --project MuPDF.NET\33-ToJsonLayout
 
 ## Related
 
+- [`32-ToMarkdown`](../32-ToMarkdown/) — same PDF, classic extract (`UseLayout(false)`)
+- [`34-ToText`](../34-ToText/) — same PDF, layout plain text
 - [`35-ToChunks`](../35-ToChunks/) — retrieval chunks from the same layout worker

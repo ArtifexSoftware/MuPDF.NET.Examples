@@ -14,8 +14,8 @@ Draw vector shapes, extract path dictionaries with `Page.GetDrawings`, then redr
 
 | | Path |
 |--|------|
-| Output | `Output/MuPDF.NET/22-GetDrawings/drawn.pdf`, `redrawn.pdf` |
-| Expected | `drawings.txt` + PDF fingerprints |
+| Output | `Output/MuPDF.NET/22-GetDrawings/drawn.pdf`, `redrawn.pdf`, `drawn.png`, `redrawn.png` |
+| Expected | `drawings.txt` + PDF fingerprints + PNG SHA-256 |
 
 ## Run
 

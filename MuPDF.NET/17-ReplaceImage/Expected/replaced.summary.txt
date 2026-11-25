@@ -1,3 +1,2 @@
-pageCount=2
-replacement=logo.png
-textSha256=3ac66637cc45a40b201f066997325ee6d3f84f219bab5766565a6f3bfe5e5ccf
+pageCount=1
+textSha256=01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
