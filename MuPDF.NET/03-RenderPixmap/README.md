@@ -2,6 +2,8 @@
 
 Render page 1 of `color-shapes.pdf` to a PNG pixmap at 2× zoom.
 
+`color-shapes.pdf` is a one-page RGB board (hue bar, swatches, circle, round rect, triangle). Recreate: `python Test/create_color_shapes_pdf.py` from `D:\Artifex\Work`.
+
 ## Package
 
 - [MuPDF.NET](https://www.nuget.org/packages/MuPDF.NET)

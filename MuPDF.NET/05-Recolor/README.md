@@ -2,6 +2,8 @@
 
 Convert page 1 of `color-shapes.pdf` to CMYK with `Document.Recolor(0, 4)`.
 
+`color-shapes.pdf` is a one-page RGB board (hue bar, swatches, circle, round rect, triangle). Recreate: `python Test/create_color_shapes_pdf.py` from `D:\Artifex\Work`. The after pixmap is a bit duller because CMYK cannot match every RGB hue.
+
 This is **not** ICC soft-proofing / print separations — for those see [`19-ColorManagement`](../19-ColorManagement/).
 
 ## Package
