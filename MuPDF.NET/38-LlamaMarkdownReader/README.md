@@ -4,9 +4,14 @@ Load LlamaIndex-compatible documents (one per page) via `Utils.LlamaMarkdownRead
 
 Uses a dedicated two-page `llama-pages.pdf` (North Pier standing orders + berth schedule). `Utils.UseLayout(false)` selects the classic extract path.
 
-## Sample method
+## Sample methods
 
-`LlamaMarkdownReader()` in `Program.cs`.
+In `Program.cs`:
+
+- `LlamaMarkdownReaderDefault` — `Utils.LlamaMarkdownReader()` then `LoadData(inputPath)`
+- `LlamaMarkdownReaderMetaFilter` — `LlamaMarkdownReader(metaFilter)` rewrites ExtraInfo
+- `LlamaMarkdownReaderExtraInfo` — `LoadData(inputPath, extraInfo)` merges your keys
+- `LlamaMarkdownReaderLoadKwargs` — `LoadData(inputPath, loadKwargs: …)` e.g. `table_output=html`
 
 ## Package
 
@@ -18,7 +23,7 @@ Uses a dedicated two-page `llama-pages.pdf` (North Pier standing orders + berth 
 |--|------|
 | Input | `Input/MuPDF.NET/llama-pages.pdf` |
 | Output | `Output/MuPDF.NET/38-LlamaMarkdownReader/llama-docs.txt`, `page-1.png`, `page-2.png` |
-| Expected | `llama-docs.txt` + summary + PNG SHA-256 |
+| Expected | `llama-docs.txt` + `llama-reader.txt` + PNG SHA-256 |
 
 ## Run
 
@@ -31,8 +36,8 @@ Recreate the fixture: `python Test/create_llama_pages_pdf.py` from `D:\Artifex\W
 ## APIs used
 
 - `Utils.UseLayout(false)` — classic RAG markdown (stable Expected/)
-- `Utils.LlamaMarkdownReader`
-- `LoadData` — one LlamaIndex document per page (`Text` / `ExtraInfo`)
+- `Utils.LlamaMarkdownReader()` / `Utils.LlamaMarkdownReader(metaFilter)`
+- `LoadData` — `filePath`, `extraInfo`, `loadKwargs` (`Text` / `ExtraInfo`)
 
 ## Related
 

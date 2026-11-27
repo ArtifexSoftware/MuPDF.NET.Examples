@@ -2,6 +2,8 @@
 
 Customer-facing sample apps for **[MuPDF.NET](https://mupdf.com/mupdf-dotnet) 4.1** and **[MuPDF.NET.Office](https://mupdf.com/mupdf-dotnet/office) 2.1.0**.
 
+Documentation for these samples: [MuPDF.NET examples](https://mupdfnet.readthedocs.io/en/latest/examples/index.html).
+
 Markdown / JSON / text extract (`Document.ToMarkdown`, `ToJson`, `ToText`, `ToChunks`) and RAG helpers (`Utils.LoadAiAsync`, `Utils.LlamaMarkdownReader`, `Utils.MarkdownToPdf`) are in **MuPDF.NET 4.1**. Samples `PackageReference` **MuPDF.NET** and **MuPDF.NET.Office** only.
 
 Each feature is a small console project. Packages are referenced via **NuGet only**.
@@ -24,7 +26,7 @@ Package versions are pinned in [`Versions.props`](Versions.props). [`NuGet.Confi
 
 | Path | Role |
 |------|------|
-| [`docs/`](docs/index.html) | HTML how-to help (start at [`docs/index.html`](docs/index.html)) |
+| Documentation | [MuPDF.NET examples](https://mupdfnet.readthedocs.io/en/latest/examples/index.html) |
 | `Common/` | Paths, `ResultCheck`, PDF fingerprints |
 | `Input/` | Fixtures (committed) |
 | `Output/` | Generated files (gitignored) |
@@ -116,7 +118,7 @@ Each project folder has its own `README.md` (what it shows, inputs, how to run, 
 | Product | Projects |
 |---------|----------|
 | MuPDF.NET | Open/Save, Pages, Render, Parallel pixmap, Text, Recolor, Story/HTML, Annotations, Widgets, Insert/Replace/Extract images, Outline/Links, Tables, Barcodes, Embedded files, Metadata, TextWriter, Draw shapes, ZUGFeRD, Color management, Rewrite images, GetDrawings, Rotate/Crop, Encrypt, Compress, Watermark, Image→PDF, Image filters, Page ops, File annot, Markdown, JSON layout, Plain text, OCR, Tables→CSV, Llama markdown reader, GetKeyValues, Markdown→PDF, LoadAi (RAG ask/search), Retrieval chunks |
-| MuPDF.NET.Office | Unlock/fonts, Open HWPX/DOCX, Export PDF, Export MD/JSON, Unlock then `Document.ToMarkdown` |
+| MuPDF.NET.Office | Unlock, Open HWPX/DOCX, Export PDF, Export MD/JSON, Unlock then `Document.ToMarkdown` |
 
 ## Versions
 

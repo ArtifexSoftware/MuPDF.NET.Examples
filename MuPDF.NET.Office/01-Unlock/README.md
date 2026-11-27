@@ -1,12 +1,12 @@
-# 01-UnlockFonts
+# 01-Unlock
 
 Unlock Office document support and inspect font search directories.
 
-`MuPDFOffice.Unlock` enables DOCX/HWPX (and other Office) handling on the shared MuPDF context. Empty / unset `MUPDF_OFFICE_KEY` is restricted mode (first 3 pages). The sample never prints the key. `fontPathAuto` is `true` so Unlock adds system font directories. `GetFontPath` returns those directories; they are machine-specific, so the listing only records whether at least one directory was registered.
+`MuPDFOffice.Unlock` enables DOCX/HWPX (and other Office) handling on the shared MuPDF context. Empty / unset `MUPDF_OFFICE_KEY` is restricted mode (first 3 pages). The sample never prints the key. `fontPathAuto` is `true` so Unlock adds system font directories. `GetFontPath` returns those directories; the listing prints each path. Paths are machine-specific, so Expected only records `unlocked` and whether at least one directory was registered.
 
 ## Sample method
 
-`UnlockFonts()` in `Program.cs`.
+`Unlock()` in `Program.cs`.
 
 ## Package
 
@@ -21,13 +21,13 @@ Unlock Office document support and inspect font search directories.
 
 | | Path |
 |--|------|
-| Output | `Output/MuPDF.NET.Office/01-UnlockFonts/unlock.txt` |
+| Output | `Output/MuPDF.NET.Office/01-Unlock/unlock.txt` |
 | Expected | `unlock.txt` + dump |
 
 ## Run
 
 ```powershell
-dotnet run --project MuPDF.NET.Office\01-UnlockFonts
+dotnet run --project MuPDF.NET.Office\01-Unlock
 ```
 
 Expected checks only portable keys (`unlocked`, `fontDirCountMin1`) so the same baseline passes on Windows, Linux, and macOS.

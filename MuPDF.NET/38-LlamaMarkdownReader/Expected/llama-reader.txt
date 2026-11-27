@@ -33,4 +33,11 @@ File this page with the noon minutes. Berth 4 stays open for timber.
 North Pier - Berth 4 - standing orders
 
 
+--- metaFilter ---
+page=1 yard=North Pier hasFilePath=False
+--- extraInfo ---
+yard=North Pier issue=12
+--- loadKwargs ---
+table_output=html htmlTable=True
+<table><tr><th>Berth</th><th>Vessel</th><th>ETA</th><th>Status</th></tr><tr><td>2</td><td>standby</td><td>-</td><td>hold</td></tr><tr><td>4</td><td>timber barge</td><td>07:40</td><td>open</td></tr><tr><td>5</td><td>Pilot 2</td><td>12:10</td><td>due</td></tr></table>
 

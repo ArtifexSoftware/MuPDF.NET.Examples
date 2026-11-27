@@ -1,12 +1,17 @@
 # 41-LoadAi
 
-Index PDFs with `Utils.LoadAiAsync`, then **Ask**, **Summarize**, and **Search**.
+Index PDFs with `Utils.LoadAiAsync`, then **Ask**, **Summarize**, **Search**, **AddDocuments**, and **RemoveDocument**.
 
 Uses two dedicated North Pier PDFs (`pier-orders.pdf`, `pier-schedule.pdf`). `Utils.UseLayout(false)` selects the classic extract path. `CreateDevelopmentAiOptions` uses hash embeddings and an in-memory index. `ExampleRagChatClient` is a local `IChatClient` so `dotnet run` needs **no API keys**. Swap that client for OpenAI, Azure, or Ollama — the MuPDF.NET extract/RAG API stays the same.
 
-## Sample method
+## Sample methods
 
-`LoadAi()` in `Program.cs`.
+In `Program.cs`:
+
+- `LoadAiAskSearch` — `AskAsync` / `SummarizeAsync` / `SearchAsync`
+- `LoadAiAddDocuments` — `AddDocumentsAsync` (orders, then add schedule)
+- `LoadAiRemoveDocument` — `RemoveDocumentAsync("pier-orders.pdf")`
+- `LoadAiFilterSource` — `sourceFileName` and `pageNumber`
 
 ## Package
 
@@ -34,7 +39,8 @@ Recreate the fixtures: `python Test/create_load_ai_pdfs.py` from `D:\Artifex\Wor
 - `Utils.UseLayout(false)`
 - `Utils.CreateDevelopmentAiOptions`
 - `Utils.LoadAiAsync`
-- `AskAsync` / `SummarizeAsync` / `SearchAsync`
+- `AiDocumentCollection.AskAsync` / `SummarizeAsync` / `SearchAsync`
+- `AiDocumentCollection.AddDocumentsAsync` / `RemoveDocumentAsync`
 
 ## Related
 
