@@ -75,11 +75,11 @@ internal static class Program
     static void Ocr(string inputPath, string outputOffPath, string outputOnPath)
     {
         // Remember prior layout flag so we restore it for other examples in the same process.
-        bool prior = Utils.LayoutEnabled;
+        bool prior = MuPDF4LLM.LayoutEnabled;
         try
         {
             // ToMarkdown OCR runs only in layout mode, and only when an engine is registered.
-            if (!Utils.LayoutAvailable)
+            if (!MuPDF4LLM.LayoutAvailable)
             {
                 Console.WriteLine("LAYOUT_UNAVAILABLE");
                 return;
@@ -90,7 +90,7 @@ internal static class Program
                 return;
             }
 
-            Utils.UseLayout(true);
+            MuPDF4LLM.SetLayout(true);
 
             // Image-only page: useOcr false keeps the scan empty.
             using (var docOff = Document.Open(inputPath))
@@ -98,7 +98,7 @@ internal static class Program
                 string mdOff = docOff.ToMarkdown(showProgress: false, useOcr: false) ?? "";
                 File.WriteAllText(outputOffPath, mdOff, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
                 Console.WriteLine($"pageCount={docOff.PageCount}");
-                Console.WriteLine($"layoutEnabled={Utils.LayoutEnabled}");
+                Console.WriteLine($"layoutEnabled={MuPDF4LLM.LayoutEnabled}");
                 Console.WriteLine($"ocrOffCharCount={mdOff.Length}");
                 Console.WriteLine("=== useOcr false ===");
                 Console.WriteLine(mdOff);
@@ -117,7 +117,7 @@ internal static class Program
         }
         finally
         {
-            Utils.UseLayout(prior);
+            MuPDF4LLM.SetLayout(prior);
         }
     }
     // doc-end:Ocr

@@ -67,24 +67,24 @@ internal static class Program
     static void ToChunks(string inputPath, string outputPath)
     {
         // Remember prior layout flag so we restore it for other examples in the same process.
-        bool prior = Utils.LayoutEnabled;
+        bool prior = MuPDF4LLM.LayoutEnabled;
         try
         {
             // ToChunks requires UseLayout=true and a registered layout worker.
-            if (!Utils.LayoutAvailable)
+            if (!MuPDF4LLM.LayoutAvailable)
             {
                 Console.WriteLine("LAYOUT_UNAVAILABLE");
                 return;
             }
 
-            Utils.UseLayout(true);
+            MuPDF4LLM.SetLayout(true);
 
             using var doc = Document.Open(inputPath);
             ChunkedDocument chunks = doc.ToChunks(useOcr: false, maxTokens: 400, minTokens: 120);
 
             var listing = new StringBuilder();
             listing.AppendLine($"pageCount={doc.PageCount}");
-            listing.AppendLine($"layoutEnabled={Utils.LayoutEnabled}");
+            listing.AppendLine($"layoutEnabled={MuPDF4LLM.LayoutEnabled}");
             listing.AppendLine($"chunkCount={chunks.Count}");
             foreach (Chunk c in chunks)
             {
@@ -102,7 +102,7 @@ internal static class Program
         }
         finally
         {
-            Utils.UseLayout(prior);
+            MuPDF4LLM.SetLayout(prior);
         }
     }
     // doc-end:ToChunks

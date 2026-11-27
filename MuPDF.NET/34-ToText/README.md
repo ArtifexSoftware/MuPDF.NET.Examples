@@ -1,6 +1,6 @@
 # 34-ToText
 
-Convert a PDF to plain text with `Document.ToText`. Requires `Utils.UseLayout(true)` and the optional layout worker.
+Convert a PDF to plain text with `Document.ToText`. Requires `MuPDF4LLM.SetLayout(true)` and the optional layout worker.
 
 Uses the same `bulletin.pdf` as [`32-ToMarkdown`](../32-ToMarkdown/) and [`33-ToJsonLayout`](../33-ToJsonLayout/).
 
@@ -34,8 +34,8 @@ Recreate the fixture: `python Test/create_bulletin_pdf.py` from `D:\Artifex\Work
 
 ## APIs used
 
-- `Utils.LayoutAvailable`
-- `Utils.UseLayout(true)`
+- `MuPDF4LLM.LayoutAvailable`
+- `MuPDF4LLM.SetLayout(true)`
 - `Document.ToText`
 
 ## Related

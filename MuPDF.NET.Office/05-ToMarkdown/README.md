@@ -2,7 +2,7 @@
 
 Unlock Office, then run `Document.ToMarkdown` on an HWPX path (same extract API as PDF).
 
-`pier-notice.hwpx` is the same one-page Hancom HWPX berth notice as 02-OpenHwpxDocx. `Utils.UseLayout(false)` selects the classic extract path (no layout worker). `useOcr` is `false` because this document is already text. This is `Document.ToMarkdown` after Unlock, not `MuPDFOffice.ToMarkdown`. The listing is UTF-8 without a BOM. The sample never prints the license key.
+`pier-notice.hwpx` is the same one-page Hancom HWPX berth notice as 02-OpenHwpxDocx. `MuPDF4LLM.SetLayout(false)` selects the classic extract path (no layout worker). `useOcr` is `false` because this document is already text. This is `Document.ToMarkdown` after Unlock, not `MuPDFOffice.ToMarkdown`. The listing is UTF-8 without a BOM. The sample never prints the license key.
 
 ## Sample method
 
@@ -34,6 +34,6 @@ dotnet run --project MuPDF.NET.Office\05-ToMarkdown
 ## APIs used
 
 - `MuPDFOffice.Unlock` (`fontPathAuto` is `true`)
-- `Utils.UseLayout` (`false`)
+- `MuPDF4LLM.SetLayout` (`false`)
 - `Document.Open`
 - `Document.ToMarkdown` (`useOcr` is `false`)

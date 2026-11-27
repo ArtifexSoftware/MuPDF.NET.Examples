@@ -34,7 +34,7 @@ internal static class Program
                 pix.Save(png2);
         }
 
-        bool prior = Utils.LayoutEnabled;
+        bool prior = MuPDF4LLM.LayoutEnabled;
         var previous = Console.Out;
         using (var capture = new StringWriter(sb))
         {
@@ -42,7 +42,7 @@ internal static class Program
             try
             {
                 // false = classic extract (no layout worker required).
-                Utils.UseLayout(false);
+                MuPDF4LLM.SetLayout(false);
                 LlamaMarkdownReaderDefault(input, output);
                 LlamaMarkdownReaderMetaFilter(input);
                 LlamaMarkdownReaderExtraInfo(input);
@@ -51,7 +51,7 @@ internal static class Program
             finally
             {
                 Console.SetOut(previous);
-                Utils.UseLayout(prior);
+                MuPDF4LLM.SetLayout(prior);
             }
         }
 
@@ -86,7 +86,7 @@ internal static class Program
 
         var listing = new StringBuilder();
         listing.AppendLine($"docCount={docs.Count}");
-        listing.AppendLine($"layoutEnabled={Utils.LayoutEnabled}");
+        listing.AppendLine($"layoutEnabled={MuPDF4LLM.LayoutEnabled}");
         foreach (var d in docs)
         {
             object? page = null;

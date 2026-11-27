@@ -1,6 +1,6 @@
 # 35-ToChunks
 
-Split a PDF into retrieval-ready chunks with `Document.ToChunks`. Requires `Utils.UseLayout(true)` and the optional layout worker.
+Split a PDF into retrieval-ready chunks with `Document.ToChunks`. Requires `MuPDF4LLM.SetLayout(true)` and the optional layout worker.
 
 Uses the same `bulletin.pdf` as [`32-ToMarkdown`](../32-ToMarkdown/), [`33-ToJsonLayout`](../33-ToJsonLayout/), and [`34-ToText`](../34-ToText/).
 
@@ -34,8 +34,8 @@ Recreate the fixture: `python Test/create_bulletin_pdf.py` from `D:\Artifex\Work
 
 ## APIs used
 
-- `Utils.LayoutAvailable`
-- `Utils.UseLayout(true)`
+- `MuPDF4LLM.LayoutAvailable`
+- `MuPDF4LLM.SetLayout(true)`
 - `Document.ToChunks`
 - `ChunkedDocument` / `Chunk.Id` / `Chunk.Text` / `Chunk.Metadata`
 

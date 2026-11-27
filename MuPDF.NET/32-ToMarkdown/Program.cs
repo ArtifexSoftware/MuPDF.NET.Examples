@@ -1,6 +1,6 @@
-using System.Text;
 using MuPDF.NET;
 using MuPDF.NET.Examples.Common;
+using System.Text;
 
 namespace MuPDF.NET.Examples.Llm.ToMarkdown;
 
@@ -66,23 +66,23 @@ internal static class Program
     static void ToMarkdown(string inputPath, string outputPath)
     {
         // Remember prior layout flag so we restore it for other examples in the same process.
-        bool prior = Utils.LayoutEnabled;
+        bool prior = MuPDF4LLM.LayoutEnabled;
         try
         {
             // false = classic extract (no layout worker required).
-            Utils.UseLayout(false);
+            MuPDF4LLM.SetLayout(false);
 
             using var doc = Document.Open(inputPath);
             string markdown = doc.ToMarkdown(showProgress: false, useOcr: false) ?? "";
             File.WriteAllText(outputPath, markdown, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
             Console.WriteLine($"pageCount={doc.PageCount}");
-            Console.WriteLine($"layoutEnabled={Utils.LayoutEnabled}");
+            Console.WriteLine($"layoutEnabled={MuPDF4LLM.LayoutEnabled}");
             Console.WriteLine($"charCount={markdown.Length}");
             Console.WriteLine(markdown);
         }
         finally
         {
-            Utils.UseLayout(prior);
+            MuPDF4LLM.SetLayout(prior);
         }
     }
     // doc-end:ToMarkdown
