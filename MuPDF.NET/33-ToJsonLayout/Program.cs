@@ -84,28 +84,28 @@ internal static class Program
     static void ToJsonLayout(string inputPath, string outputPath)
     {
         // Remember prior layout flag so we restore it for other examples in the same process.
-        bool prior = Utils.LayoutEnabled;
+        bool prior = MuPDF4LLM.LayoutEnabled;
         try
         {
             // ToJson requires UseLayout=true and a registered layout worker.
-            if (!Utils.LayoutAvailable)
+            if (!MuPDF4LLM.LayoutAvailable)
             {
                 Console.WriteLine("LAYOUT_UNAVAILABLE");
                 return;
             }
 
-            Utils.UseLayout(true);
+            MuPDF4LLM.SetLayout(true);
 
             using var doc = Document.Open(inputPath);
             string json = doc.ToJson(showProgress: false, useOcr: false) ?? "";
             File.WriteAllText(outputPath, json, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
             Console.WriteLine($"pageCount={doc.PageCount}");
-            Console.WriteLine($"layoutEnabled={Utils.LayoutEnabled}");
+            Console.WriteLine($"layoutEnabled={MuPDF4LLM.LayoutEnabled}");
             WriteBoxes(json);
         }
         finally
         {
-            Utils.UseLayout(prior);
+            MuPDF4LLM.SetLayout(prior);
         }
     }
     // doc-end:ToJsonLayout

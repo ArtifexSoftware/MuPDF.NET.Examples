@@ -67,29 +67,29 @@ internal static class Program
     static void ToText(string inputPath, string outputPath)
     {
         // Remember prior layout flag so we restore it for other examples in the same process.
-        bool prior = Utils.LayoutEnabled;
+        bool prior = MuPDF4LLM.LayoutEnabled;
         try
         {
             // ToText requires UseLayout=true and a registered layout worker.
-            if (!Utils.LayoutAvailable)
+            if (!MuPDF4LLM.LayoutAvailable)
             {
                 Console.WriteLine("LAYOUT_UNAVAILABLE");
                 return;
             }
 
-            Utils.UseLayout(true);
+            MuPDF4LLM.SetLayout(true);
 
             using var doc = Document.Open(inputPath);
             string text = doc.ToText(showProgress: false, useOcr: false) ?? "";
             File.WriteAllText(outputPath, text, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
             Console.WriteLine($"pageCount={doc.PageCount}");
-            Console.WriteLine($"layoutEnabled={Utils.LayoutEnabled}");
+            Console.WriteLine($"layoutEnabled={MuPDF4LLM.LayoutEnabled}");
             Console.WriteLine($"charCount={text.Length}");
             Console.WriteLine(text);
         }
         finally
         {
-            Utils.UseLayout(prior);
+            MuPDF4LLM.SetLayout(prior);
         }
     }
     // doc-end:ToText

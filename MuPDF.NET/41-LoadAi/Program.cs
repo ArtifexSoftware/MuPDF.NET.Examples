@@ -37,14 +37,14 @@ internal static class Program
         using (Pixmap pix = page.GetPixmap(matrix: new Matrix(2, 2)))
             pix.Save(pngSchedule);
 
-        bool prior = Utils.LayoutEnabled;
+        bool prior = MuPDF4LLM.LayoutEnabled;
         var previous = Console.Out;
         using (var capture = new StringWriter(sb))
         {
             Console.SetOut(capture);
             try
             {
-                Utils.UseLayout(false);
+                MuPDF4LLM.SetLayout(false);
                 await LoadAiAskSearch(new[] { orders, schedule }, output);
                 await LoadAiAddDocuments(orders, schedule);
                 await LoadAiRemoveDocument(orders, schedule);
@@ -53,7 +53,7 @@ internal static class Program
             finally
             {
                 Console.SetOut(previous);
-                Utils.UseLayout(prior);
+                MuPDF4LLM.SetLayout(prior);
             }
         }
 
@@ -97,7 +97,7 @@ internal static class Program
 
         var listing = new StringBuilder();
         listing.AppendLine($"chunkCount={aiDocs.ChunkCount}");
-        listing.AppendLine($"layoutEnabled={Utils.LayoutEnabled}");
+        listing.AppendLine($"layoutEnabled={MuPDF4LLM.LayoutEnabled}");
         foreach (string source in aiDocs.SourceFiles.OrderBy(s => s, StringComparer.Ordinal))
             listing.AppendLine($"source={source}");
 

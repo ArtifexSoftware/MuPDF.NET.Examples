@@ -2,7 +2,7 @@
 
 Load LlamaIndex-compatible documents (one per page) via `Utils.LlamaMarkdownReader`.
 
-Uses a dedicated two-page `llama-pages.pdf` (North Pier standing orders + berth schedule). `Utils.UseLayout(false)` selects the classic extract path.
+Uses a dedicated two-page `llama-pages.pdf` (North Pier standing orders + berth schedule). `MuPDF4LLM.SetLayout(false)` selects the classic extract path.
 
 ## Sample methods
 
@@ -35,7 +35,7 @@ Recreate the fixture: `python Test/create_llama_pages_pdf.py` from `D:\Artifex\W
 
 ## APIs used
 
-- `Utils.UseLayout(false)` — classic RAG markdown (stable Expected/)
+- `MuPDF4LLM.SetLayout(false)` — classic RAG markdown (stable Expected/)
 - `Utils.LlamaMarkdownReader()` / `Utils.LlamaMarkdownReader(metaFilter)`
 - `LoadData` — `filePath`, `extraInfo`, `loadKwargs` (`Text` / `ExtraInfo`)
 

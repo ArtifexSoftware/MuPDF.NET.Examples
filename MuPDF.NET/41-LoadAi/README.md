@@ -2,7 +2,7 @@
 
 Index PDFs with `Utils.LoadAiAsync`, then **Ask**, **Summarize**, **Search**, **AddDocuments**, and **RemoveDocument**.
 
-Uses two dedicated North Pier PDFs (`pier-orders.pdf`, `pier-schedule.pdf`). `Utils.UseLayout(false)` selects the classic extract path. `CreateDevelopmentAiOptions` uses hash embeddings and an in-memory index. `ExampleRagChatClient` is a local `IChatClient` so `dotnet run` needs **no API keys**. Swap that client for OpenAI, Azure, or Ollama — the MuPDF.NET extract/RAG API stays the same.
+Uses two dedicated North Pier PDFs (`pier-orders.pdf`, `pier-schedule.pdf`). `MuPDF4LLM.SetLayout(false)` selects the classic extract path. `CreateDevelopmentAiOptions` uses hash embeddings and an in-memory index. `ExampleRagChatClient` is a local `IChatClient` so `dotnet run` needs **no API keys**. Swap that client for OpenAI, Azure, or Ollama — the MuPDF.NET extract/RAG API stays the same.
 
 ## Sample methods
 
@@ -36,7 +36,7 @@ Recreate the fixtures: `python Test/create_load_ai_pdfs.py` from `D:\Artifex\Wor
 
 ## APIs used
 
-- `Utils.UseLayout(false)`
+- `MuPDF4LLM.SetLayout(false)`
 - `Utils.CreateDevelopmentAiOptions`
 - `Utils.LoadAiAsync`
 - `AiDocumentCollection.AskAsync` / `SummarizeAsync` / `SearchAsync`

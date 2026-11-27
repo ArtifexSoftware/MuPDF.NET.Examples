@@ -1,10 +1,10 @@
 # MuPDF.NET.Examples
 
-Customer-facing sample apps for **[MuPDF.NET](https://mupdf.com/mupdf-dotnet) 4.1** and **[MuPDF.NET.Office](https://mupdf.com/mupdf-dotnet/office) 2.1.0**.
+Customer-facing sample apps for **[MuPDF.NET](https://mupdf.com/mupdf-dotnet) 4.1.2** and **[MuPDF.NET.Office](https://mupdf.com/mupdf-dotnet/office) 2.1.0**.
 
 Documentation for these samples: [MuPDF.NET examples](https://mupdfnet.readthedocs.io/en/latest/examples/index.html).
 
-Markdown / JSON / text extract (`Document.ToMarkdown`, `ToJson`, `ToText`, `ToChunks`) and RAG helpers (`Utils.LoadAiAsync`, `Utils.LlamaMarkdownReader`, `Utils.MarkdownToPdf`) are in **MuPDF.NET 4.1**. Samples `PackageReference` **MuPDF.NET** and **MuPDF.NET.Office** only.
+Markdown / JSON / text extract (`Document.ToMarkdown`, `ToJson`, `ToText`, `ToChunks`) and RAG helpers (`Utils.LoadAiAsync`, `Utils.LlamaMarkdownReader`, `Utils.MarkdownToPdf`) are in **MuPDF.NET 4.1.2**. Layout is switched with `MuPDF4LLM.SetLayout` (`using MuPDF.NET;`). Samples `PackageReference` **MuPDF.NET** and **MuPDF.NET.Office** only.
 
 Each feature is a small console project. Packages are referenced via **NuGet only**.
 
@@ -122,7 +122,7 @@ Each project folder has its own `README.md` (what it shows, inputs, how to run, 
 
 ## Versions
 
-Edit `Versions.props` only. Current pins: MuPDF.NET **4.1.1**, Office **2.1.0**. Restore looks in `LocalNuget/`, then nuget.org.
+Edit `Versions.props` only. Current pins: MuPDF.NET **4.1.2**, Office **2.1.0**. Restore looks in `LocalNuget/`, then nuget.org.
 
 ## License
 

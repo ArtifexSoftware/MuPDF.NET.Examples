@@ -1,6 +1,6 @@
 # 36-Ocr
 
-Compare Markdown extraction with OCR off vs on (`Document.ToMarkdown`). Requires `Utils.UseLayout(true)`, the optional layout worker, and an OCR engine.
+Compare Markdown extraction with OCR off vs on (`Document.ToMarkdown`). Requires `MuPDF4LLM.SetLayout(true)`, the optional layout worker, and an OCR engine.
 
 Uses a dedicated image-only `ocr-scan.pdf` (copier scan: speckle, JPEG, faint COPY stamp). Without OCR the page has no text layer. `forceOcr: true` because a noisy scan can fail the layout heuristic. Layout tags `# NORTH PIER` when RapidOCR returns a large title box.
 
@@ -35,10 +35,10 @@ Recreate the fixture: `python Test/create_ocr_pdf.py` from `D:\Artifex\Work`.
 
 ## APIs used
 
-- `Utils.LayoutAvailable`
+- `MuPDF4LLM.LayoutAvailable`
 - `Utils.RapidOcrAvailable`
 - `Utils.TESSDATA_PREFIX`
-- `Utils.UseLayout(true)`
+- `MuPDF4LLM.SetLayout(true)`
 - `Document.ToMarkdown(..., useOcr: false|true, forceOcr: true)`
 
 ## Related

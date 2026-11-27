@@ -30,14 +30,14 @@ Recreate the fixture: `python Test/create_bulletin_pdf.py` from `D:\Artifex\Work
 
 ## APIs used
 
-- `Utils.UseLayout(false)`
+- `MuPDF4LLM.SetLayout(false)`
 - `Document.ToMarkdown`
 
 ## Related
 
 - [`04-TextExtractSearch`](../04-TextExtractSearch/) — `Page.GetText` / `SearchFor`
 - [`11-Tables`](../11-Tables/) — `Table.ToMarkdown`
-- [`33-ToJsonLayout`](../33-ToJsonLayout/) — same PDF, layout JSON (`UseLayout(true)`)
+- [`33-ToJsonLayout`](../33-ToJsonLayout/) — same PDF, layout JSON (`MuPDF4LLM.SetLayout(true)`)
 - [`34-ToText`](../34-ToText/) — same PDF, layout plain text
 - [`35-ToChunks`](../35-ToChunks/) — same PDF, retrieval chunks
 - [`36-Ocr`](../36-Ocr/) — scanned page, `useOcr` on vs off

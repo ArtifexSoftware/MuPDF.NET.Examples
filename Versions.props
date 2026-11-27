@@ -4,7 +4,7 @@
     See NuGet.Config for restore sources (repo-local LocalNuget/, then nuget.org).
   -->
   <PropertyGroup Label="Artifex package versions">
-    <ArtifexMuPDFNetVersion>4.1.1</ArtifexMuPDFNetVersion>
+    <ArtifexMuPDFNetVersion>4.1.2</ArtifexMuPDFNetVersion>
     <ArtifexMuPDFNetOfficeVersion>2.1.0</ArtifexMuPDFNetOfficeVersion>
   </PropertyGroup>
 </Project>
