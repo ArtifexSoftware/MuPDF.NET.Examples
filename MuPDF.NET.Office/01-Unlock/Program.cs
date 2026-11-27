@@ -2,22 +2,22 @@ using System.Text;
 using MuPDF.NET.Examples.Common;
 using MuPDF.NET.Office;
 
-namespace MuPDF.NET.Examples.Office.UnlockFonts;
+namespace MuPDF.NET.Examples.Office.Unlock;
 
 internal static class Program
 {
     static void Main(string[] args)
     {
         ExampleArgs.Parse(args);
-        ConsoleEx.Title("MuPDF.NET.Office / 01-UnlockFonts");
-        UnlockFonts();
+        ConsoleEx.Title("MuPDF.NET.Office / 01-Unlock");
+        Unlock();
     }
 
     // help:skip — calls the documented overload, then checks the harness baseline.
-    static void UnlockFonts()
+    static void Unlock()
     {
-        string output = ExamplePaths.Output("MuPDF.NET.Office", "01-UnlockFonts", "unlock.txt");
-        var check = new ResultCheck("MuPDF.NET.Office", "01-UnlockFonts");
+        string output = ExamplePaths.Output("MuPDF.NET.Office", "01-Unlock", "unlock.txt");
+        var check = new ResultCheck("MuPDF.NET.Office", "01-Unlock");
         var sb = new StringBuilder();
 
         var previous = Console.Out;
@@ -26,7 +26,7 @@ internal static class Program
             Console.SetOut(capture);
             try
             {
-                UnlockFonts(output);
+                Unlock(output);
             }
             finally
             {
@@ -46,15 +46,26 @@ internal static class Program
         captured = dump.ToString();
         Console.Write(captured);
 
-        check.Text(captured, "unlock-dump.txt");
-        if (File.Exists(output))
-            check.Text(File.ReadAllText(output), "unlock.txt");
+        // Font directories are machine-specific. Expected keeps portable keys only.
+        var portable = new StringBuilder();
+        int fontDirs = 0;
+        foreach (string line in captured.Split('\n'))
+        {
+            if (line.StartsWith("unlocked=", StringComparison.Ordinal))
+                portable.Append(line).Append('\n');
+            else if (line.StartsWith("fontPath=", StringComparison.Ordinal))
+                fontDirs++;
+        }
+        portable.Append($"fontDirCountMin1={fontDirs >= 1}\n");
+        string portableText = portable.ToString();
+        check.Text(portableText, "unlock-dump.txt");
+        check.Text(portableText, "unlock.txt");
         check.Finish();
     }
 
-    // doc-start:UnlockFonts
+    // doc-start:Unlock
     /// <summary>Unlock Office document support and inspect font search paths</summary>
-    static void UnlockFonts(string outputPath)
+    static void Unlock(string outputPath)
     {
         // Empty / unset MUPDF_OFFICE_KEY = restricted mode (first 3 pages). Never print the key.
         string? key = Environment.GetEnvironmentVariable("MUPDF_OFFICE_KEY")?.Trim();
@@ -62,17 +73,17 @@ internal static class Program
             key = null;
 
         // fontPathAuto: discover system font directories (Windows Fonts, fc-list on Linux, …).
-        // Unlock returns 0 in restricted mode. GetFontPath strings are machine-specific.
         MuPDFOffice.Unlock(key, fontPathAuto: true);
         var fonts = MuPDFOffice.GetFontPath();
 
         var listing = new StringBuilder();
         listing.AppendLine($"unlocked={MuPDFOffice.IsUnlocked}");
-        listing.AppendLine($"fontDirCountMin1={fonts.Count >= 1}");
+        foreach (string dir in fonts)
+            listing.AppendLine($"fontPath={dir}");
 
         string text = listing.ToString();
         File.WriteAllText(outputPath, text, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         Console.Write(text);
     }
-    // doc-end:UnlockFonts
+    // doc-end:Unlock
 }

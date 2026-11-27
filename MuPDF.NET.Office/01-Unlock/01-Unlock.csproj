@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MuPDF.NET.Examples.Office.UnlockFonts</RootNamespace>
-    <AssemblyName>01-UnlockFonts</AssemblyName>
+    <RootNamespace>MuPDF.NET.Examples.Office.Unlock</RootNamespace>
+    <AssemblyName>01-Unlock</AssemblyName>
     <!-- Windows SmartOffice handler is x64; Linux/macOS follow the host RID. -->
     <PlatformTarget Condition="'$(OS)' == 'Windows_NT'">x64</PlatformTarget>
   </PropertyGroup>

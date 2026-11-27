@@ -7,7 +7,7 @@ source=pier-schedule.pdf
 question=Which berth is open for the timber barge?
 Development-mode answer (no API keys).
 
-Berth 4 is open for the timber barge. Unload timber before noon.
+Berth 4 is open for the timber barge (ETA 07:40).
 
 --- summarize ---
 source=pier-orders.pdf
